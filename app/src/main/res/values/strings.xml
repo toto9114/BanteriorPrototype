@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">BanteriorPrototype</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="id_hint">name@example.com</string>
+    <string name="pw_hint">password</string>
+    <string name="text_login">Login</string>
+    <string name="text_signup_suggest">아직 방테리어 회원이 아니신가요?</string>
+    <string name="text_signup">회원가입하기</string>
+    <string name="text_service_agreement">서비스이용약관 동의</string>
+    <string name="text_personal_info_agreement">개인정보수집 및 활용동의</string>
+    <string name="text_btn_signup">회원가입</string>
+    <string name="text_user_name">사용자 이름</string>
+    <string name="text_rent">임대하기</string>
+    <string name="hint_search">검색어를 입력해주세요</string>
+    <string name="survey_q1">당신의 연령대는?</string>
+    <string name="age_twenty">20대</string>
+    <string name="age_thirty">30대</string>
+    <string name="age_fourty">40대</string>
+    <string name="age_fifty">50대</string>
+    <string name="survey_q2">당신의 취향은?</string>
+    <string name="favorite_modern"><![CDATA[도시적이고 간결한 블랙&화이트]]></string>
+    <string name="favorite_provence">전원적이고 아기자기한 꽃내음</string>
+    <string name="favorite_north">내츄럴한 우드스타일의 실용주의</string>
+    <string name="favorite_vintage">아날로그감성의 빛바랜</string>
+    <string name="important_lamp">조명</string>
+    <string name="important_wall">벽지</string>
+    <string name="important_curtain">커튼/블라인드</string>
+    <string name="important_cover">커버류(방석/침구류)</string>
+    <string name="survey_q3">당신이 인테리어 할 때 가장 중요시하는 소품은?</string>
+    <string name="btn_pay">결제하기</string>
+    <string name="show_interior">show interior</string>
+    <string name="message_reply">내가 쓴 글에 댓글이 등록되었습니다.</string>
+    <string name="message_due">반납 일주일 전입니다.</string>
+</resources>

@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sony.banteriorprototype.login.SignupFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image_logo"
+                android:layout_width="139dp"
+                android:layout_height="125dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="58dp"
+                android:src="@drawable/signup_icon" />
+
+            <EditText
+                android:id="@+id/edit_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/image_logo"
+                android:hint="@string/id_hint" />
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/edit_id"
+                android:hint="@string/text_user_name" />
+
+            <EditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/edit_name"
+                android:hint="@string/pw_hint" />
+
+
+                <CheckBox
+                    android:id="@+id/check_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:layout_below="@+id/edit_password"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <CheckBox
+                    android:id="@+id/check_personal_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:layout_below="@+id/check_service"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            <Button
+                android:id="@+id/btn_agree"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/text_btn_signup"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/text_service_agreement"
+                android:id="@+id/text_service_agreement"
+                android:layout_alignBottom="@+id/check_service"
+                android:layout_toRightOf="@+id/check_service"
+                android:layout_toEndOf="@+id/check_service"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/text_personal_info_agreement"
+                android:id="@+id/text_personal_info_agreement"
+                android:layout_alignBottom="@+id/check_personal_info"
+                android:layout_toRightOf="@+id/check_service"
+                android:layout_toEndOf="@+id/check_service"
+                android:layout_marginBottom="5dp" />
+
+        </RelativeLayout>
+
+</RelativeLayout>

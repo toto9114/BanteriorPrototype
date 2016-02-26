@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sony.banteriorprototype">
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/signup_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".main.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".main.MainInterior.DetailInterior.InteriorActivity" />
+        <activity android:name=".survey.SurveyActivity" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".main.MainInterior.DetailInterior.RentalActivity" />
+        <activity android:name=".main.community.CommunityContentActivity" />
+        <activity android:name=".main.community.WriteActivity" />
+        <activity android:name=".main.mypage.NotificationActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".login.AgreementActivity" />
+        <activity android:name=".main.search.ResultActivity" />
+        <activity android:name=".main.MainInterior.DetailInterior.DetailInteriorListActivity"></activity>
+    </application>
+
+</manifest>

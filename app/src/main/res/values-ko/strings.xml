@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="id_hint">name@example.com</string>
+    <string name="pw_hint">password</string>
+</resources>

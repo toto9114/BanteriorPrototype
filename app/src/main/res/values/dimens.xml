@@ -1,0 +1,19 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="interior_product_margin">16dp</dimen>
+    <dimen name="join_box_width">284dp</dimen>
+    <dimen name="join_box_height">158dp</dimen>
+    <dimen name="check_service_top_margin">47dp</dimen>
+    <dimen name="check_personal_top_margin">56dp</dimen>
+    <dimen name="login_btn_width">284dp</dimen>
+    <dimen name="login_btn_height">38dp</dimen>
+    <dimen name="detail_interior_size">179dp</dimen>
+    <dimen name="main_interior_width">360dp</dimen>
+    <dimen name="main_interior_height">240dp</dimen>
+    <dimen name="community_thumb_width">179dp</dimen>
+    <dimen name="community_thumb_height">179dp</dimen>
+    <dimen name="profile_image_size">34dp</dimen>
+</resources>
