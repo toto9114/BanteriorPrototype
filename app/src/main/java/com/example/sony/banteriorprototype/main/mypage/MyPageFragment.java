@@ -14,17 +14,17 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.MyPageData;
-import com.example.sony.banteriorprototype.data.MyWritingInfo;
+import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
+import com.example.sony.banteriorprototype.data.Mypage.MyPost;
+import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
+import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
-import com.example.sony.banteriorprototype.data.ScrapData;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
 
-import java.util.List;
+import okhttp3.Request;
 
 
 /**
@@ -65,18 +65,29 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        NetworkManager.getInstance().getMypage(new NetworkManager.OnResultListener<MyPageData>() {
+//        NetworkManager.getInstance().getMypage(new NetworkManager.OnResultListener<MyProfileData>() {
+//            @Override
+//            public void onSuccess(MyProfileData result) {
+//                setMyPage(result);
+//            }
+//
+//            @Override
+//            public void onFailure(int code) {
+//
+//            }
+//        });
+
+        NetworkManager.getInstance().getMypage(new NetworkManager.OnResultListener<MyProfile>() {
             @Override
-            public void onSuccess(MyPageData result) {
-                setMyPage(result);
+            public void onSuccess(Request request, MyProfile result) {
+                setMyPage(result.result.mypageData);
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request, int code, Throwable cause) {
 
             }
         });
-
         Button btn = (Button)view.findViewById(R.id.btn_myscrap);
         btn.setSelected(true);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -84,16 +95,14 @@ public class MyPageFragment extends Fragment {
             public void onClick(View v) {
                 //getScrapData...
                 mAdapter.clear();
-                NetworkManager.getInstance().getScrapData(new NetworkManager.OnResultListener<List<ScrapData>>() {
+                NetworkManager.getInstance().getMyScrap(new NetworkManager.OnResultListener<MyPageScrap>() {
                     @Override
-                    public void onSuccess(List<ScrapData> result) {
-                        for (ScrapData s : result) {
-                            mAdapter.add(s);
-                        }
+                    public void onSuccess(Request request, MyPageScrap result) {
+                        mAdapter.addAll(result.result.data.list);
                     }
 
                     @Override
-                    public void onFailure(int code) {
+                    public void onFailure(Request request, int code, Throwable cause) {
 
                     }
                 });
@@ -107,20 +116,17 @@ public class MyPageFragment extends Fragment {
             public void onClick(View v) {
                 //getMyWritingData...
                 mAdapter.clear();
-                NetworkManager.getInstance().getMyWritingData(new NetworkManager.OnResultListener<List<MyWritingInfo>>() {
+                NetworkManager.getInstance().getMyPost(new NetworkManager.OnResultListener<MyPost>() {
                     @Override
-                    public void onSuccess(List<MyWritingInfo> result) {
-                        for (MyWritingInfo i : result) {
-                            mAdapter.add(i);
-                        }
+                    public void onSuccess(Request request, MyPost result) {
+                        mAdapter.addAll(result.result.data.list);
                     }
 
                     @Override
-                    public void onFailure(int code) {
+                    public void onFailure(Request request, int code, Throwable cause) {
 
                     }
                 });
-
             }
         });
 
@@ -140,12 +146,13 @@ public class MyPageFragment extends Fragment {
         return view;
     }
 
-    MyPageData data;
-    private void setMyPage(MyPageData data){
+    MyProfileData data;
+    private void setMyPage(MyProfileData data){
         this.data = data;
         nameView.setText(data.getName());
-        scrapView.setText(data.scrapCount);
-        myPostView.setText(data.myPostCount);
+        Glide.with(getContext())
+                .load(data.getProfileImage())
+                .into(profileView);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

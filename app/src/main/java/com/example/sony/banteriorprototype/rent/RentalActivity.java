@@ -26,19 +26,19 @@ public class RentalActivity extends AppCompatActivity {
         orderView = (RecyclerView)findViewById(R.id.orderView);
         mAdapter = new OrderAdapter();
         orderView.setAdapter(mAdapter);
-        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
-            @Override
-            public void onSuccess(List<ProductData> result) {
-                for(ProductData data : result){
-                    mAdapter.add(data);
-                }
-            }
-
-            @Override
-            public void onFailure(int code) {
-
-            }
-        });
+//        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
+//            @Override
+//            public void onSuccess(List<ProductData> result) {
+//                for(ProductData data : result){
+//                    mAdapter.add(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int code) {
+//
+//            }
+//        });
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderView.setLayoutManager(layoutManager);
         Button btn = (Button) findViewById(R.id.btn_pay);

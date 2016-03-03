@@ -48,19 +48,19 @@ public class InteriorActivity extends AppCompatActivity {
         });
         pager.setAdapter(imageAdapter);
 
-        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
-            @Override
-            public void onSuccess(List<ProductData> result) {
-                for (ProductData data : result) {
-                    productAdapter.add(data);
-                }
-            }
-
-            @Override
-            public void onFailure(int code) {
-
-            }
-        });
+//        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
+//            @Override
+//            public void onSuccess(List<ProductData> result) {
+//                for (ProductData data : result) {
+//                    productAdapter.add(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int code) {
+//
+//            }
+//        });
 
         listView = (ListView)findViewById(R.id.product_listView);
         productAdapter = new ProductListAdapter();

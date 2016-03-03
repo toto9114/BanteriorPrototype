@@ -35,18 +35,18 @@ public class DetailInteriorListActivity extends AppCompatActivity {
                 startActivity(new Intent(DetailInteriorListActivity.this, CommunityContentActivity.class));
             }
         });
-        NetworkManager.getInstance().getDetailInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
-            @Override
-            public void onSuccess(List<InteriorData> result) {
-                for(InteriorData data : result) {
-                    mAdapter.add(data);
-                }
-            }
-
-            @Override
-            public void onFailure(int code) {
-
-            }
-        });
+//        NetworkManager.getInstance().getDetailInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
+//            @Override
+//            public void onSuccess(List<InteriorData> result) {
+//                for(InteriorData data : result) {
+//                    mAdapter.add(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int code) {
+//
+//            }
+//        });
     }
 }

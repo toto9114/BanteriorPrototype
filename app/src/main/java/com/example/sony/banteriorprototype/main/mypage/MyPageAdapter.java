@@ -4,10 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.sony.banteriorprototype.data.MyWritingInfo;
-import com.example.sony.banteriorprototype.data.ScrapData;
-import com.example.sony.banteriorprototype.data.ThumbnailData;
-import com.example.sony.banteriorprototype.main.community.ThumbnailView;
+import com.example.sony.banteriorprototype.data.Mypage.ThumbnailData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,10 @@ public class MyPageAdapter extends BaseAdapter {
 
     public void add(ThumbnailData data){
         items.add(data);
+        notifyDataSetChanged();
+    }
+    public void addAll(List<ThumbnailData> list){
+        items.addAll(list);
         notifyDataSetChanged();
     }
 

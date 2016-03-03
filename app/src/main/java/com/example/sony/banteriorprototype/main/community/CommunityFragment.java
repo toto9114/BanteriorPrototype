@@ -53,19 +53,19 @@ public class CommunityFragment extends Fragment {
             }
         });
 
-        NetworkManager.getInstance().getCommunityMain(new NetworkManager.OnResultListener<List<CommunityData>>() {
-            @Override
-            public void onSuccess(List<CommunityData> result) {
-                for (CommunityData data : result) {
-                    mAdapter.add(data);
-                }
-            }
-
-            @Override
-            public void onFailure(int code) {
-
-            }
-        });
+//        NetworkManager.getInstance().getCommunityMain(new NetworkManager.OnResultListener<List<CommunityData>>() {
+//            @Override
+//            public void onSuccess(List<CommunityData> result) {
+//                for (CommunityData data : result) {
+//                    mAdapter.add(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int code) {
+//
+//            }
+//        });
         return view;
     }
 

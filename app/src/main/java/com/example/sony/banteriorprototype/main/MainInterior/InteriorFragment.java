@@ -40,19 +40,19 @@ public class InteriorFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.interior_listView);
         mAdapter = new MainInteriorAdapter();
         listView.setAdapter(mAdapter);
-        NetworkManager.getInstance().getMainInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
-            @Override
-            public void onSuccess(List<InteriorData> result) {
-                for(InteriorData data : result){
-                    mAdapter.addMainInterior(data);
-                }
-            }
-
-            @Override
-            public void onFailure(int code) {
-
-            }
-        });
+//        NetworkManager.getInstance().getMainInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
+//            @Override
+//            public void onSuccess(List<InteriorData> result) {
+//                for(InteriorData data : result){
+//                    mAdapter.addMainInterior(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int code) {
+//
+//            }
+//        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

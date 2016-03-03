@@ -5,23 +5,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.begentgroup.xmlparser.XMLParser;
 import com.example.sony.banteriorprototype.MyApplication;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.CommunityData;
-import com.example.sony.banteriorprototype.data.InteriorData;
-import com.example.sony.banteriorprototype.data.MyPageData;
-import com.example.sony.banteriorprototype.data.MyWritingInfo;
-import com.example.sony.banteriorprototype.data.ProductData;
-import com.example.sony.banteriorprototype.data.ScrapData;
+import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
+import com.example.sony.banteriorprototype.data.Mypage.MyPost;
+import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
+import com.example.sony.banteriorprototype.data.Signup;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -30,9 +26,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -42,9 +35,11 @@ import javax.net.ssl.TrustManagerFactory;
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -59,31 +54,124 @@ public class NetworkManager {
         }
         return instance;
     }
+
     OkHttpClient mClient;
-    static class CallbackObject<T>{
-        Request request;
-        T result;
-        IOException exception;
-        OnResultListener<T> listener;
-    }
     private static final int MAX_CACHE_SIZE = 10 * 1024 * 1024;
-    private NetworkManager(){
-        OkHttpClient.Builder builder  = new OkHttpClient.Builder();
+
+    private NetworkManager() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         Context context = MyApplication.getContext();
-        File cachefile = new File(context.getExternalCacheDir(),"mycache");
-        if(!cachefile.exists()){
+        File cachefile = new File(context.getExternalCacheDir(), "mycache");
+        if (!cachefile.exists()) {
             cachefile.mkdirs();
         }
-        Cache cache = new Cache(cachefile,MAX_CACHE_SIZE);
+        Cache cache = new Cache(cachefile, MAX_CACHE_SIZE);
         builder.cache(cache);
 
         CookieManager cookieManager = new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
         builder.cookieJar(new JavaNetCookieJar(cookieManager));
 
+        try {
+            disableCertificateValidation(context, builder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         mClient = builder.build();
     }
 
-    private static final String[] USER_NAME = {"이지훈","주해찬","김민주","정윤지"};
+    static void disableCertificateValidation(Context context, OkHttpClient.Builder builder) throws IOException {
+
+        try {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            InputStream caInput = context.getResources().openRawResource(R.raw.site);
+            Certificate ca;
+            try {
+                ca = cf.generateCertificate(caInput);
+                System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
+            } finally {
+                caInput.close();
+            }
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", ca);
+
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+            tmf.init(keyStore);
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, tmf.getTrustManagers(), null);
+            HostnameVerifier hv = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+            sc.init(null, tmf.getTrustManagers(), null);
+            builder.sslSocketFactory(sc.getSocketFactory());
+            builder.hostnameVerifier(hv);
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void cancelAll() {
+        mClient.dispatcher().cancelAll();
+    }
+
+    public interface OnResultListener<T> {
+        public void onSuccess(Request request, T result);
+
+        public void onFailure(Request request, int code, Throwable cause);
+    }
+
+    private static final int MESSAGE_SUCCESS = 0;
+    private static final int MESSAGE_FAILURE = 1;
+
+    static class NetworkHandler extends Handler {
+        public NetworkHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            CallbackObject object = (CallbackObject) msg.obj;
+            Request request = object.request;
+            OnResultListener listener = object.listener;
+            switch (msg.what) {
+                case MESSAGE_SUCCESS:
+                    listener.onSuccess(request, object.result);
+                    break;
+                case MESSAGE_FAILURE:
+                    listener.onFailure(request, -1, object.exception);
+                    break;
+            }
+        }
+    }
+
+    Handler mHandler = new NetworkHandler(Looper.getMainLooper());
+
+    static class CallbackObject<T> {
+        Request request;
+        T result;
+        IOException exception;
+        OnResultListener<T> listener;
+    }
+
+    public void cancelAll(Object tag) {
+
+    }
+
+    private static final String[] USER_NAME = {"이지훈", "주해찬", "김민주", "정윤지"};
     public static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
             R.drawable.modern_main2,
             R.drawable.modern_main3,
@@ -93,125 +181,247 @@ public class NetworkManager {
             R.drawable.detail_modern3,
             R.drawable.detail_modern4};
 
-    Handler mHandler = new Handler();
-
-    public interface OnResultListener<T>{
-        public void onSuccess(T result);
-        public void onFailure(int code);
-    }
-
-    public void login(Context context, String userId, String password, final OnResultListener<String> listener){
-
-    }
-    public void signup(Context context,String userId, String name, String password, final OnResultListener<String> listener){
+    public void login(Context context, String userId, String password, final OnResultListener<String> listener) {
 
     }
 
-    public void getMainInteriorData(final OnResultListener<List<InteriorData>> listener){
-        mHandler.postDelayed(new Runnable() {
+    public void signup(Context context, String userId, String name, String password, final OnResultListener<String> listener) {
+
+    }
+
+    private static final String URL_FORMAT = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com";
+
+    public Request getMypage(final OnResultListener<MyProfile> listener) {
+
+        String url = String.format(URL_FORMAT+"/mypages");
+
+        final CallbackObject<MyProfile> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                List<InteriorData> list = new ArrayList<InteriorData>();
-                for(int i = 0 ; i< MAIN_INTERIOR_IMAGE.length; i++){
-                    InteriorData data = new InteriorData();
-                    data.interiorImage = MAIN_INTERIOR_IMAGE[i];
-                    data.interiorType = i;
-                    list.add(data);
-                }
-                listener.onSuccess(list);
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
             }
-        },1000);
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                MyProfile data = gson.fromJson(response.body().string(), MyProfile.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+    public Request signupUser(final OnResultListener<Signup> listener) {
+
+        String url = String.format(URL_FORMAT+"/members");
+
+        final CallbackObject<Signup> callbackObject = new CallbackObject<>();
+        RequestBody body = new FormBody.Builder()
+                .add("name","1")
+                .add("email", "2")
+                .add("password","3")
+                .build();
+        Request request = new Request.Builder().url(url)
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                Signup data = gson.fromJson(response.body().string(), Signup.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
     }
 
-    public void getDetailInteriorData(final OnResultListener<List<InteriorData>> listener){
-        mHandler.postDelayed(new Runnable() {
+    public Request getMyScrap(final OnResultListener<MyPageScrap> listener) {
+
+        String url = String.format(URL_FORMAT+"/scraps");
+
+        final CallbackObject<MyPageScrap> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                List<InteriorData> list = new ArrayList<InteriorData>();
-                for(int i = 0 ;i < 16 ; i++) {
-                    InteriorData data = new InteriorData();
-                    data.interiorImage = MAIN_INTERIOR_IMAGE[i % MAIN_INTERIOR_IMAGE.length];
-                    list.add(data);
-                }
-                listener.onSuccess(list);
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
             }
-        },1000);
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // XMLParser parser = new XMLParser();
+                //...
+//                 NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
+//                callbackObject.result = movies;
+                Gson gson = new Gson();
+                MyPageScrap data = gson.fromJson(response.body().string(), MyPageScrap.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
     }
 
-    public void getCommunityMain(final OnResultListener<List<CommunityData>> listener){
-        mHandler.postDelayed(new Runnable() {
+    public Request getMyPost(final OnResultListener<MyPost> listener) {
+
+        String url = String.format(URL_FORMAT+"/scraps");
+
+        final CallbackObject<MyPost> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                List<CommunityData> list = new ArrayList<CommunityData>();
-                for(int i = 0 ; i< 10; i++){
-                    CommunityData data = new CommunityData();
-                    data.mainImage = MAIN_INTERIOR_IMAGE[i%MAIN_INTERIOR_IMAGE.length];
-                    data.profileImage = R.drawable.profile_image;
-                    list.add(data);
-                }
-                listener.onSuccess(list);
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
             }
-        },1000);
-    }
-    public void getScrapData(final OnResultListener<List<ScrapData>> listener){
-        mHandler.postDelayed(new Runnable() {
+
             @Override
-            public void run() {
-                List<ScrapData> list = new ArrayList<>();
-                for (int i = 0; i < 10; i++) {
-                    ScrapData data = new ScrapData();
-                    data.interiorImage = MAIN_INTERIOR_IMAGE[i%MAIN_INTERIOR_IMAGE.length];
-                    data.profileImage = R.drawable.profile_image;
-                    list.add(data);
-                }
-                listener.onSuccess(list);
+            public void onResponse(Call call, Response response) throws IOException {
+                // XMLParser parser = new XMLParser();
+                //...
+//                 NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
+//                callbackObject.result = movies;
+                Gson gson = new Gson();
+                MyPost data = gson.fromJson(response.body().string(), MyPost.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
             }
-        }, 1000);
+        });
+        return request;
     }
 
-    public void getMyWritingData(final OnResultListener<List<MyWritingInfo>> listener){
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<MyWritingInfo> list = new ArrayList<>();
-                Random r = new Random();
-                for (int i = 0; i < 10; i++) {
-                    int random = r.nextInt(MAIN_INTERIOR_IMAGE.length);
-                    MyWritingInfo data = new MyWritingInfo();
-                    data.interiorImage = MAIN_INTERIOR_IMAGE[(i+random)%MAIN_INTERIOR_IMAGE.length];
-                    data.profileImage = R.drawable.profile_image;
-                    list.add(data);
-                }
-                listener.onSuccess(list);
-            }
-        }, 1000);
-    }
-    public void getProductData(final OnResultListener<List<ProductData>> listener){
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<ProductData> list = new ArrayList<>();
-                for (int i = 0; i < DETAIL_INTERIOR_MODERN1.length; i++) {
-                    ProductData data = new ProductData();
-                    data.productImage = DETAIL_INTERIOR_MODERN1[i];
-                    list.add(data);
-                }
-                listener.onSuccess(list);
-            }
-        }, 1000);
-    }
+    public Request getPostList(final OnResultListener<MyPost> listener) {
 
-    public void getMypage(final OnResultListener<MyPageData> listener){
-        mHandler.postDelayed(new Runnable() {
+        String url = String.format(URL_FORMAT+"/scraps");
+
+        final CallbackObject<MyPost> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                Random r= new Random();
-                MyPageData data = new MyPageData();
-                data.setName(USER_NAME[r.nextInt(USER_NAME.length)]);
-                data.scrapCount = "스크랩:"+r.nextInt(30);
-                data.myPostCount = "내가 쓴 글"+r.nextInt(20);
-                listener.onSuccess(data);
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
             }
-        },500);
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // XMLParser parser = new XMLParser();
+                //...
+//                 NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
+//                callbackObject.result = movies;
+                Gson gson = new Gson();
+                MyPost data = gson.fromJson(response.body().string(), MyPost.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+//    private static final String URL_FORMAT = "https://openapi.naver.com/v1/search/movie.xml?target=movie&query=%s&start=%s&display=%s";
+
+//    public Request getNaverMovie(Context context, String keyword, int start, int display,
+//                                 final OnResultListener<NaverMovies> listener) throws UnsupportedEncodingException {
+//        String url = String.format(URL_FORMAT, URLEncoder.encode(keyword, "utf-8"), start, display);
+//
+//        final CallbackObject<NaverMovies> callbackObject = new CallbackObject<NaverMovies>();
+//
+//        Request request = new Request.Builder().url(url)
+//                .header("X-Naver-Client-Id", "FRzO_6MMu6zwQYAaXlZr")
+//                .header("X-Naver-Client-Secret", "z0iOB55iQk")
+//                .tag(context)
+//                .build();
+//
+//        callbackObject.request = request;
+//        callbackObject.listener = listener;
+//        mClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                callbackObject.exception = e;
+//                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+//                mHandler.sendMessage(msg);
+//            }
+
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                XMLParser parser = new XMLParser();
+//                NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
+//                callbackObject.result = movies;
+//                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+//                mHandler.sendMessage(msg);
+//            }
+//        });
+//
+//        return request;
+//    }
+
+    public Request testSSL(Context context, final OnResultListener<String> listener) {
+        Request request = new Request.Builder().url("https://192.168.210.51:8443/test.html").build();
+        final CallbackObject<String> callbackObject = new CallbackObject<String>();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                callbackObject.result = response.body().string();
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+
+        return request;
+
     }
 }

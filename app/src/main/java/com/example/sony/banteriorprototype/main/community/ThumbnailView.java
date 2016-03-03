@@ -6,8 +6,6 @@ import android.widget.ImageView;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommunityData;
-import com.example.sony.banteriorprototype.data.MyWritingInfo;
-import com.example.sony.banteriorprototype.data.ScrapData;
 
 /**
  * Created by sony on 2016-02-23.
