@@ -1,6 +1,7 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +17,12 @@ public class ProductView extends FrameLayout {
         super(context);
         init();
     }
+
+    public ProductView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
     ImageView productView;
     TextView idView,nameView,sizeView;
 

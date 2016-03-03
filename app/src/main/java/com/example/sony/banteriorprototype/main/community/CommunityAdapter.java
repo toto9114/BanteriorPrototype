@@ -17,6 +17,7 @@ public class CommunityAdapter extends BaseAdapter {
 
     public void add(CommunityData data){
         items.add(data);
+        notifyDataSetChanged();
     }
     @Override
     public int getCount() {
@@ -42,7 +43,7 @@ public class CommunityAdapter extends BaseAdapter {
         else {
             view = (ThumbnailView)convertView;
         }
-        view.setThumbnailData(items.get(position));
+        view.setCommunityThumbnailData(items.get(position));
         return view;
     }
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioGroup;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.login.LoginActivity;
@@ -21,7 +22,8 @@ public class ImportantSurveyFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    RadioGroup category;
+    int important;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,10 +39,11 @@ public class ImportantSurveyFragment extends Fragment {
                 getActivity().finish();
             }
         });
-        btn = (Button)view.findViewById(R.id.btn_login);
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        category = (RadioGroup)view.findViewById(R.id.category);
+        category.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
                 startActivity(new Intent(getContext(),LoginActivity.class));
                 getActivity().finish();
             }

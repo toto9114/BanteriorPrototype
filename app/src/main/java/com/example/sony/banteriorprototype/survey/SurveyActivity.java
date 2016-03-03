@@ -18,5 +18,8 @@ public class SurveyActivity extends AppCompatActivity {
         mAdapter = new SurveyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(mAdapter);
     }
-
+    public void moveToNext(){
+        int page = pager.getCurrentItem();
+            pager.setCurrentItem(page + 1, true);
+    }
 }

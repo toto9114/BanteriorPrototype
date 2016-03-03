@@ -19,9 +19,4 @@ public class InteriorData {
     public int x,y;
     public List<ProductData> productDataList;
 
-    public static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
-            R.drawable.modern_main2,
-            R.drawable.modern_main3,
-            R.drawable.modern_main4};
-
 }

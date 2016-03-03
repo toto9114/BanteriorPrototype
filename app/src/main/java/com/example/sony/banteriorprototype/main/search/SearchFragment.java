@@ -93,6 +93,7 @@ public class SearchFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(),"검색어를 입력해주세요",Toast.LENGTH_SHORT).show();
                 }
+                searchView.setText("");
             }
         });
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {

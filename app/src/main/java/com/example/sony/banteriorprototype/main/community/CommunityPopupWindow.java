@@ -13,6 +13,10 @@ import com.example.sony.banteriorprototype.R;
  * Created by sony on 2016-02-25.
  */
 public class CommunityPopupWindow extends PopupWindow {
+    OnItemClickListener mListener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
     public CommunityPopupWindow(Context context){
         super(context);
 
@@ -26,13 +30,20 @@ public class CommunityPopupWindow extends PopupWindow {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mListener != null){
+                    mListener.onItemClick(v);
+                }
                 dismiss();
             }
         });
         btn = (Button)view.findViewById(R.id.btn_delete);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mListener!= null){
+                    mListener.onItemClick(v);
+                }
                 dismiss();
             }
         });

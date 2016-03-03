@@ -3,6 +3,7 @@ package com.example.sony.banteriorprototype.main.community;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.widget.GridView;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommunityData;
-import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
+
+import java.util.List;
 
 
 /**
@@ -41,17 +44,29 @@ public class CommunityFragment extends Fragment {
         });
         mAdapter = new CommunityAdapter();
         gridView.setAdapter(mAdapter);
-        initData();
-        return view;
-    }
-    private void initData(){
-        for(int i = 0; i< 10 ; i++) {
-            CommunityData data = new CommunityData();
-            data.mainImage = InteriorData.MAIN_INTERIOR_IMAGE[i%InteriorData.MAIN_INTERIOR_IMAGE.length];
-            data.profileImage = R.drawable.profile_image;
-            mAdapter.add(data);
-        }
 
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),WriteActivity.class));
+            }
+        });
+
+        NetworkManager.getInstance().getCommunityMain(new NetworkManager.OnResultListener<List<CommunityData>>() {
+            @Override
+            public void onSuccess(List<CommunityData> result) {
+                for (CommunityData data : result) {
+                    mAdapter.add(data);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
+        return view;
     }
 
 }

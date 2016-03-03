@@ -1,11 +1,18 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
+import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
+
+import java.util.List;
 
 public class DetailInteriorListActivity extends AppCompatActivity {
     private static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
@@ -22,13 +29,24 @@ public class DetailInteriorListActivity extends AppCompatActivity {
         gridView = (GridView)findViewById(R.id.grid_interior_list);
         mAdapter = new DetailInteriorAdapter();
         gridView.setAdapter(mAdapter);
-        initData();
-    }
-    private void initData(){
-        for(int i = 0 ;i < 16 ; i++){
-            InteriorData data= new InteriorData();
-            data.interiorImage = MAIN_INTERIOR_IMAGE[i%MAIN_INTERIOR_IMAGE.length];
-            mAdapter.add(data);
-        }
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(DetailInteriorListActivity.this, CommunityContentActivity.class));
+            }
+        });
+        NetworkManager.getInstance().getDetailInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
+            @Override
+            public void onSuccess(List<InteriorData> result) {
+                for(InteriorData data : result) {
+                    mAdapter.add(data);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  * Created by sony on 2016-02-24.
  */
 public class SurveyPagerAdapter extends FragmentPagerAdapter {
-    private static final int SURVEY_FRAGMENT_COUNT = 3;
+    public static final int SURVEY_FRAGMENT_COUNT = 3;
 
     public SurveyPagerAdapter(FragmentManager fm) {
         super(fm);

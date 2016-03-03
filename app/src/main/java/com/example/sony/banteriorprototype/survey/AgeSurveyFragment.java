@@ -23,8 +23,10 @@ public class AgeSurveyFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //private static final String AGE_FRAGMENT = "age";
 
     RadioGroup category;
+    int age;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,12 +44,12 @@ public class AgeSurveyFragment extends Fragment {
         category.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    
+                if(age !=checkedId) {
+                    age = checkedId;
+                    ((SurveyActivity) getActivity()).moveToNext();
                 }
             }
         });
         return view;
     }
-
 }

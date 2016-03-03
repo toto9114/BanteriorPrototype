@@ -2,6 +2,8 @@ package com.example.sony.banteriorprototype.main.mypage;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.sony.banteriorprototype.R;
@@ -33,4 +35,20 @@ public class NotificationActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_finish,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.finish){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

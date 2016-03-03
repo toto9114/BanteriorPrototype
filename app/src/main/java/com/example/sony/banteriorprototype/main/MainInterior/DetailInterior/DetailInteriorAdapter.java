@@ -17,6 +17,7 @@ public class DetailInteriorAdapter extends BaseAdapter {
 
     public void add(InteriorData data){
         items.add(data);
+        notifyDataSetChanged();
     }
     @Override
     public int getCount() {

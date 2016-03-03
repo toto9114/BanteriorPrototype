@@ -33,6 +33,16 @@
     <string name="survey_q3">당신이 인테리어 할 때 가장 중요시하는 소품은?</string>
     <string name="btn_pay">결제하기</string>
     <string name="show_interior">show interior</string>
+    <string name="regist_hash">regist hash</string>
+    <string name="regist_post">regist post</string>
+    <string name="finish">finish</string>
     <string name="message_reply">내가 쓴 글에 댓글이 등록되었습니다.</string>
     <string name="message_due">반납 일주일 전입니다.</string>
+    <string name="desc_hash_tag">#태그를 입력해주세요.(최대 5개)</string>
+    <string name="complete_payment">결제가 완료되었습니다.</string>
+    <string name="header_product">주문소품정보</string>
+    <string name="header_address">배송정보</string>
+    <string name="header_rent">임대기간 선택</string>
+    <string name="header_total">최종결제금액</string>
+
 </resources>

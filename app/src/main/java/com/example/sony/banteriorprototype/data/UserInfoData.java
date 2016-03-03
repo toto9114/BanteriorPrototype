@@ -5,6 +5,6 @@ package com.example.sony.banteriorprototype.data;
  */
 public class UserInfoData {
     String userId;
-    String naem;
+    String name;
     String password;
 }

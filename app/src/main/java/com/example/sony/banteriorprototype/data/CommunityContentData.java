@@ -5,7 +5,6 @@ package com.example.sony.banteriorprototype.data;
  */
 public class CommunityContentData {
     String imageUrl;
-    String comment;
     int scrapCount;
     boolean isScrap;
 }

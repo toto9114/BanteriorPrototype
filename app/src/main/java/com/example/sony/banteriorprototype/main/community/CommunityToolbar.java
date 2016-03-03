@@ -14,23 +14,26 @@ import com.example.sony.banteriorprototype.R;
 /**
  * Created by sony on 2016-02-25.
  */
-public class CommunityToolbar extends FrameLayout {
+public class CommunityToolbar extends FrameLayout implements OnItemClickListener{
     public CommunityToolbar(Context context) {
         super(context);
         init();
     }
 
     CommunityPopupWindow popup;
+
     boolean isShowing = false;
 
     public CommunityToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+
         menuBtn.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if (popup == null) {
                     popup = new CommunityPopupWindow(getContext());
+                    popup.setOnItemClickListener(CommunityToolbar.this);
                     popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                         @Override
                         public void onDismiss() {
@@ -51,14 +54,26 @@ public class CommunityToolbar extends FrameLayout {
     ImageView profileView;
     TextView nameView;
     Button menuBtn;
-    private void init(){
-        inflate(getContext(), R.layout.view_community_toolbar,this);
-        profileView = (ImageView)findViewById(R.id.image_profile);
-        nameView = (TextView)findViewById(R.id.text_name);
-        menuBtn = (Button)findViewById(R.id.btn_menu);
+
+    private void init() {
+        inflate(getContext(), R.layout.view_community_toolbar, this);
+        profileView = (ImageView) findViewById(R.id.image_profile);
+        nameView = (TextView) findViewById(R.id.text_name);
+        menuBtn = (Button) findViewById(R.id.btn_menu);
     }
 
-    public void setToolbar(){
+    OnItemClickListener mListener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+    @Override
+    public void onItemClick(View view) {
+        if(mListener!=null){
+            mListener.onItemClick(view);
+        }
+    }
+
+    public void setToolbar() {
 
     }
 }

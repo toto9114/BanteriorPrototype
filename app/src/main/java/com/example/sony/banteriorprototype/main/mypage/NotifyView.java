@@ -22,7 +22,7 @@ public class NotifyView extends FrameLayout {
     TextView messageView;
     public void init(){
         inflate(getContext(), R.layout.view_notify,this);
-        iconView = (ImageView)findViewById(R.id.image_icon);
+        iconView = (ImageView)findViewById(R.id.image_address_icon);
         messageView = (TextView)findViewById(R.id.text_message);
     }
     NotificationData data;

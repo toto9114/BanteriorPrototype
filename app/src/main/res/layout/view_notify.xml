@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/image_icon"
+        android:id="@+id/image_address_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -19,8 +19,8 @@
         android:text="Medium Text"
         android:id="@+id/text_message"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/image_icon"
-        android:layout_alignBottom="@+id/image_icon"
+        android:layout_toRightOf="@+id/image_address_icon"
+        android:layout_alignBottom="@+id/image_address_icon"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:gravity="center_vertical" />

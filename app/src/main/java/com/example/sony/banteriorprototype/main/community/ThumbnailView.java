@@ -6,7 +6,8 @@ import android.widget.ImageView;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommunityData;
-import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.data.MyWritingInfo;
+import com.example.sony.banteriorprototype.data.ScrapData;
 
 /**
  * Created by sony on 2016-02-23.
@@ -19,14 +20,15 @@ public class ThumbnailView extends FrameLayout {
     ImageView thumbView;
     ImageView profileView;
     private void init(){
-        inflate(getContext(), R.layout.view_community_thumb,this);
+        inflate(getContext(), R.layout.view_thumb,this);
         thumbView = (ImageView)findViewById(R.id.image_thumb);
         profileView = (ImageView)findViewById(R.id.image_profile);
     }
-    CommunityData data;
-    public void setThumbnailData(CommunityData data){
-        this.data = data;
+    CommunityData communityData;
+    public void setCommunityThumbnailData(CommunityData data){
+        this.communityData = data;
         thumbView.setImageResource(data.mainImage);
         profileView.setImageResource(data.profileImage);
     }
+
 }

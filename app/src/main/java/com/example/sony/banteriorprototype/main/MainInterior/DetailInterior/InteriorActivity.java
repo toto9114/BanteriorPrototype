@@ -2,7 +2,6 @@ package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,14 +11,13 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.data.ProductData;
+import com.example.sony.banteriorprototype.rent.RentalActivity;
+
+import java.util.List;
 
 public class InteriorActivity extends AppCompatActivity {
-    private static final int[] DETAIL_INTERIOR_MODERN1 = {R.drawable.detail_modern1,
-            R.drawable.detail_modern2,
-            R.drawable.detail_modern3,
-            R.drawable.detail_modern4};
-    //SliderLayout sliderLayout;
     ViewPager pager;
     InteriorPagerAdapter imageAdapter;
     ProductListAdapter productAdapter;
@@ -50,6 +48,20 @@ public class InteriorActivity extends AppCompatActivity {
         });
         pager.setAdapter(imageAdapter);
 
+        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
+            @Override
+            public void onSuccess(List<ProductData> result) {
+                for (ProductData data : result) {
+                    productAdapter.add(data);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
+
         listView = (ListView)findViewById(R.id.product_listView);
         productAdapter = new ProductListAdapter();
         listView.setAdapter(productAdapter);
@@ -61,8 +73,8 @@ public class InteriorActivity extends AppCompatActivity {
                 startActivity(new Intent(InteriorActivity.this, RentalActivity.class));
             }
         });
-        initData();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,13 +91,5 @@ public class InteriorActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    private void initData(){
-        for(int i = 0 ; i<4; i++){
-            ProductData data = new ProductData();
-            data.productImage = DETAIL_INTERIOR_MODERN1[i];
-            productAdapter.add(data);
-        }
     }
 }

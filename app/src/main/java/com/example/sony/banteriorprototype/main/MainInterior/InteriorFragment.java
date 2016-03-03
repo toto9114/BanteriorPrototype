@@ -4,17 +4,18 @@ package com.example.sony.banteriorprototype.main.MainInterior;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
+
+import java.util.List;
 
 
 /**
@@ -39,31 +40,34 @@ public class InteriorFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.interior_listView);
         mAdapter = new MainInteriorAdapter();
         listView.setAdapter(mAdapter);
-        initdata();
+        NetworkManager.getInstance().getMainInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
+            @Override
+            public void onSuccess(List<InteriorData> result) {
+                for(InteriorData data : result){
+                    mAdapter.addMainInterior(data);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "position : " + position, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getContext(), InteriorActivity.class));
             }
         });
-
-        Log.i("InteriorFragment",""+mAdapter.getCount());
         return view;
     }
-    private void initdata(){
-        for(int i = 0 ; i< 4; i++){
-            InteriorData data= new InteriorData();
-            data.interiorImage = MAIN_INTERIOR_IMAGE[i];
-            data.interiorType = i;
-            Log.i("InteriorFragment","i: "+i);
-            mAdapter.addMainInterior(data);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
+//    private void initdata(){
+//        for(int i = 0 ; i< 4; i++){
+//            InteriorData data= new InteriorData();
+//            data.interiorImage = MAIN_INTERIOR_IMAGE[i];
+//            data.interiorType = i;
+//            Log.i("InteriorFragment","i: "+i);
+//            mAdapter.addMainInterior(data);
+//        }
+//    }
 }

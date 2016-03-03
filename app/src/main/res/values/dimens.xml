@@ -16,4 +16,10 @@
     <dimen name="community_thumb_width">179dp</dimen>
     <dimen name="community_thumb_height">179dp</dimen>
     <dimen name="profile_image_size">34dp</dimen>
+    <dimen name="community_content_image_height">288dp</dimen>
+    <dimen name="hash_height">46dp</dimen>
+    <dimen name="color_image_size">11dp</dimen>
+    <dimen name="product_width">54dp</dimen>
+    <dimen name="product_height">51dp</dimen>
+
 </resources>
