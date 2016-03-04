@@ -9,5 +9,5 @@ public class ScrapDataList {
     public int myscarp_count;
     public int page;
     public int listPerPage;
-    public List<ThumbnailData> list;
+    public List<ScrapData> list;
 }

@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.sony.banteriorprototype.data.CommunityData;
+import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,14 @@ import java.util.List;
  * Created by sony on 2016-02-23.
  */
 public class CommunityAdapter extends BaseAdapter {
-    List<CommunityData> items = new ArrayList<CommunityData>();
+    List<CommunityContentData> items = new ArrayList<CommunityContentData>();
 
-    public void add(CommunityData data){
+    public void add(CommunityContentData data){
         items.add(data);
         notifyDataSetChanged();
+    }
+    public void addAll(List<CommunityContentData> data){
+        items.addAll(data);
     }
     @Override
     public int getCount() {

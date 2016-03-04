@@ -4,8 +4,9 @@ import android.content.Context;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.CommunityData;
+import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
 
 /**
  * Created by sony on 2016-02-23.
@@ -22,11 +23,11 @@ public class ThumbnailView extends FrameLayout {
         thumbView = (ImageView)findViewById(R.id.image_thumb);
         profileView = (ImageView)findViewById(R.id.image_profile);
     }
-    CommunityData communityData;
-    public void setCommunityThumbnailData(CommunityData data){
+    CommunityContentData communityData;
+    public void setCommunityThumbnailData(CommunityContentData data){
         this.communityData = data;
-        thumbView.setImageResource(data.mainImage);
-        profileView.setImageResource(data.profileImage);
+        Glide.with(getContext()).load(data.mainImage).into(thumbView);
+        Glide.with(getContext()).load(data.profileImage).into(profileView);
     }
 
 }

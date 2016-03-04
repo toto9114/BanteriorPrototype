@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.ProductData;
 
@@ -30,14 +31,14 @@ public class ProductView extends FrameLayout {
         inflate(getContext(), R.layout.view_product,this);
         productView = (ImageView)findViewById(R.id.image_product);
         idView = (TextView)findViewById(R.id.text_id);
-        nameView = (TextView)findViewById(R.id.text_name);
+        nameView = (TextView)findViewById(R.id.text_brand);
         sizeView = (TextView)findViewById(R.id.text_size);
     }
 
     ProductData data;
     public void setProduct(ProductData data){
         this.data = data;
-        productView.setImageResource(data.productImage);
+        Glide.with(getContext()).load(data.productImage).into(productView);
         idView.setText(data.productId);
         nameView.setText(data.name);
         sizeView.setText(data.size);

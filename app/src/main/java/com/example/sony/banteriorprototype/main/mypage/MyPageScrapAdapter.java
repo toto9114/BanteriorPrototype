@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.sony.banteriorprototype.data.Mypage.ThumbnailData;
+import com.example.sony.banteriorprototype.data.Mypage.ScrapData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * Created by sony on 2016-02-27.
  */
-public class MyPageAdapter extends BaseAdapter {
-    List<ThumbnailData> items = new ArrayList<>();
+public class MyPageScrapAdapter extends BaseAdapter {
+    List<ScrapData> items = new ArrayList<>();
 
-    public void add(ThumbnailData data){
+    public void add(ScrapData data){
         items.add(data);
         notifyDataSetChanged();
     }
-    public void addAll(List<ThumbnailData> list){
+    public void addAll(List<ScrapData> list){
         items.addAll(list);
         notifyDataSetChanged();
     }
@@ -51,7 +51,7 @@ public class MyPageAdapter extends BaseAdapter {
         else {
             view = (MyScrapView)convertView;
         }
-        view.setThumb(items.get(position));
+        view.setScrapData(items.get(position));
         return view;
     }
 }

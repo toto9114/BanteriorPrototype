@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,13 @@ import java.util.List;
  * Created by sony on 2016-02-23.
  */
 public class MainInteriorAdapter extends BaseAdapter {
-    List<InteriorData> items = new ArrayList<InteriorData>();
+    List<InteriorContentData> items = new ArrayList<InteriorContentData>();
     @Override
     public int getCount() {
         return items.size();
     }
 
-    public void addMainInterior(InteriorData data){
+    public void addMainInterior(InteriorContentData data){
         items.add(data);
         notifyDataSetChanged();
     }

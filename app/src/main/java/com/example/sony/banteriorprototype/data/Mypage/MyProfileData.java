@@ -7,9 +7,8 @@ import com.google.gson.annotations.SerializedName;
  * Created by sony on 2016-02-22.
  */
 public class MyProfileData {
-
     String name;
-    @SerializedName("photo_path")
+    @SerializedName("photo_url")
     String profileImage;
 
     public String getProfileImage() {

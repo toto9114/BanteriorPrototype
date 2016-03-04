@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.CommunityData;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
+import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Community.Community;
 
-import java.util.List;
+import okhttp3.Request;
 
 
 /**
@@ -53,19 +53,17 @@ public class CommunityFragment extends Fragment {
             }
         });
 
-//        NetworkManager.getInstance().getCommunityMain(new NetworkManager.OnResultListener<List<CommunityData>>() {
-//            @Override
-//            public void onSuccess(List<CommunityData> result) {
-//                for (CommunityData data : result) {
-//                    mAdapter.add(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//
-//            }
-//        });
+        NetworkManager.getInstance().getCommunityPost(getContext(), new NetworkManager.OnResultListener<Community>() {
+            @Override
+            public void onSuccess(Request request, Community result) {
+                mAdapter.addAll(result.result.communityData.postList);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
         return view;
     }
 

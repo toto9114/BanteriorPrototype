@@ -7,11 +7,12 @@ import java.util.List;
 /**
  * Created by sony on 2016-02-22.
  */
-public class MyPostData implements ThumbnailData {
+public class MyPostData{
     public int post_id;
+    @SerializedName("file_url")
     public String interiorImage;
-
     @SerializedName("photo_url")
-    String profileImage;
-    List<String> hashtag;
+    public String profileImage;
+    //public List<String> hash_tag;
+    public String hash_tag;
 }

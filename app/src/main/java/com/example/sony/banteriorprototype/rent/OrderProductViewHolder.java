@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.sony.banteriorprototype.MyApplication;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.ProductData;
 
@@ -21,7 +23,7 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
     public OrderProductViewHolder(View itemView) {
         super(itemView);
         productView = (ImageView)itemView.findViewById(R.id.image_product);
-        nameView = (TextView)itemView.findViewById(R.id.text_name);
+        nameView = (TextView)itemView.findViewById(R.id.text_brand);
         colorView = (ImageView)itemView.findViewById(R.id.image_color);
         colorNameView = (TextView)itemView.findViewById(R.id.text_color);
         priceView = (TextView)itemView.findViewById(R.id.text_price);
@@ -30,7 +32,7 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
     ProductData data;
     public void setData(ProductData data){
         this.data = data;
-        productView.setImageResource(data.productImage);
+        Glide.with(MyApplication.getContext()).load(data.productImage).into(productView);
         nameView.setText(data.name);
     }
 }

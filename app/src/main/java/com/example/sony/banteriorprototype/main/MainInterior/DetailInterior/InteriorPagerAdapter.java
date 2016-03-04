@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  * Created by sony on 2016-02-23.
  */
 public class InteriorPagerAdapter extends FragmentPagerAdapter {
-    List<InteriorData> items = new ArrayList<>();
+    List<InteriorContentData> items = new ArrayList<>();
     private static final int FRAGMENT_COUNT = 4;
 
     public InteriorPagerAdapter(FragmentManager fm) {

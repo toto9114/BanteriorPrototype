@@ -5,5 +5,5 @@ package com.example.sony.banteriorprototype.data.Mypage;
  */
 public class MyPageScrapResult {
     public String message;
-    public ScrapDataList data;
+    public ScrapDataList scrapData;
 }

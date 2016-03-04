@@ -16,9 +16,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Medium Text"
-        android:id="@+id/text_name"
+        android:id="@+id/text_brand"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/image_product"
         android:layout_toEndOf="@+id/image_product" />
@@ -29,7 +29,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/text_id"
-        android:layout_below="@+id/text_name"
+        android:layout_below="@+id/text_brand"
         android:layout_toRightOf="@+id/image_product"
         android:layout_toEndOf="@+id/image_product" />
 
@@ -52,5 +52,15 @@
         android:layout_below="@+id/text_size"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/text_name"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/text_brand"
+        android:layout_toEndOf="@+id/text_brand" />
 
 </RelativeLayout>

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.main.MainActivity;
 
@@ -60,7 +61,7 @@ public class LoginFragment extends Fragment {
         signupView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((LoginActivity)getActivity()).changeSignup();
+                ((LoginActivity) getActivity()).changeSignup();
             }
         });
         return view;

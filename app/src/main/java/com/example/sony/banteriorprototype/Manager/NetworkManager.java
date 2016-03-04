@@ -7,6 +7,9 @@ import android.os.Message;
 
 import com.example.sony.banteriorprototype.MyApplication;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Community.Community;
+import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
+import com.example.sony.banteriorprototype.data.Interior.Interior;
 import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
 import com.example.sony.banteriorprototype.data.Mypage.MyPost;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
@@ -191,7 +194,7 @@ public class NetworkManager {
 
     private static final String URL_FORMAT = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com";
 
-    public Request getMypage(final OnResultListener<MyProfile> listener) {
+    public Request getMypage(Context context,final OnResultListener<MyProfile> listener) {
 
         String url = String.format(URL_FORMAT+"/mypages");
 
@@ -221,7 +224,7 @@ public class NetworkManager {
         });
         return request;
     }
-    public Request signupUser(final OnResultListener<Signup> listener) {
+    public Request signupUser(Context context,final OnResultListener<Signup> listener) {
 
         String url = String.format(URL_FORMAT+"/members");
 
@@ -258,7 +261,7 @@ public class NetworkManager {
         return request;
     }
 
-    public Request getMyScrap(final OnResultListener<MyPageScrap> listener) {
+    public Request getMyScrap(Context context,final OnResultListener<MyPageScrap> listener) {
 
         String url = String.format(URL_FORMAT+"/scraps");
 
@@ -279,10 +282,6 @@ public class NetworkManager {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // XMLParser parser = new XMLParser();
-                //...
-//                 NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
-//                callbackObject.result = movies;
                 Gson gson = new Gson();
                 MyPageScrap data = gson.fromJson(response.body().string(), MyPageScrap.class);
                 callbackObject.result = data;
@@ -293,9 +292,9 @@ public class NetworkManager {
         return request;
     }
 
-    public Request getMyPost(final OnResultListener<MyPost> listener) {
+    public Request getMyPost(Context context,final OnResultListener<MyPost> listener) {
 
-        String url = String.format(URL_FORMAT+"/scraps");
+        String url = String.format(URL_FORMAT+"/myposts");
 
         final CallbackObject<MyPost> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -314,10 +313,6 @@ public class NetworkManager {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // XMLParser parser = new XMLParser();
-                //...
-//                 NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
-//                callbackObject.result = movies;
                 Gson gson = new Gson();
                 MyPost data = gson.fromJson(response.body().string(), MyPost.class);
                 callbackObject.result = data;
@@ -328,11 +323,12 @@ public class NetworkManager {
         return request;
     }
 
-    public Request getPostList(final OnResultListener<MyPost> listener) {
+    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?post-type=1&page=1";
 
-        String url = String.format(URL_FORMAT+"/scraps");
+    public Request getCommunityPost(Context context,final OnResultListener<Community> listener) {
+        String url = String.format(GET_COMMUNITY_URL);
 
-        final CallbackObject<MyPost> callbackObject = new CallbackObject<>();
+        final CallbackObject<Community> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
                 .build();
 
@@ -349,12 +345,40 @@ public class NetworkManager {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // XMLParser parser = new XMLParser();
-                //...
-//                 NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
-//                callbackObject.result = movies;
                 Gson gson = new Gson();
-                MyPost data = gson.fromJson(response.body().string(), MyPost.class);
+                Community data = gson.fromJson(response.body().string(), Community.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?post-type=0&page=1";
+    public Request getInteriorPost(Context context,final OnResultListener<Interior> listener) {
+
+        String url = String.format(GET_INTERIOR_URL);
+
+        final CallbackObject<Interior> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                Interior data = gson.fromJson(response.body().string(), Interior.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);

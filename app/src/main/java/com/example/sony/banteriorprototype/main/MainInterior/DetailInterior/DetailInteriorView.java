@@ -5,8 +5,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.InteriorData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 
 /**
  * Created by sony on 2016-02-25.
@@ -23,7 +24,7 @@ public class DetailInteriorView extends FrameLayout {
         interiorView = (ImageView)findViewById(R.id.image_detail_interior);
        // hashTagView = (TextView)findViewById(R.id.text_hash_1);
     }
-    public void setDetailInteriorView(InteriorData data){
-        interiorView.setImageResource(data.interiorImage);
+    public void setDetailInteriorView(InteriorContentData data){
+        Glide.with(getContext()).load(data.interiorImage).into(interiorView);
     }
 }

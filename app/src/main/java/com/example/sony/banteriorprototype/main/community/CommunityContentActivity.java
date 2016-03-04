@@ -9,20 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommentData;
-import com.example.sony.banteriorprototype.rent.RentalActivity;
 
 public class CommunityContentActivity extends AppCompatActivity{
 
@@ -88,8 +84,8 @@ public class CommunityContentActivity extends AppCompatActivity{
             public void onClick(View v) {
                 CommentData data = new CommentData();
                 String comment = commentView.getText().toString();
-                data.name = "Unknown";
-                data.comment = comment;
+                data.username = "Unknown";
+                data.reply_content = comment;
                 if(!TextUtils.isEmpty(comment)) {
                     mAdapter.add(data);
                 }

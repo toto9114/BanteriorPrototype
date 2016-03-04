@@ -40,20 +40,22 @@ public class MyPageFragment extends Fragment {
     ImageView profileView;
     TextView nameView,scrapView, myPostView;
     GridView gridView;
-    MyPageAdapter mAdapter;
+    MyPageScrapAdapter scrapAdapter;
+    MyPostAdapter postAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
         profileView = (ImageView)view.findViewById(R.id.image_profile);
-        nameView = (TextView)view.findViewById(R.id.text_name);
+        nameView = (TextView)view.findViewById(R.id.text_brand);
         scrapView = (TextView)view.findViewById(R.id.text_scrap);
         myPostView = (TextView)view.findViewById(R.id.text_write_count);
 
         gridView = (GridView)view.findViewById(R.id.grid_mypage);
-        mAdapter = new MyPageAdapter();
-        gridView.setAdapter(mAdapter);
+        scrapAdapter = new MyPageScrapAdapter();
+        postAdapter = new MyPostAdapter();
+        gridView.setAdapter(scrapAdapter);
 
         profileView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,19 +67,8 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-//        NetworkManager.getInstance().getMypage(new NetworkManager.OnResultListener<MyProfileData>() {
-//            @Override
-//            public void onSuccess(MyProfileData result) {
-//                setMyPage(result);
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//
-//            }
-//        });
 
-        NetworkManager.getInstance().getMypage(new NetworkManager.OnResultListener<MyProfile>() {
+        NetworkManager.getInstance().getMypage(getContext(),new NetworkManager.OnResultListener<MyProfile>() {
             @Override
             public void onSuccess(Request request, MyProfile result) {
                 setMyPage(result.result.mypageData);
@@ -94,11 +85,12 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //getScrapData...
-                mAdapter.clear();
-                NetworkManager.getInstance().getMyScrap(new NetworkManager.OnResultListener<MyPageScrap>() {
+                gridView.setAdapter(scrapAdapter);
+                scrapAdapter.clear();
+                NetworkManager.getInstance().getMyScrap(getContext(),new NetworkManager.OnResultListener<MyPageScrap>() {
                     @Override
                     public void onSuccess(Request request, MyPageScrap result) {
-                        mAdapter.addAll(result.result.data.list);
+                        scrapAdapter.addAll(result.result.scrapData.list);
                     }
 
                     @Override
@@ -115,11 +107,12 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //getMyWritingData...
-                mAdapter.clear();
-                NetworkManager.getInstance().getMyPost(new NetworkManager.OnResultListener<MyPost>() {
+               gridView.setAdapter(postAdapter);
+                postAdapter.clear();
+                NetworkManager.getInstance().getMyPost(getContext(),new NetworkManager.OnResultListener<MyPost>() {
                     @Override
                     public void onSuccess(Request request, MyPost result) {
-                        mAdapter.addAll(result.result.data.list);
+                        postAdapter.addAll(result.result.postData.postList);
                     }
 
                     @Override

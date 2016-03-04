@@ -8,11 +8,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.InteriorData;
-import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
-
-import java.util.List;
 
 public class DetailInteriorListActivity extends AppCompatActivity {
     private static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
@@ -35,10 +31,10 @@ public class DetailInteriorListActivity extends AppCompatActivity {
                 startActivity(new Intent(DetailInteriorListActivity.this, CommunityContentActivity.class));
             }
         });
-//        NetworkManager.getInstance().getDetailInteriorData(new NetworkManager.OnResultListener<List<InteriorData>>() {
+//        NetworkManager.getInstance().getDetailInteriorData(new NetworkManager.OnResultListener<List<InteriorContentData>>() {
 //            @Override
-//            public void onSuccess(List<InteriorData> result) {
-//                for(InteriorData data : result) {
+//            public void onSuccess(List<InteriorContentData> result) {
+//                for(InteriorContentData data : result) {
 //                    mAdapter.add(data);
 //                }
 //            }

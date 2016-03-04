@@ -58,7 +58,7 @@ public class CommunityToolbar extends FrameLayout implements OnItemClickListener
     private void init() {
         inflate(getContext(), R.layout.view_community_toolbar, this);
         profileView = (ImageView) findViewById(R.id.image_profile);
-        nameView = (TextView) findViewById(R.id.text_name);
+        nameView = (TextView) findViewById(R.id.text_brand);
         menuBtn = (Button) findViewById(R.id.btn_menu);
     }
 

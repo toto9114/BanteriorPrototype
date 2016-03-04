@@ -5,5 +5,5 @@ package com.example.sony.banteriorprototype.data.Mypage;
  */
 public class MyPostResult {
     public String message;
-    public MyPostDataList data;
+    public MyPostDataList postData;
 }

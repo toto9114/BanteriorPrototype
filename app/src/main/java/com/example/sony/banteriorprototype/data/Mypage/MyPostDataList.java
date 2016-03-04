@@ -9,5 +9,5 @@ public class MyPostDataList {
     int mypost_count;
     int page;
     int listPerPage;
-    public List<ThumbnailData> postlist;
+    public List<MyPostData> postList;
 }
