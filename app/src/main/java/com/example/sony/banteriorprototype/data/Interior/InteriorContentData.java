@@ -13,7 +13,7 @@ import java.util.List;
 public class InteriorContentData {
     public int post_id;
     public String content;
-    int category;
+    String category;
     public String username;
     @SerializedName("photo_url")
     public String profileImage;

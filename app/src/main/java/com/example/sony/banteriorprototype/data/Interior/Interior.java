@@ -5,6 +5,6 @@ package com.example.sony.banteriorprototype.data.Interior;
  */
 import com.example.sony.banteriorprototype.data.Error;
 public class Interior {
-    InteriorResult result;
-    Error error;
+    public InteriorResult result;
+    public Error error;
 }

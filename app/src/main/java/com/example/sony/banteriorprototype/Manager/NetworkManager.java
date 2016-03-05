@@ -7,20 +7,25 @@ import android.os.Message;
 
 import com.example.sony.banteriorprototype.MyApplication;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.CommentData;
 import com.example.sony.banteriorprototype.data.Community.Community;
-import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
 import com.example.sony.banteriorprototype.data.Interior.Interior;
 import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
 import com.example.sony.banteriorprototype.data.Mypage.MyPost;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
+import com.example.sony.banteriorprototype.data.PostTypeResult;
+import com.example.sony.banteriorprototype.data.Search.Search;
 import com.example.sony.banteriorprototype.data.Signup;
+import com.example.sony.banteriorprototype.data.Survey.Survey;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -188,15 +193,44 @@ public class NetworkManager {
 
     }
 
-    public void signup(Context context, String userId, String name, String password, final OnResultListener<String> listener) {
 
+    private static final String BASE_URL_FORMAT = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com";
+
+    public Request getSurvey(Context context, final OnResultListener<Survey> listener) {
+
+        String url = String.format(BASE_URL_FORMAT + "/preference");
+
+        final CallbackObject<Survey> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                Survey data = gson.fromJson(response.body().string(), Survey.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
     }
 
-    private static final String URL_FORMAT = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com";
 
-    public Request getMypage(Context context,final OnResultListener<MyProfile> listener) {
+    public Request getMypage(Context context, final OnResultListener<MyProfile> listener) {
 
-        String url = String.format(URL_FORMAT+"/mypages");
+        String url = String.format(BASE_URL_FORMAT + "/mypages");
 
         final CallbackObject<MyProfile> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -224,15 +258,16 @@ public class NetworkManager {
         });
         return request;
     }
-    public Request signupUser(Context context,final OnResultListener<Signup> listener) {
 
-        String url = String.format(URL_FORMAT+"/members");
+    public Request signupUser(Context context, final OnResultListener<PostTypeResult> listener) {
 
-        final CallbackObject<Signup> callbackObject = new CallbackObject<>();
+        String url = String.format(BASE_URL_FORMAT + "/members");
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         RequestBody body = new FormBody.Builder()
-                .add("name","1")
+                .add("name", "1")
                 .add("email", "2")
-                .add("password","3")
+                .add("password", "3")
                 .build();
         Request request = new Request.Builder().url(url)
                 .post(body)
@@ -252,7 +287,7 @@ public class NetworkManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
-                Signup data = gson.fromJson(response.body().string(), Signup.class);
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
@@ -261,9 +296,9 @@ public class NetworkManager {
         return request;
     }
 
-    public Request getMyScrap(Context context,final OnResultListener<MyPageScrap> listener) {
+    public Request getMyScrap(Context context, final OnResultListener<MyPageScrap> listener) {
 
-        String url = String.format(URL_FORMAT+"/scraps");
+        String url = String.format(BASE_URL_FORMAT + "/scraps");
 
         final CallbackObject<MyPageScrap> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -292,9 +327,9 @@ public class NetworkManager {
         return request;
     }
 
-    public Request getMyPost(Context context,final OnResultListener<MyPost> listener) {
+    public Request getMyPost(Context context, final OnResultListener<MyPost> listener) {
 
-        String url = String.format(URL_FORMAT+"/myposts");
+        String url = String.format(BASE_URL_FORMAT + "/myposts");
 
         final CallbackObject<MyPost> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -323,9 +358,49 @@ public class NetworkManager {
         return request;
     }
 
+    public Request setOrder(Context context,int postId,String address, String phone, int monthPrice, String payMethod, int period, final OnResultListener<PostTypeResult> listener) {
+
+        String url = String.format(BASE_URL_FORMAT + "/members");
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+        RequestBody body = new FormBody.Builder()
+                .add("postId", "")
+                .add("address", address)
+                .add("phone", phone)
+                .add("monthPrice","")
+                .add("payMethod",payMethod)
+                .add("period","")
+                .build();
+        Request request = new Request.Builder().url(url)
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
     private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?post-type=1&page=1";
 
-    public Request getCommunityPost(Context context,final OnResultListener<Community> listener) {
+    public Request getCommunityPost(Context context, final OnResultListener<Community> listener) {
         String url = String.format(GET_COMMUNITY_URL);
 
         final CallbackObject<Community> callbackObject = new CallbackObject<>();
@@ -356,7 +431,8 @@ public class NetworkManager {
     }
 
     private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?post-type=0&page=1";
-    public Request getInteriorPost(Context context,final OnResultListener<Interior> listener) {
+
+    public Request getInteriorPost(Context context, final OnResultListener<Interior> listener) {
 
         String url = String.format(GET_INTERIOR_URL);
 
@@ -386,11 +462,83 @@ public class NetworkManager {
         });
         return request;
     }
-//    private static final String URL_FORMAT = "https://openapi.naver.com/v1/search/movie.xml?target=movie&query=%s&start=%s&display=%s";
+
+    private static final String GET_HASHTAG_RESULT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/tags?tag=%s&page=1";
+
+    public Request getHashTagResult(Context context, String keyword, final OnResultListener<Search> listener) throws UnsupportedEncodingException {
+
+        String url = String.format(GET_HASHTAG_RESULT_URL, URLEncoder.encode(keyword, "utf-8"));
+
+        final CallbackObject<Search> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                Search data = gson.fromJson(response.body().string(), Search.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String SET_COMMENT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1/replies?page=1";
+    public Request setComment(Context context, int postId, String comment,final OnResultListener<CommentData> listener) throws UnsupportedEncodingException {
+
+        String url = String.format(SET_COMMENT_URL,postId,URLEncoder.encode(comment,"utf-8"));
+
+        final CallbackObject<CommentData> callbackObject = new CallbackObject<>();
+        RequestBody body = new FormBody.Builder()
+                .add("reply_content","" )
+                .build();
+        Request request = new Request.Builder().url(url)
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                CommentData data = gson.fromJson(response.body().string(), CommentData.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+
+
+//    private static final String BASE_URL_FORMAT = "https://openapi.naver.com/v1/search/movie.xml?target=movie&query=%s&start=%s&display=%s";
 
 //    public Request getNaverMovie(Context context, String keyword, int start, int display,
 //                                 final OnResultListener<NaverMovies> listener) throws UnsupportedEncodingException {
-//        String url = String.format(URL_FORMAT, URLEncoder.encode(keyword, "utf-8"), start, display);
+//        String url = String.format(BASE_URL_FORMAT, URLEncoder.encode(keyword, "utf-8"), start, display);
 //
 //        final CallbackObject<NaverMovies> callbackObject = new CallbackObject<NaverMovies>();
 //

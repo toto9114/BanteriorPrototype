@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Survey.SurveyData;
 import com.example.sony.banteriorprototype.login.LoginActivity;
 import com.example.sony.banteriorprototype.main.MainActivity;
 
@@ -18,7 +19,7 @@ import com.example.sony.banteriorprototype.main.MainActivity;
  * A simple {@link Fragment} subclass.
  */
 public class FavoriteSurveyFragment extends Fragment {
-    public FavoriteSurveyFragment() {
+    public FavoriteSurveyFragment(SurveyData data) {
         // Required empty public constructor
     }
 

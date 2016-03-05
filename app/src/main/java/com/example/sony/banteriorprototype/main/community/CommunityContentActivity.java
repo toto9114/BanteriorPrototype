@@ -17,10 +17,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommentData;
 
-public class CommunityContentActivity extends AppCompatActivity{
+import java.io.UnsupportedEncodingException;
+
+import okhttp3.Request;
+
+public class CommunityContentActivity extends AppCompatActivity {
 
     RecyclerView recycler;
     ImageView interiorView;
@@ -29,13 +34,14 @@ public class CommunityContentActivity extends AppCompatActivity{
     CommentAdapter mAdapter;
     CommunityPopupWindow popup;
     CommunityToolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,14 +49,14 @@ public class CommunityContentActivity extends AppCompatActivity{
             }
         });
 
-        recycler = (RecyclerView)findViewById(R.id.recycler_comment);
+        recycler = (RecyclerView) findViewById(R.id.recycler_comment);
         mAdapter = new CommentAdapter();
         recycler.setAdapter(mAdapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
 
-        toolbar = (CommunityToolbar)findViewById(R.id.community_toolbar);
+        toolbar = (CommunityToolbar) findViewById(R.id.community_toolbar);
         toolbar.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -59,40 +65,47 @@ public class CommunityContentActivity extends AppCompatActivity{
                         startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
                         break;
                     case R.id.btn_delete:
-                        startActivity(new Intent(CommunityContentActivity.this,WriteActivity.class));
+                        startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
                         break;
                 }
             }
         });
-
-//        popup = new CommunityPopupWindow(this);
-//        popup.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view) {
-//                    startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
-//            }
-//        });
-        interiorView = (ImageView)findViewById(R.id.image_interior);
-        scrapCountView = (TextView)findViewById(R.id.text_scrap_count);
-        commentView = (EditText)findViewById(R.id.edit_comment);
+        interiorView = (ImageView) findViewById(R.id.image_interior);
+        scrapCountView = (TextView) findViewById(R.id.text_scrap_count);
+        commentView = (EditText) findViewById(R.id.edit_comment);
 
 
-
-        Button btn = (Button)findViewById(R.id.btn_send);
+        Button btn = (Button) findViewById(R.id.btn_send);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommentData data = new CommentData();
+//                CommentData data = new CommentData();
+//                String comment = commentView.getText().toString();
+//                data.username = "Unknown";
+//                data.reply_content = comment;
+//                if(!TextUtils.isEmpty(comment)) {
+//                    mAdapter.add(data);
+//                }
                 String comment = commentView.getText().toString();
-                data.username = "Unknown";
-                data.reply_content = comment;
                 if(!TextUtils.isEmpty(comment)) {
-                    mAdapter.add(data);
+                    try {
+                        NetworkManager.getInstance().setComment(CommunityContentActivity.this, 1, comment, new NetworkManager.OnResultListener<CommentData>() {
+                            @Override
+                            public void onSuccess(Request request, CommentData result) {
+                                Toast.makeText(CommunityContentActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
+
+                            }
+                        });
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-
-        Toast.makeText(this,"Community Detail",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -100,7 +113,7 @@ public class CommunityContentActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             finish();
             return true;
         }

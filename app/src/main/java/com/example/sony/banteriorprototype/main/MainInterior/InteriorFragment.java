@@ -10,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Interior.Interior;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
+
+import okhttp3.Request;
 
 
 /**
@@ -36,6 +40,17 @@ public class InteriorFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.interior_listView);
         mAdapter = new MainInteriorAdapter();
         listView.setAdapter(mAdapter);
+        NetworkManager.getInstance().getInteriorPost(getContext(), new NetworkManager.OnResultListener<Interior>() {
+            @Override
+            public void onSuccess(Request request, Interior result) {
+                mAdapter.addAll(result.result.postData.postList);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
 //        NetworkManager.getInstance().getMainInteriorData(new NetworkManager.OnResultListener<List<InteriorContentData>>() {
 //            @Override
 //            public void onSuccess(List<InteriorContentData> result) {
@@ -57,13 +72,4 @@ public class InteriorFragment extends Fragment {
         });
         return view;
     }
-//    private void initdata(){
-//        for(int i = 0 ; i< 4; i++){
-//            InteriorContentData data= new InteriorContentData();
-//            data.interiorImage = MAIN_INTERIOR_IMAGE[i];
-//            data.interiorType = i;
-//            Log.i("InteriorFragment","i: "+i);
-//            mAdapter.addMainInterior(data);
-//        }
-//    }
 }

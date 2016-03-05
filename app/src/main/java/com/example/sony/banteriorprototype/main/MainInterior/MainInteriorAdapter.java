@@ -23,6 +23,10 @@ public class MainInteriorAdapter extends BaseAdapter {
         items.add(data);
         notifyDataSetChanged();
     }
+    public void addAll(List<InteriorContentData> data){
+        items.addAll(data);
+        notifyDataSetChanged();
+    }
 
     @Override
     public Object getItem(int position) {

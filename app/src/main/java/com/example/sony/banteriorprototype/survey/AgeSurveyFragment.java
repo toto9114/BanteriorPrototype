@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Survey.SurveyData;
 import com.example.sony.banteriorprototype.login.LoginActivity;
 import com.example.sony.banteriorprototype.main.MainActivity;
 
@@ -19,7 +20,9 @@ import com.example.sony.banteriorprototype.main.MainActivity;
  */
 public class AgeSurveyFragment extends Fragment {
 
-    public AgeSurveyFragment() {
+    SurveyData data;
+    public AgeSurveyFragment(SurveyData data) {
+        this.data = data;
         // Required empty public constructor
     }
 
