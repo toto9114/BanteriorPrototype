@@ -20,7 +20,7 @@ public class CommunityContentData implements ThumbnailData {
     public String mainImage;
     @SerializedName("photo_url")
     public String profileImage;
-    public List<String> hashTag;
+    public List<String> hash_tag;
     public int scrap_count;
     public List<CommentData> reply;
 }

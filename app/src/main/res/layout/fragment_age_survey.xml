@@ -24,29 +24,28 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/age_twenty"
-            android:id="@+id/radioButton"
+            android:id="@+id/radio_1"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/age_thirty"
-            android:id="@+id/radioButton2"
+            android:text=""
+            android:id="@+id/radio_2"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/age_fourty"
-            android:id="@+id/radioButton3"
+            android:text=""
+            android:id="@+id/radio_3"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/age_fifty"
-            android:id="@+id/radioButton4"
+            android:text=""
+            android:id="@+id/radio_4"
             android:checked="false" />
     </RadioGroup>
 
@@ -54,8 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/survey_q1"
-        android:id="@+id/textView5"
+        android:id="@+id/text_title"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="73dp" />

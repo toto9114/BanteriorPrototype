@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorData;
+import com.example.sony.banteriorprototype.data.MainPage.MainContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +15,20 @@ import java.util.List;
  * Created by sony on 2016-02-23.
  */
 public class MainInteriorAdapter extends BaseAdapter {
-    List<InteriorContentData> items = new ArrayList<InteriorContentData>();
+    List<MainContent> items = new ArrayList<MainContent>();
     @Override
     public int getCount() {
         return items.size();
     }
 
-    public void addMainInterior(InteriorContentData data){
+    public void addMainInterior(MainContent data){
         items.add(data);
         notifyDataSetChanged();
     }
-    public void addAll(List<InteriorContentData> data){
-        items.addAll(data);
-        notifyDataSetChanged();
-    }
+//    public void addAll(List<InteriorData> data){
+//        items.addAll(data);
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public Object getItem(int position) {

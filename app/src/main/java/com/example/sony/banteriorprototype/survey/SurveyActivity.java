@@ -8,6 +8,10 @@ import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Survey.Survey;
 import com.example.sony.banteriorprototype.data.Survey.SurveyData;
+import com.example.sony.banteriorprototype.data.Survey.SurveyResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Request;
 
@@ -21,11 +25,15 @@ public class SurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
         pager = (ViewPager)findViewById(R.id.survey_pager);
         mAdapter = new SurveyPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(mAdapter);
-        NetworkManager.getInstance().getSurvey(this, new NetworkManager.OnResultListener<Survey>() {
+        NetworkManager.getInstance().setSurvey(this, new NetworkManager.OnResultListener<SurveyResult>() {
             @Override
-            public void onSuccess(Request request, Survey result) {
-                mAdapter.addAll(result.result.preferData);
+            public void onSuccess(Request request, SurveyResult result) {
+                surveyResult = result;
+                mAdapter.setSurveyResult(result);
+//                List<SurveyData> items = new ArrayList<SurveyData>();
+//                for(SurveyData data : result.preferData){
+//                    items.add(data);
+//                }
             }
 
             @Override
@@ -33,7 +41,14 @@ public class SurveyActivity extends AppCompatActivity {
 
             }
         });
+        pager.setAdapter(mAdapter);
     }
+
+    SurveyResult surveyResult = null;
+    public SurveyResult getSurveyResult() {
+        return surveyResult;
+    }
+
     public void moveToNext(){
         int page = pager.getCurrentItem();
             pager.setCurrentItem(page + 1, true);

@@ -5,5 +5,7 @@ package com.example.sony.banteriorprototype.data.Interior;
  */
 public class InteriorResult {
     public String message;
+    public int page;
+    public int listperPage;
     public InteriorData postData;
 }

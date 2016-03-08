@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,10 @@ import java.util.List;
 public class InteriorPagerAdapter extends FragmentPagerAdapter {
     List<InteriorContentData> items = new ArrayList<>();
     private static final int FRAGMENT_COUNT = 4;
+
+    public void add(InteriorResult result){
+
+    }
 
     public InteriorPagerAdapter(FragmentManager fm) {
         super(fm);

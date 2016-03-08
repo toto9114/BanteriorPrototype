@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
 
 /**
@@ -23,10 +24,10 @@ public class DetailInteriorFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
 
-    private static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
-            R.drawable.modern_main2,
-            R.drawable.modern_main3,
-            R.drawable.modern_main4};
+//    private static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
+//            R.drawable.modern_main2,
+//            R.drawable.modern_main3,
+//            R.drawable.modern_main4};
     // TODO: Rename and change types of parameters
     private int imageId;
 
@@ -67,7 +68,8 @@ public class DetailInteriorFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_detail_interior, container, false);
         interiorView = (ImageView)view.findViewById(R.id.image_detail_interior);
-        interiorView.setImageResource(MAIN_INTERIOR_IMAGE[imageId]);
+       // Glide.with(getActivity()).load().into();
+       // interiorView.setImageResource(MAIN_INTERIOR_IMAGE[imageId]);
         return view;
     }
 

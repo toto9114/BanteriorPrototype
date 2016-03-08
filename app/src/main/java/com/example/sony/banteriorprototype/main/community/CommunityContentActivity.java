@@ -1,8 +1,10 @@
 package com.example.sony.banteriorprototype.main.community;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommentData;
+import com.example.sony.banteriorprototype.data.PostTypeResult;
 
 import java.io.UnsupportedEncodingException;
 
@@ -65,7 +68,30 @@ public class CommunityContentActivity extends AppCompatActivity {
                         startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
                         break;
                     case R.id.btn_delete:
-                        startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
+                        AlertDialog.Builder builder =new AlertDialog.Builder(CommunityContentActivity.this);
+                        builder.setIcon(android.R.drawable.ic_dialog_alert)
+                                .setMessage("게시물을 삭제하시겠어요?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        NetworkManager.getInstance().delPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<PostTypeResult>() {
+                                            @Override
+                                            public void onSuccess(Request request, PostTypeResult result) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Request request, int code, Throwable cause) {
+
+                                            }
+                                        });
+                                    }
+                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
                         break;
                 }
             }

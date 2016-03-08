@@ -68,10 +68,10 @@ public class MyPageFragment extends Fragment {
         });
 
 
-        NetworkManager.getInstance().getMypage(getContext(),new NetworkManager.OnResultListener<MyProfile>() {
+        NetworkManager.getInstance().getMypage(getContext(),new NetworkManager.OnResultListener<MyProfileData>() {
             @Override
-            public void onSuccess(Request request, MyProfile result) {
-                setMyPage(result.result.mypageData);
+            public void onSuccess(Request request, MyProfileData result) {
+                setMyPage(result);
             }
 
             @Override

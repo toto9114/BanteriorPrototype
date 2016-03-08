@@ -4,7 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.sony.banteriorprototype.R;
-
+//email: yunji@naver.com
+//password: 1234567
 public class LoginActivity extends AppCompatActivity {
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,10 +13,15 @@ import android.widget.ListView;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.data.ProductData;
 import com.example.sony.banteriorprototype.rent.RentalActivity;
 
 import java.util.List;
+
+import okhttp3.Request;
 
 public class InteriorActivity extends AppCompatActivity {
     ViewPager pager;
@@ -23,11 +29,25 @@ public class InteriorActivity extends AppCompatActivity {
     ProductListAdapter productAdapter;
     ListView listView;
     int productId;
+
+    public static final String EXTRA_MESSAGE ="Interior";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior);
+        String category = getIntent().getStringExtra(EXTRA_MESSAGE);
+        NetworkManager.getInstance().getInteriorPost(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
+            @Override
+            public void onSuccess(Request request, InteriorResult result) {
+                InteriorResult interiorResult = result;
+                imageAdapter.add();
+            }
 
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
         pager = (ViewPager)findViewById(R.id.interior_pager);
         imageAdapter = new InteriorPagerAdapter(getSupportFragmentManager());
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -46,21 +66,8 @@ public class InteriorActivity extends AppCompatActivity {
 
             }
         });
-        pager.setAdapter(imageAdapter);
 
-//        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
-//            @Override
-//            public void onSuccess(List<ProductData> result) {
-//                for (ProductData data : result) {
-//                    productAdapter.add(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//
-//            }
-//        });
+        pager.setAdapter(imageAdapter);
 
         listView = (ListView)findViewById(R.id.product_listView);
         productAdapter = new ProductListAdapter();
@@ -74,7 +81,6 @@ public class InteriorActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

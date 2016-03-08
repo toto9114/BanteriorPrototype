@@ -32,11 +32,21 @@ public class ThumbnailView extends FrameLayout {
         this.communityData = data;
         Glide.with(getContext()).load(data.mainImage).into(thumbView);
         Glide.with(getContext()).load(data.profileImage).into(profileView);
+        StringBuilder sb = new StringBuilder();
+        for(String s : data.hash_tag){
+            sb.append(s);
+        }
+        hashTagView.setText(sb.toString());
     }
     SearchContentData searchContentData;
     public void setResultData(SearchContentData data){
         searchContentData = data;
         Glide.with(getContext()).load(data.interiorImage).into(thumbView);
         Glide.with(getContext()).load(data.profileImage).into(profileView);
+        StringBuilder sb = new StringBuilder();
+        for(String s : data.hash_tag){
+            sb.append(s);
+        }
+        hashTagView.setText(sb.toString());
     }
 }

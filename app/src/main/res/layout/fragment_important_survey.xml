@@ -23,29 +23,29 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/important_lamp"
-            android:id="@+id/radioButton"
+            android:text=""
+            android:id="@+id/radio_1"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/important_wall"
-            android:id="@+id/radioButton2"
+            android:text=""
+            android:id="@+id/radio_2"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/important_curtain"
-            android:id="@+id/radioButton3"
+            android:text=""
+            android:id="@+id/radio_3"
             android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/important_cover"
-            android:id="@+id/radioButton4"
+            android:text=""
+            android:id="@+id/radio_4"
             android:checked="false" />
     </RadioGroup>
 
@@ -53,8 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/survey_q3"
-        android:id="@+id/textView5"
+        android:id="@+id/text_title"
         android:singleLine="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -76,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/btn_login"
-        android:layout_below="@+id/textView5"
+        android:layout_below="@+id/text_title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

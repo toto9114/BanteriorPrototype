@@ -21,6 +21,7 @@ public class CommunityAdapter extends BaseAdapter {
     }
     public void addAll(List<CommunityContentData> data){
         items.addAll(data);
+        notifyDataSetChanged();
     }
     @Override
     public int getCount() {
