@@ -26,6 +26,7 @@ public class MyPageScrapAdapter extends BaseAdapter {
 
     public void clear(){
         items.clear();
+        notifyDataSetChanged();
     }
     @Override
     public int getCount() {

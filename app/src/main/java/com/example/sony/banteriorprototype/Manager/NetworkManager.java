@@ -7,8 +7,8 @@ import android.os.Message;
 
 import com.example.sony.banteriorprototype.MyApplication;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.CommentData;
 import com.example.sony.banteriorprototype.data.Community.Community;
+import com.example.sony.banteriorprototype.data.Community.CommunityResult;
 import com.example.sony.banteriorprototype.data.Interior.Interior;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.data.MainPage.Main;
@@ -19,7 +19,6 @@ import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.example.sony.banteriorprototype.data.Search.Search;
-import com.example.sony.banteriorprototype.data.Signup;
 import com.example.sony.banteriorprototype.data.Survey.Survey;
 import com.example.sony.banteriorprototype.data.Survey.SurveyResult;
 import com.google.gson.Gson;
@@ -219,7 +218,6 @@ public class NetworkManager {
         return request;
     }
 
-
     public Request getMypage(Context context, final OnResultListener<MyProfileData> listener) {
 
         String url = String.format(BASE_URL_FORMAT + "/mypages");
@@ -252,13 +250,50 @@ public class NetworkManager {
         return request;
     }
 
+    public Request setMyProfile(Context context, String imageUrl, final OnResultListener<PostTypeResult> listener) {
+
+        String url = String.format(BASE_URL_FORMAT + "/mypages");
+
+        RequestBody body = new FormBody.Builder()
+                .add("photo_url", imageUrl)
+                .build();
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .post(body)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
     public Request login(Context context, String email, String password, final OnResultListener<PostTypeResult> listener) {
 
         String url = String.format(BASE_URL_FORMAT + "/members/login");
 
         RequestBody body = new FormBody.Builder()
                 .add("email",email)
-                .add("password",password)
+                .add("password", password)
                 .build();
 
 
@@ -352,6 +387,42 @@ public class NetworkManager {
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
                 MyPageScrap data = gson.fromJson(response.body().string(), MyPageScrap.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    public Request doScrap(Context context, int postId, final OnResultListener<PostTypeResult> listener) {
+
+        String url = String.format(BASE_URL_FORMAT + "/scraps");
+
+        RequestBody body = new FormBody.Builder()
+                .add("post_id",""+postId)
+                .build();
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
@@ -464,12 +535,11 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?post-type=1&page=1";
-
-    public Request getCommunityPost(Context context, final OnResultListener<Community> listener) {
+    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1";
+    public Request getCommunityPost(Context context, final OnResultListener<CommunityResult> listener) {
         String url = String.format(GET_COMMUNITY_URL);
 
-        final CallbackObject<Community> callbackObject = new CallbackObject<>();
+        final CallbackObject<CommunityResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
                 .tag(context)
                 .build();
@@ -489,7 +559,7 @@ public class NetworkManager {
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
                 Community data = gson.fromJson(response.body().string(), Community.class);
-                callbackObject.result = data;
+                callbackObject.result = data.result;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
             }
@@ -497,11 +567,76 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=%s&page=1";
+    private static final String GET_COMMUNITY_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?page=1";
+    public Request getCommunityPostList(Context context, final OnResultListener<CommunityResult> listener) {
+        String url = String.format(GET_COMMUNITY_LIST_URL);
+
+        final CallbackObject<CommunityResult> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                Community data = gson.fromJson(response.body().string(), Community.class);
+                callbackObject.result = data.result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1?category";
 
     public Request getInteriorPost(Context context, String category, final OnResultListener<InteriorResult> listener) {
 
-        String url = String.format(GET_INTERIOR_URL,URLEncoder.encode(category));
+        String url = String.format(GET_INTERIOR_URL);
+
+        final CallbackObject<InteriorResult> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                Interior data = gson.fromJson(response.body().string(), Interior.class);
+                callbackObject.result = data.result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String GET_INTERIOR_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=1&page=1";
+    public Request getInteriorPostList(Context context, final OnResultListener<InteriorResult> listener) {
+
+        String url = String.format(GET_INTERIOR_LIST_URL);
 
         final CallbackObject<InteriorResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -532,7 +667,6 @@ public class NetworkManager {
     }
 
     private static final String GET_HASHTAG_RESULT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/tags?tag=%s&page=1";
-
     public Request getHashTagResult(Context context, String keyword, final OnResultListener<Search> listener) throws UnsupportedEncodingException {
 
         String url = String.format(GET_HASHTAG_RESULT_URL, URLEncoder.encode(keyword, "utf-8"));
@@ -566,11 +700,11 @@ public class NetworkManager {
     }
 
     private static final String SET_COMMENT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1/replies?page=1";
-    public Request setComment(Context context, int postId, String comment,final OnResultListener<CommentData> listener) throws UnsupportedEncodingException {
+    public Request setComment(Context context, int postId, String comment,final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
 
         String url = String.format(SET_COMMENT_URL,postId,URLEncoder.encode(comment,"utf-8"));
 
-        final CallbackObject<CommentData> callbackObject = new CallbackObject<>();
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         RequestBody body = new FormBody.Builder()
                 .add("reply_content","" )
                 .build();
@@ -593,7 +727,7 @@ public class NetworkManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
-                CommentData data = gson.fromJson(response.body().string(), CommentData.class);
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);

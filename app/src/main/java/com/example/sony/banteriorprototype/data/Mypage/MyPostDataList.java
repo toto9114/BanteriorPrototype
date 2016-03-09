@@ -6,8 +6,8 @@ import java.util.List;
  * Created by sony on 2016-03-03.
  */
 public class MyPostDataList {
-    int mypost_count;
-    int page;
-    int listPerPage;
+    public int mypost_count;
+    public int page;
+    public int listPerPage;
     public List<MyPostData> postList;
 }

@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
 
 /**
  * Created by sony on 2016-02-25.
@@ -62,6 +64,11 @@ public class CommunityToolbar extends FrameLayout implements OnItemClickListener
         menuBtn = (Button) findViewById(R.id.btn_menu);
     }
 
+    public void setToolbar(CommunityContentData data){
+        Glide.with(getContext()).load(data.profileImage).into(profileView);
+        nameView.setText(data.username);
+    }
+
     OnItemClickListener mListener;
     public void setOnItemClickListener(OnItemClickListener listener){
         mListener = listener;
@@ -71,9 +78,5 @@ public class CommunityToolbar extends FrameLayout implements OnItemClickListener
         if(mListener!=null){
             mListener.onItemClick(view);
         }
-    }
-
-    public void setToolbar() {
-
     }
 }

@@ -31,5 +31,11 @@
         android:id="@+id/text_hash_tag"
         android:layout_gravity="center_horizontal|bottom" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_scrap_count"
+        android:layout_gravity="left|top" />
+
 
 </FrameLayout>

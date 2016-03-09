@@ -37,8 +37,8 @@ public class MainInteriorView extends FrameLayout {
         Glide.with(getContext()).load(data.file_url).into(interiorView);
         titleView.setText(data.category);
         descriptionView.setText(data.content);
-        postCountView.setText(data.scrap_count);
-        scrapView.setText(data.post_count);
+        postCountView.setText(""+data.scrap_count);
+        scrapView.setText(""+data.post_count);
     }
 
 }

@@ -12,8 +12,6 @@ import android.widget.ListView;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.Interior.Interior;
-import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.MainPage.MainContent;
 import com.example.sony.banteriorprototype.data.MainPage.MainData;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
@@ -41,17 +39,7 @@ public class InteriorFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.interior_listView);
         mAdapter = new MainInteriorAdapter();
         listView.setAdapter(mAdapter);
-//        NetworkManager.getInstance().getInteriorPost(getContext(), new NetworkManager.OnResultListener<Interior>() {
-//            @Override
-//            public void onSuccess(Request request, Interior result) {
-//                //mAdapter.addAll(result.result.postData);
-//            }
-//
-//            @Override
-//            public void onFailure(Request request, int code, Throwable cause) {
-//
-//            }
-//        });
+
         NetworkManager.getInstance().getMainpage(getContext(), new NetworkManager.OnResultListener<MainData>() {
             @Override
             public void onSuccess(Request request, MainData result) {
@@ -72,7 +60,7 @@ public class InteriorFragment extends Fragment {
                 MainContent data = (MainContent)listView.getItemAtPosition(position);
                 String category = data.category;
                 Intent intent = new Intent(getContext(),InteriorActivity.class);
-                intent.putExtra(InteriorActivity.EXTRA_MESSAGE,category);
+                intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE,category);
                 startActivity(intent);
             }
         });

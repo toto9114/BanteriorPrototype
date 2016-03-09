@@ -17,7 +17,7 @@ public class CommunityPopupWindow extends PopupWindow {
     public void setOnItemClickListener(OnItemClickListener listener){
         mListener = listener;
     }
-    public CommunityPopupWindow(Context context){
+    public CommunityPopupWindow(final Context context){
         super(context);
 
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);

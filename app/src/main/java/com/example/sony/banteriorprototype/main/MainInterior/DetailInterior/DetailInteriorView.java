@@ -18,13 +18,16 @@ public class DetailInteriorView extends FrameLayout {
         init();
     }
     ImageView interiorView;
+    ImageView profileView;
     TextView hashTagView;
     private void init(){
         inflate(getContext(), R.layout.view_detail_interior,this);
         interiorView = (ImageView)findViewById(R.id.image_detail_interior);
+        profileView = (ImageView)findViewById(R.id.image_profile);
        // hashTagView = (TextView)findViewById(R.id.text_hash_1);
     }
     public void setDetailInteriorView(InteriorContentData data){
         Glide.with(getContext()).load(data.interiorImage).into(interiorView);
+        Glide.with(getContext()).load(data.profileImage).into(profileView);
     }
 }

@@ -14,14 +14,14 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
 import com.example.sony.banteriorprototype.data.Mypage.MyPost;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
-import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
-import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
 
 import okhttp3.Request;
@@ -42,6 +42,7 @@ public class MyPageFragment extends Fragment {
     GridView gridView;
     MyPageScrapAdapter scrapAdapter;
     MyPostAdapter postAdapter;
+    int scrapCount,mypostCount;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class MyPageFragment extends Fragment {
         nameView = (TextView)view.findViewById(R.id.text_brand);
         scrapView = (TextView)view.findViewById(R.id.text_scrap);
         myPostView = (TextView)view.findViewById(R.id.text_write_count);
+
 
         gridView = (GridView)view.findViewById(R.id.grid_mypage);
         scrapAdapter = new MyPageScrapAdapter();
@@ -91,6 +93,7 @@ public class MyPageFragment extends Fragment {
                     @Override
                     public void onSuccess(Request request, MyPageScrap result) {
                         scrapAdapter.addAll(result.result.scrapData.list);
+                        Toast.makeText(getActivity(),result.result.message,Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -113,6 +116,7 @@ public class MyPageFragment extends Fragment {
                     @Override
                     public void onSuccess(Request request, MyPost result) {
                         postAdapter.addAll(result.result.postData.postList);
+                        Toast.makeText(getActivity(),result.result.message,Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -152,6 +156,17 @@ public class MyPageFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE && resultCode != Activity.RESULT_CANCELED){
             Uri selectedImageUri = data.getData();
+//            NetworkManager.getInstance().setMyProfile(getActivity(), selectedImageUri, new NetworkManager.OnResultListener<PostTypeResult>() {
+//                @Override
+//                public void onSuccess(Request request, PostTypeResult result) {
+//
+//                }
+//
+//                @Override
+//                public void onFailure(Request request, int code, Throwable cause) {
+//
+//                }
+//            });
             Glide.with(this).load(selectedImageUri).into(profileView);
         }
     }

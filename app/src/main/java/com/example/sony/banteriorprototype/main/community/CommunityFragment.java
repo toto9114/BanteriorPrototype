@@ -13,7 +13,8 @@ import android.widget.GridView;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.Community.Community;
+import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
+import com.example.sony.banteriorprototype.data.Community.CommunityResult;
 
 import okhttp3.Request;
 
@@ -39,7 +40,9 @@ public class CommunityFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getContext(),CommunityContentActivity.class));
+                Intent intent = new Intent(getContext(),CommunityContentActivity.class);
+                intent.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE, ((CommunityContentData)gridView.getItemAtPosition(position)).post_id);
+                startActivity(intent);
             }
         });
         mAdapter = new CommunityAdapter();
@@ -49,14 +52,15 @@ public class CommunityFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),WriteActivity.class));
+                Intent intent = new Intent(getContext(),WriteActivity.class);
+                startActivity(intent);
             }
         });
 
-        NetworkManager.getInstance().getCommunityPost(getContext(), new NetworkManager.OnResultListener<Community>() {
+        NetworkManager.getInstance().getCommunityPostList(getContext(), new NetworkManager.OnResultListener<CommunityResult>() {
             @Override
-            public void onSuccess(Request request, Community result) {
-                mAdapter.addAll(result.result.communityData.postList);
+            public void onSuccess(Request request, CommunityResult result) {
+                mAdapter.addAll(result.communityData.communityList);
             }
 
             @Override

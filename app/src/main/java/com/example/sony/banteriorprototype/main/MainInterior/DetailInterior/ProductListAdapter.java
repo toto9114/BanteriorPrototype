@@ -19,6 +19,14 @@ public class ProductListAdapter extends BaseAdapter {
         items.add(data);
         notifyDataSetChanged();
     }
+    public void addAll(List<ProductData> list){
+        items.addAll(list);
+        notifyDataSetChanged();
+    }
+    public void clear(){
+        items.clear();
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return items.size();

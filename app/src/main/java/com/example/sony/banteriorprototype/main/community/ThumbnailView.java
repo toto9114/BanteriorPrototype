@@ -20,11 +20,12 @@ public class ThumbnailView extends FrameLayout {
     }
     ImageView thumbView;
     ImageView profileView;
-    TextView hashTagView;
+    TextView hashTagView,scrapView;
     private void init(){
         inflate(getContext(), R.layout.view_thumb,this);
         thumbView = (ImageView)findViewById(R.id.image_thumb);
         profileView = (ImageView)findViewById(R.id.image_profile);
+        scrapView = (TextView)findViewById(R.id.text_scrap_count);
         hashTagView = (TextView)findViewById(R.id.text_hash_tag);
     }
     CommunityContentData communityData;
@@ -32,9 +33,11 @@ public class ThumbnailView extends FrameLayout {
         this.communityData = data;
         Glide.with(getContext()).load(data.mainImage).into(thumbView);
         Glide.with(getContext()).load(data.profileImage).into(profileView);
+        scrapView.setText(""+data.scrap_count);
         StringBuilder sb = new StringBuilder();
         for(String s : data.hash_tag){
             sb.append(s);
+            sb.append(" ");
         }
         hashTagView.setText(sb.toString());
     }
@@ -43,9 +46,11 @@ public class ThumbnailView extends FrameLayout {
         searchContentData = data;
         Glide.with(getContext()).load(data.interiorImage).into(thumbView);
         Glide.with(getContext()).load(data.profileImage).into(profileView);
+        scrapView.setText(""+data.scrap_count);
         StringBuilder sb = new StringBuilder();
         for(String s : data.hash_tag){
             sb.append(s);
+            sb.append(" ");
         }
         hashTagView.setText(sb.toString());
     }

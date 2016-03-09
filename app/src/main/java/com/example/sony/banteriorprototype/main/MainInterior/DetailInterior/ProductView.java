@@ -25,11 +25,12 @@ public class ProductView extends FrameLayout {
     }
 
     ImageView productView;
-    TextView idView,nameView,sizeView;
+    TextView brandView,idView,nameView,sizeView;
 
     private void init(){
         inflate(getContext(), R.layout.view_product,this);
         productView = (ImageView)findViewById(R.id.image_product);
+        brandView = (TextView)findViewById(R.id.text_brand);
         idView = (TextView)findViewById(R.id.text_id);
         nameView = (TextView)findViewById(R.id.text_brand);
         sizeView = (TextView)findViewById(R.id.text_size);
@@ -39,6 +40,7 @@ public class ProductView extends FrameLayout {
     public void setProduct(ProductData data){
         this.data = data;
         Glide.with(getContext()).load(data.productImage).into(productView);
+        brandView.setText(data.brand);
         idView.setText(data.productId);
         nameView.setText(data.name);
         sizeView.setText(data.size);

@@ -2,10 +2,12 @@ package com.example.sony.banteriorprototype.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by sony on 2016-02-22.
  */
-public class ProductData{
+public class ProductData implements Serializable{
     @SerializedName("furniture_url")
     public String productImage;
     public String brand;

@@ -1,21 +1,20 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
+
+import okhttp3.Request;
 
 public class DetailInteriorListActivity extends AppCompatActivity {
-    private static final int[] MAIN_INTERIOR_IMAGE = {R.drawable.modern_main1,
-            R.drawable.modern_main2,
-            R.drawable.modern_main3,
-            R.drawable.modern_main4};
-
     GridView gridView;
     DetailInteriorAdapter mAdapter;
     @Override
@@ -28,21 +27,25 @@ public class DetailInteriorListActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(DetailInteriorListActivity.this, CommunityContentActivity.class));
+                Intent intent = new Intent(DetailInteriorListActivity.this, InteriorActivity.class);
+                intent.putExtra(InteriorActivity.EXTRA_INTERIOR_MESSAGE,((InteriorContentData)gridView.getItemAtPosition(position)).post_id);
+                intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE,((InteriorContentData)gridView.getItemAtPosition(position)).category);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
-//        NetworkManager.getInstance().getDetailInteriorData(new NetworkManager.OnResultListener<List<InteriorContentData>>() {
-//            @Override
-//            public void onSuccess(List<InteriorContentData> result) {
-//                for(InteriorContentData data : result) {
-//                    mAdapter.add(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//
-//            }
-//        });
+        NetworkManager.getInstance().getInteriorPostList(this, new NetworkManager.OnResultListener<InteriorResult>() {
+            @Override
+            public void onSuccess(Request request, InteriorResult result) {
+                for(InteriorContentData data : result.postData.interiorList) {
+                    mAdapter.add(data);
+                }
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
     }
 }

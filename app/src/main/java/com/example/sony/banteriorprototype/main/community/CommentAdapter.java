@@ -21,6 +21,10 @@ public class CommentAdapter extends RecyclerView.Adapter {
         items.add(data);
         notifyDataSetChanged();
     }
+    public void addAll(List<CommentData> list){
+        items.addAll(list);
+        notifyDataSetChanged();
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());

@@ -21,13 +21,14 @@ public class MyScrapView extends FrameLayout {
 
     ImageView thumbView;
     ImageView profileView;
-    TextView tagView;
+    TextView tagView,scrapView;
 
     private void init() {
         inflate(getContext(), R.layout.view_thumb, this);
         thumbView = (ImageView) findViewById(R.id.image_thumb);
         profileView = (ImageView) findViewById(R.id.image_profile);
         tagView = (TextView) findViewById(R.id.text_hash_tag);
+        scrapView = (TextView)findViewById(R.id.text_scrap_count);
     }
 
     MyPostData myPost;
@@ -39,8 +40,8 @@ public class MyScrapView extends FrameLayout {
         tagView.setText(myPost.hash_tag);
     }
 
-    ScrapData data;
 
+    ScrapData data;
     public void setScrapData(ScrapData data) {
         this.data = data;
         Glide.with(getContext()).load(data.interiorImage).into(thumbView);

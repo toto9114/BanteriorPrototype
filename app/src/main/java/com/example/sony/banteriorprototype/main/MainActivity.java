@@ -63,28 +63,24 @@ public class MainActivity extends AppCompatActivity {
                                 .beginTransaction()
                                 .replace(R.id.login_container, new InteriorFragment())
                                 .commit();
-                        Toast.makeText(MainActivity.this,"Main",Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container, new CommunityFragment())
                                 .commit();
-                        Toast.makeText(MainActivity.this,"Community",Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container,new MyPageFragment())
                                 .commit();
-                        Toast.makeText(MainActivity.this,"MyPage",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container,new SearchFragment())
                                 .commit();
-                        Toast.makeText(MainActivity.this,"Search",Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

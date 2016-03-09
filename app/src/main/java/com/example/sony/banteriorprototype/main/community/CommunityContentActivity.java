@@ -2,11 +2,11 @@ package com.example.sony.banteriorprototype.main.community;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.CommentData;
+import com.example.sony.banteriorprototype.data.Community.CommunityResult;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 
 import java.io.UnsupportedEncodingException;
@@ -38,6 +39,8 @@ public class CommunityContentActivity extends AppCompatActivity {
     CommunityPopupWindow popup;
     CommunityToolbar toolbar;
 
+    public static final String EXTRA_POSTID_MESSAGE = "postid";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,10 @@ public class CommunityContentActivity extends AppCompatActivity {
                 startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
             }
         });
+
+        Intent intent = getIntent();
+        int postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
+
 
         recycler = (RecyclerView) findViewById(R.id.recycler_comment);
         mAdapter = new CommentAdapter();
@@ -68,7 +75,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                         startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
                         break;
                     case R.id.btn_delete:
-                        AlertDialog.Builder builder =new AlertDialog.Builder(CommunityContentActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CommunityContentActivity.this);
                         builder.setIcon(android.R.drawable.ic_dialog_alert)
                                 .setMessage("게시물을 삭제하시겠어요?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -77,7 +84,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                                         NetworkManager.getInstance().delPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<PostTypeResult>() {
                                             @Override
                                             public void onSuccess(Request request, PostTypeResult result) {
-
+                                                Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
@@ -86,12 +93,12 @@ public class CommunityContentActivity extends AppCompatActivity {
                                             }
                                         });
                                     }
-                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
                         break;
                 }
             }
@@ -105,20 +112,27 @@ public class CommunityContentActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                CommentData data = new CommentData();
-//                String comment = commentView.getText().toString();
-//                data.username = "Unknown";
-//                data.reply_content = comment;
-//                if(!TextUtils.isEmpty(comment)) {
-//                    mAdapter.add(data);
-//                }
-                String comment = commentView.getText().toString();
-                if(!TextUtils.isEmpty(comment)) {
+                final String comment = commentView.getText().toString();
+                if (!TextUtils.isEmpty(comment)) {
                     try {
-                        NetworkManager.getInstance().setComment(CommunityContentActivity.this, 1, comment, new NetworkManager.OnResultListener<CommentData>() {
+                        NetworkManager.getInstance().setComment(CommunityContentActivity.this, 1, comment, new NetworkManager.OnResultListener<PostTypeResult>() {
                             @Override
-                            public void onSuccess(Request request, CommentData result) {
-                                Toast.makeText(CommunityContentActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                            public void onSuccess(Request request, PostTypeResult result) {
+                                Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                                NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, new NetworkManager.OnResultListener<CommunityResult>() {
+                                    @Override
+                                    public void onSuccess(Request request, CommunityResult result) {
+                                        Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
+                                        scrapCountView.setText("" + result.communityDetails.scrap_count);
+                                        toolbar.setToolbar(result.communityDetails);
+                                        mAdapter.addAll(result.communityDetails.reply);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Request request, int code, Throwable cause) {
+
+                                    }
+                                });
                             }
 
                             @Override
@@ -132,6 +146,22 @@ public class CommunityContentActivity extends AppCompatActivity {
                 }
             }
         });
+
+        NetworkManager.getInstance().getCommunityPost(this, new NetworkManager.OnResultListener<CommunityResult>() {
+            @Override
+            public void onSuccess(Request request, CommunityResult result) {
+                Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
+                scrapCountView.setText("" + result.communityDetails.scrap_count);
+                toolbar.setToolbar(result.communityDetails);
+                mAdapter.addAll(result.communityDetails.reply);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+
     }
 
 

@@ -1,7 +1,8 @@
 package com.example.sony.banteriorprototype.rent;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,41 +11,48 @@ import android.widget.Toast;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.ProductData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
+import com.example.sony.banteriorprototype.data.PostTypeResult;
 
-import java.util.List;
+import okhttp3.Request;
 
 public class RentalActivity extends AppCompatActivity {
 
+    public static final String EXTRA_PRODUCT_MESSAGE ="product";
     RecyclerView orderView;
     OrderAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rental);
 
+        Intent intent = getIntent();
+        final InteriorContentData interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
+
         orderView = (RecyclerView)findViewById(R.id.orderView);
         mAdapter = new OrderAdapter();
         orderView.setAdapter(mAdapter);
-//        NetworkManager.getInstance().getProductData(new NetworkManager.OnResultListener<List<ProductData>>() {
-//            @Override
-//            public void onSuccess(List<ProductData> result) {
-//                for(ProductData data : result){
-//                    mAdapter.add(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int code) {
-//
-//            }
-//        });
+        mAdapter.addAll(interiorContentData.productDataList);
+        mAdapter.setInterior(interiorContentData);
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderView.setLayoutManager(layoutManager);
         Button btn = (Button) findViewById(R.id.btn_pay);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NetworkManager.getInstance().setOrder(RentalActivity.this, interiorContentData.post_id, "", "", 1, "", 1, new NetworkManager.OnResultListener<PostTypeResult>() {
+                    @Override
+                    public void onSuccess(Request request, PostTypeResult result) {
+                        Toast.makeText(RentalActivity.this,result.result.message,Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
                 Toast.makeText(RentalActivity.this, getString(R.string.complete_payment), Toast.LENGTH_SHORT).show();
                 finish();
             }

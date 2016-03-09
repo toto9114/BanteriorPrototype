@@ -7,6 +7,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class CommunityResult {
     public String message;
+    public int page;
+    public int listperPage;
     @SerializedName("postData")
     public CommunityData communityData;
+
+    public CommunityContentData communityDetails;
 }
