@@ -79,4 +79,9 @@ public class CommunityToolbar extends FrameLayout implements OnItemClickListener
             mListener.onItemClick(view);
         }
     }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
 }

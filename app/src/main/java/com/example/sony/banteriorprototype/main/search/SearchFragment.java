@@ -17,7 +17,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Search.HashTagResult;
+
+import java.io.UnsupportedEncodingException;
+
+import okhttp3.Request;
 
 
 /**
@@ -114,11 +120,23 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = s.toString();
-                if (!TextUtils.isEmpty(text)) {
+                String keyword = s.toString();
+                if (!TextUtils.isEmpty(keyword)) {
                     mAdapter.clear();
-                    for (int i = 0; i < 3; i++) {
-                        mAdapter.add(text + ":" + i);
+                    try {
+                        NetworkManager.getInstance().getHashTagResultList(getActivity(), keyword, new NetworkManager.OnResultListener<HashTagResult>() {
+                            @Override
+                            public void onSuccess(Request request, HashTagResult result) {
+                                mAdapter.addAll(result.words);
+                            }
+
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
+
+                            }
+                        });
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
                     popupWindow.show();
                 } else {

@@ -45,7 +45,9 @@ public class ThumbnailView extends FrameLayout {
     public void setResultData(SearchContentData data){
         searchContentData = data;
         Glide.with(getContext()).load(data.interiorImage).into(thumbView);
-        Glide.with(getContext()).load(data.profileImage).into(profileView);
+        if(data.profileImage != null) {
+            Glide.with(getContext()).load(data.profileImage).into(profileView);
+        }
         scrapView.setText(""+data.scrap_count);
         StringBuilder sb = new StringBuilder();
         for(String s : data.hash_tag){

@@ -21,5 +21,7 @@
     <dimen name="color_image_size">11dp</dimen>
     <dimen name="product_width">54dp</dimen>
     <dimen name="product_height">51dp</dimen>
+    <dimen name="survey_margin_top">49dp</dimen>
+    <dimen name="survey_margin_left">82dp</dimen>
 
 </resources>

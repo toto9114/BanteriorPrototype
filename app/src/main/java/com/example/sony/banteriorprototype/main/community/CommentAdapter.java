@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by sony on 2016-02-26.
  */
-public class CommentAdapter extends RecyclerView.Adapter {
+public class CommentAdapter extends RecyclerView.Adapter implements OnItemClickListener{
     List<CommentData> items = new ArrayList<>();
 
     public void add(CommentData data){
@@ -25,6 +25,24 @@ public class CommentAdapter extends RecyclerView.Adapter {
         items.addAll(list);
         notifyDataSetChanged();
     }
+
+    OnItemClickListener itemClickListener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        itemClickListener = listener;
+    }
+
+    @Override
+    public void onItemClick(View view) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if(itemClickListener !=null){
+            itemClickListener.onItemClick(view,position);
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());

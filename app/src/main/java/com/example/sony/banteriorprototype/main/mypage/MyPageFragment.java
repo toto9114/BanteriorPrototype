@@ -3,8 +3,10 @@ package com.example.sony.banteriorprototype.main.mypage;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,10 @@ import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
 import com.example.sony.banteriorprototype.data.Mypage.MyPost;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
+import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
+
+import java.io.File;
 
 import okhttp3.Request;
 
@@ -81,8 +86,10 @@ public class MyPageFragment extends Fragment {
 
             }
         });
+
+
         Button btn = (Button)view.findViewById(R.id.btn_myscrap);
-        btn.setSelected(true);
+        btn.performClick();
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,17 +163,36 @@ public class MyPageFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE && resultCode != Activity.RESULT_CANCELED){
             Uri selectedImageUri = data.getData();
-//            NetworkManager.getInstance().setMyProfile(getActivity(), selectedImageUri, new NetworkManager.OnResultListener<PostTypeResult>() {
-//                @Override
-//                public void onSuccess(Request request, PostTypeResult result) {
-//
-//                }
-//
-//                @Override
-//                public void onFailure(Request request, int code, Throwable cause) {
-//
-//                }
-//            });
+            Cursor c = getContext().getContentResolver().query(selectedImageUri, new String[] {MediaStore.Images.Media.DATA}, null, null, null);
+            if (!c.moveToNext()) {
+                c.close();
+                return;
+            }
+            String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+            c.close();
+            File file = new File(path);
+            NetworkManager.getInstance().setMyProfile(getActivity(), file, new NetworkManager.OnResultListener<PostTypeResult>() {
+                @Override
+                public void onSuccess(Request request, PostTypeResult result) {
+                    Toast.makeText(getContext(), result.result.message , Toast.LENGTH_SHORT).show();
+                    NetworkManager.getInstance().getMypage(getContext(), new NetworkManager.OnResultListener<MyProfileData>() {
+                        @Override
+                        public void onSuccess(Request request, MyProfileData result) {
+                            setMyPage(result);
+                        }
+
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+
+                }
+            });
             Glide.with(this).load(selectedImageUri).into(profileView);
         }
     }

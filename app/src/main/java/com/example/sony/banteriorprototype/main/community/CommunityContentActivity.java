@@ -102,6 +102,11 @@ public class CommunityContentActivity extends AppCompatActivity {
                         break;
                 }
             }
+
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
         });
         interiorView = (ImageView) findViewById(R.id.image_interior);
         scrapCountView = (TextView) findViewById(R.id.text_scrap_count);
@@ -159,6 +164,27 @@ public class CommunityContentActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
 
+            }
+        });
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+                NetworkManager.getInstance().delReply(CommunityContentActivity.this, 1, 1, new NetworkManager.OnResultListener<PostTypeResult>() {
+                    @Override
+                    public void onSuccess(Request request, PostTypeResult result) {
+                        Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
             }
         });
 

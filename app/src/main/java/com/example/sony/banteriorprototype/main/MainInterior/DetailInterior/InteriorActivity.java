@@ -12,9 +12,7 @@ import android.widget.ListView;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
-import com.example.sony.banteriorprototype.data.ProductData;
 import com.example.sony.banteriorprototype.rent.RentalActivity;
 
 import okhttp3.Request;
@@ -27,20 +25,31 @@ public class InteriorActivity extends AppCompatActivity {
     ListView listView;
     int productId;
     public static final String EXTRA_INTERIOR_MESSAGE = "interior";
-    public static final String EXTRA_CATEGORY_MESSAGE ="category";
+    public static final String EXTRA_CATEGORY_MESSAGE = "category";
+    String category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior);
-        String category = getIntent().getStringExtra(EXTRA_CATEGORY_MESSAGE);
-        int postId = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE,0);
-        NetworkManager.getInstance().getInteriorPost(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
+        category = getIntent().getStringExtra(EXTRA_CATEGORY_MESSAGE);
+        int postId = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE, 0);
+        NetworkManager.getInstance().getInteriorPostList(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
             @Override
             public void onSuccess(Request request, InteriorResult result) {
-                for (InteriorContentData data: result.postData.interiorList){
-                    imageAdapter.add(data);
-                }
-                productAdapter.addAll(result.postData.interiorList.get(0).productDataList);
+                imageAdapter.addAll(result.postData.interiorList);
+                int postId = result.postData.interiorList.get(0).post_id;
+                NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
+                    @Override
+                    public void onSuccess(Request request, InteriorResult result) {
+                        productAdapter.clear();
+                        productAdapter.addAll(result.detailData.productDataList);
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
             }
 
             @Override
@@ -49,7 +58,7 @@ public class InteriorActivity extends AppCompatActivity {
             }
         });
 
-        pager = (ViewPager)findViewById(R.id.interior_pager);
+        pager = (ViewPager) findViewById(R.id.interior_pager);
         imageAdapter = new InteriorPagerAdapter(getSupportFragmentManager());
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -60,9 +69,20 @@ public class InteriorActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 productAdapter.clear();
                 productId = position;
-                for(ProductData data: imageAdapter.getInterior(position).productDataList){
-                    productAdapter.add(data);
-                }
+                NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, 1, category, new NetworkManager.OnResultListener<InteriorResult>() {
+                    @Override
+                    public void onSuccess(Request request, InteriorResult result) {
+                        productAdapter.addAll(result.detailData.productDataList);
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
+//                for (ProductData data : imageAdapter.getInterior(position).productDataList) {
+//                    productAdapter.add(data);
+//                }
             }
 
             @Override
@@ -70,16 +90,16 @@ public class InteriorActivity extends AppCompatActivity {
             }
         });
         pager.setAdapter(imageAdapter);
-        listView = (ListView)findViewById(R.id.product_listView);
+        listView = (ListView) findViewById(R.id.product_listView);
         productAdapter = new ProductListAdapter();
         listView.setAdapter(productAdapter);
 
-        Button btn = (Button)findViewById(R.id.btn_rent);
+        Button btn = (Button) findViewById(R.id.btn_rent);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(InteriorActivity.this, RentalActivity.class);
-                i.putExtra(RentalActivity.EXTRA_PRODUCT_MESSAGE,imageAdapter.getInterior(productId));
+                i.putExtra(RentalActivity.EXTRA_PRODUCT_MESSAGE, imageAdapter.getInterior(productId));
                 startActivity(i);
             }
         });
@@ -87,7 +107,7 @@ public class InteriorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_show_detail_interior,menu);
+        getMenuInflater().inflate(R.menu.menu_show_detail_interior, menu);
         return true;
     }
 
@@ -95,8 +115,10 @@ public class InteriorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_show_interior){
-            startActivity(new Intent(this,DetailInteriorListActivity.class));
+        if (id == R.id.action_show_interior) {
+            Intent intent = new Intent(this, DetailInteriorListActivity.class);
+            intent.putExtra(DetailInteriorListActivity.EXTRA_CATEGORY_MESSAGE,category);
+            startActivity(intent);
             return true;
         }
         return false;

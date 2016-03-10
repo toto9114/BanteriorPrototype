@@ -17,10 +17,17 @@ import okhttp3.Request;
 public class DetailInteriorListActivity extends AppCompatActivity {
     GridView gridView;
     DetailInteriorAdapter mAdapter;
+
+    public static final String EXTRA_CATEGORY_MESSAGE = "category";
+    String category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_interior_list);
+
+        Intent intent = getIntent();
+        category = intent.getStringExtra(EXTRA_CATEGORY_MESSAGE);
+
         gridView = (GridView)findViewById(R.id.grid_interior_list);
         mAdapter = new DetailInteriorAdapter();
         gridView.setAdapter(mAdapter);
@@ -34,7 +41,7 @@ public class DetailInteriorListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        NetworkManager.getInstance().getInteriorPostList(this, new NetworkManager.OnResultListener<InteriorResult>() {
+        NetworkManager.getInstance().getInteriorPostList(this, category , new NetworkManager.OnResultListener<InteriorResult>() {
             @Override
             public void onSuccess(Request request, InteriorResult result) {
                 for(InteriorContentData data : result.postData.interiorList) {

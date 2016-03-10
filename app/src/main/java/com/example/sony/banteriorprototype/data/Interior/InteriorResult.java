@@ -8,4 +8,5 @@ public class InteriorResult {
     public int page;
     public int listperPage;
     public InteriorData postData;
+    public InteriorContentData detailData;
 }

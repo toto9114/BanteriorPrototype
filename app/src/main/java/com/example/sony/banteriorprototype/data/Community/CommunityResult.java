@@ -12,5 +12,6 @@ public class CommunityResult {
     @SerializedName("postData")
     public CommunityData communityData;
 
+    @SerializedName("detailData")
     public CommunityContentData communityDetails;
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
+import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 
 import okhttp3.Request;
@@ -33,11 +34,23 @@ public class RentalActivity extends AppCompatActivity {
         orderView = (RecyclerView)findViewById(R.id.orderView);
         mAdapter = new OrderAdapter();
         orderView.setAdapter(mAdapter);
-        mAdapter.addAll(interiorContentData.productDataList);
         mAdapter.setInterior(interiorContentData);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderView.setLayoutManager(layoutManager);
+
+        NetworkManager.getInstance().getInteriorPost(this, interiorContentData.post_id, interiorContentData.category, new NetworkManager.OnResultListener<InteriorResult>() {
+            @Override
+            public void onSuccess(Request request, InteriorResult result) {
+                mAdapter.addAll(result.detailData.productDataList);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+
         Button btn = (Button) findViewById(R.id.btn_pay);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

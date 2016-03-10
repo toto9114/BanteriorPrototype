@@ -18,6 +18,8 @@ import com.example.sony.banteriorprototype.data.Mypage.MyPost;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfile;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
+import com.example.sony.banteriorprototype.data.Search.HashTagList;
+import com.example.sony.banteriorprototype.data.Search.HashTagResult;
 import com.example.sony.banteriorprototype.data.Search.Search;
 import com.example.sony.banteriorprototype.data.Survey.Survey;
 import com.example.sony.banteriorprototype.data.Survey.SurveyResult;
@@ -38,6 +40,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -49,6 +52,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.JavaNetCookieJar;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -184,6 +189,7 @@ public class NetworkManager {
     }
 
 
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final String BASE_URL_FORMAT = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com";
 
     public Request setSurvey(Context context, final OnResultListener<SurveyResult> listener) {
@@ -250,12 +256,13 @@ public class NetworkManager {
         return request;
     }
 
-    public Request setMyProfile(Context context, String imageUrl, final OnResultListener<PostTypeResult> listener) {
+    public Request setMyProfile(Context context, File file, final OnResultListener<PostTypeResult> listener) {
 
         String url = String.format(BASE_URL_FORMAT + "/mypages");
 
-        RequestBody body = new FormBody.Builder()
-                .add("photo_url", imageUrl)
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("photo_url", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file))
                 .build();
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
@@ -600,8 +607,7 @@ public class NetworkManager {
     }
 
     private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1?category";
-
-    public Request getInteriorPost(Context context, String category, final OnResultListener<InteriorResult> listener) {
+    public Request getInteriorPost(Context context, int postId, String category, final OnResultListener<InteriorResult> listener) {
 
         String url = String.format(GET_INTERIOR_URL);
 
@@ -634,7 +640,7 @@ public class NetworkManager {
     }
 
     private static final String GET_INTERIOR_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=1&page=1";
-    public Request getInteriorPostList(Context context, final OnResultListener<InteriorResult> listener) {
+    public Request getInteriorPostList(Context context, String category, final OnResultListener<InteriorResult> listener) {
 
         String url = String.format(GET_INTERIOR_LIST_URL);
 
@@ -699,6 +705,39 @@ public class NetworkManager {
         return request;
     }
 
+    private static final String GET_HASHTAG_RESULT_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/keywords?word=의";
+    public Request getHashTagResultList(Context context, String keyword, final OnResultListener<HashTagResult> listener) throws UnsupportedEncodingException {
+
+        String url = String.format(GET_HASHTAG_RESULT_LIST_URL, URLEncoder.encode(keyword, "utf-8"));
+
+        final CallbackObject<HashTagResult> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                HashTagList data = gson.fromJson(response.body().string(), HashTagList.class);
+                callbackObject.result = data.result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
     private static final String SET_COMMENT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1/replies?page=1";
     public Request setComment(Context context, int postId, String comment,final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
 
@@ -736,6 +775,43 @@ public class NetworkManager {
         return request;
     }
 
+    private static final String UPLOAD_COMMUNITY_POST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts";
+    public Request uploadPost(Context context, File file, List<String> hashTag, String content, final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
+
+        String url = String.format(UPLOAD_COMMUNITY_POST_URL);
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+        RequestBody body = new MultipartBody.Builder()
+                .addFormDataPart("file_url",file.getName(),RequestBody.create(MEDIA_TYPE_PNG,file))
+//                .addFormDataPart()
+                .build();
+        Request request = new Request.Builder().url(url)
+                .post(body)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
 
     private static final String DELETE_REPLY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s/replies/%s";
     public Request delReply(Context context, int postId,int replyId,final OnResultListener<PostTypeResult> listener) {
@@ -804,42 +880,6 @@ public class NetworkManager {
         });
         return request;
     }
-//    private static final String BASE_URL_FORMAT = "https://openapi.naver.com/v1/search/movie.xml?target=movie&query=%s&start=%s&display=%s";
-
-//    public Request getNaverMovie(Context context, String keyword, int start, int display,
-//                                 final OnResultListener<NaverMovies> listener) throws UnsupportedEncodingException {
-//        String url = String.format(BASE_URL_FORMAT, URLEncoder.encode(keyword, "utf-8"), start, display);
-//
-//        final CallbackObject<NaverMovies> callbackObject = new CallbackObject<NaverMovies>();
-//
-//        Request request = new Request.Builder().url(url)
-//                .header("X-Naver-Client-Id", "FRzO_6MMu6zwQYAaXlZr")
-//                .header("X-Naver-Client-Secret", "z0iOB55iQk")
-//                .tag(context)
-//                .build();
-//
-//        callbackObject.request = request;
-//        callbackObject.listener = listener;
-//        mClient.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                callbackObject.exception = e;
-//                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
-//                mHandler.sendMessage(msg);
-//            }
-
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                XMLParser parser = new XMLParser();
-//                NaverMovies movies = parser.fromXml(response.body().byteStream(), "channel", NaverMovies.class);
-//                callbackObject.result = movies;
-//                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
-//                mHandler.sendMessage(msg);
-//            }
-//        });
-//
-//        return request;
-//    }
 
     public Request testSSL(Context context, final OnResultListener<String> listener) {
         Request request = new Request.Builder().url("https://192.168.210.51:8443/test.html").build();
