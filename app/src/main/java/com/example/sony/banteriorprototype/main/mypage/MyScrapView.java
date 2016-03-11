@@ -37,7 +37,12 @@ public class MyScrapView extends FrameLayout {
         myPost = info;
         Glide.with(getContext()).load(myPost.interiorImage).into(thumbView);
         Glide.with(getContext()).load(myPost.profileImage).into(profileView);
-        tagView.setText(myPost.hash_tag);
+        StringBuilder sb = new StringBuilder();
+        for(String b: myPost.hash_tag){
+            sb.append(b);
+            sb.append(" ");
+        }
+        tagView.setText(sb.toString());
     }
 
 
@@ -45,7 +50,14 @@ public class MyScrapView extends FrameLayout {
     public void setScrapData(ScrapData data) {
         this.data = data;
         Glide.with(getContext()).load(data.interiorImage).into(thumbView);
-        Glide.with(getContext()).load(data.profileImage).into(profileView);
-        tagView.setText(data.hash_tag);
+        if(data.profileImage != null) {
+            Glide.with(getContext()).load(data.profileImage).into(profileView);
+        }
+        StringBuilder sb = new StringBuilder();
+        for(String s : data.hash_tag){
+            sb.append(s);
+            sb.append(" ");
+        }
+        tagView.setText(sb.toString());
     }
 }

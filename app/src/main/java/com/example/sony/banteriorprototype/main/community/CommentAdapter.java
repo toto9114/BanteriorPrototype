@@ -25,6 +25,9 @@ public class CommentAdapter extends RecyclerView.Adapter implements OnItemClickL
         items.addAll(list);
         notifyDataSetChanged();
     }
+    public void clear(){
+        items.clear();
+    }
 
     OnItemClickListener itemClickListener;
     public void setOnItemClickListener(OnItemClickListener listener){

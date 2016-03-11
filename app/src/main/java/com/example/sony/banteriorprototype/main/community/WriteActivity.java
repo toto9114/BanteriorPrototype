@@ -1,13 +1,11 @@
 package com.example.sony.banteriorprototype.main.community;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.sony.banteriorprototype.R;
+
+import java.io.File;
 
 public class WriteActivity extends AppCompatActivity {
 
@@ -29,4 +27,17 @@ public class WriteActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
+    File file;
+    String content;
+    public void setContent(File file,String content){
+        this.file = file;
+        this.content = content;
+    }
+    public File getFile(){
+        return file;
+    }
+    public String getContent(){
+        return content;
+    }
+
 }

@@ -127,6 +127,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                                 NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, new NetworkManager.OnResultListener<CommunityResult>() {
                                     @Override
                                     public void onSuccess(Request request, CommunityResult result) {
+                                        mAdapter.clear();
                                         Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
                                         scrapCountView.setText("" + result.communityDetails.scrap_count);
                                         toolbar.setToolbar(result.communityDetails);

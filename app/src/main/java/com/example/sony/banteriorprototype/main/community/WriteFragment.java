@@ -21,13 +21,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.PostTypeResult;
 
 import java.io.File;
-
-import okhttp3.Request;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +38,7 @@ public class WriteFragment extends Fragment {
     private static final int PICK_IMAGE = 0;
     ImageView imageView;
     EditText contentView;
+    File file;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,18 +84,7 @@ public class WriteFragment extends Fragment {
             }
             String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
             c.close();
-            File file = new File(path);
-            NetworkManager.getInstance().setMyProfile(getActivity(), file, new NetworkManager.OnResultListener<PostTypeResult>() {
-                @Override
-                public void onSuccess(Request request, PostTypeResult result) {
-
-                }
-
-                @Override
-                public void onFailure(Request request, int code, Throwable cause) {
-
-                }
-            });
+            file = new File(path);
             Glide.with(this).load(selectedImageUri).into(imageView);
         }
     }
@@ -114,6 +100,7 @@ public class WriteFragment extends Fragment {
         int id = item.getItemId();
 
         if(id == R.id.regist_hash) {
+            ((WriteActivity)getActivity()).setContent(file,contentView.getText().toString());
             ((WriteActivity)getActivity()).changeHashTag();
             return true;
         }

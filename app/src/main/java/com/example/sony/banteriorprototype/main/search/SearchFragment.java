@@ -122,11 +122,11 @@ public class SearchFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String keyword = s.toString();
                 if (!TextUtils.isEmpty(keyword)) {
-                    mAdapter.clear();
                     try {
                         NetworkManager.getInstance().getHashTagResultList(getActivity(), keyword, new NetworkManager.OnResultListener<HashTagResult>() {
                             @Override
                             public void onSuccess(Request request, HashTagResult result) {
+                                mAdapter.clear();
                                 mAdapter.addAll(result.words);
                             }
 

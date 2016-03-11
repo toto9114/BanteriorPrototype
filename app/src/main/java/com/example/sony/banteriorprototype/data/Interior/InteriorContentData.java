@@ -18,8 +18,11 @@ public class InteriorContentData implements Serializable{
     @SerializedName("file_url")
     public String interiorImage;
     public int scrap_count;
+    public String month_price;
     public String[] hash_tag;
     public String category;
+    @SerializedName("Package")
+    public String packageName;
     @SerializedName("furnitures")
     public List<ProductData> productDataList;
     public List<CommentData> reply;

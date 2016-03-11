@@ -19,5 +19,5 @@ public class MyPostData{
     public String content;
     public List<CommentData> reply;
     //public List<String> hash_tag;
-    public String hash_tag;
+    public List<String> hash_tag;
 }

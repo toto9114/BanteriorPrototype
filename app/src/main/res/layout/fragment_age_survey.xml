@@ -7,13 +7,15 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/survey_age_image_width"
+        android:layout_height="@dimen/survey_age_image_height"
         android:id="@+id/image_address_icon"
         android:src="@drawable/survey_age"
         android:layout_marginTop="@dimen/survey_margin_top"
         android:layout_marginLeft="@dimen/survey_margin_left"
-        android:layout_marginStart="82dp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="82dp"
+        android:layout_marginBottom="@dimen/survey_margin_bottom" />
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -55,8 +57,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/text_title"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="73dp" />
+        android:layout_below="@+id/image_address_icon"
+        android:layout_marginLeft="@dimen/survey_title_left"
+        android:layout_marginStart="@dimen/survey_title_left"
+        android:layout_marginBottom="@dimen/survey_title_bottom" />
 
 </RelativeLayout>

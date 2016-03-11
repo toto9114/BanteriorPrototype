@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 
@@ -28,8 +29,8 @@ public class OrderProductTitleViewHolder extends RecyclerView.ViewHolder {
     InteriorContentData data;
     public void setTitle(InteriorContentData data){
         this.data = data;
-//        Glide.with(mContext).load(data.interiorImage).into(interiorView);
-//        packageView.setText(data.);
-//        monthPriceView.setText();
+        Glide.with(mContext).load(data.interiorImage).into(interiorView);
+        packageView.setText(data.packageName);
+        monthPriceView.setText(data.month_price);
     }
 }

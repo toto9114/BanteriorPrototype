@@ -23,5 +23,10 @@
     <dimen name="product_height">51dp</dimen>
     <dimen name="survey_margin_top">49dp</dimen>
     <dimen name="survey_margin_left">82dp</dimen>
+    <dimen name="survey_margin_bottom">43dp</dimen>
+    <dimen name="survey_title_left">120dp</dimen>
+    <dimen name="survey_title_bottom">29dp</dimen>
+    <dimen name="survey_age_image_width">195dp</dimen>
+    <dimen name="survey_age_image_height">195dp</dimen>
 
 </resources>

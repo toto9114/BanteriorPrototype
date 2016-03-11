@@ -15,8 +15,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.wefika.flowlayout.FlowLayout;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import okhttp3.Request;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +38,9 @@ public class HashTagFragment extends Fragment {
 
     EditText keywordView;
     FlowLayout mFlowlayout;
+    List<String> hashTag;
+    File file;
+    String content;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,12 +58,16 @@ public class HashTagFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String keyword = keywordView.getText().toString();
+                hashTag.add(keyword);
                 TextView hash = new TextView(getContext());
                 hash.setText(keyword);
                 mFlowlayout.addView(hash);
                 Toast.makeText(getContext(),"add",Toast.LENGTH_SHORT).show();
             }
         });
+
+        file = ((WriteActivity) getActivity()).getFile();
+        content = ((WriteActivity) getActivity()).getContent();
         return view;
     }
 
@@ -68,10 +83,25 @@ public class HashTagFragment extends Fragment {
 
         if(id==R.id.regist_post){
             getActivity().finish();
+            try {
+                NetworkManager.getInstance().uploadPost(getContext(), file, hashTag, content, new NetworkManager.OnResultListener<PostTypeResult>() {
+                    @Override
+                    public void onSuccess(Request request, PostTypeResult result) {
+                        Toast.makeText(getActivity(), result.result.message, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         if(id == android.R.id.home){
-            ((WriteActivity)getActivity()).getSupportFragmentManager()
+            getActivity().getSupportFragmentManager()
                     .popBackStack();
         }
         return false;

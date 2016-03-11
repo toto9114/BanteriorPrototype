@@ -75,7 +75,7 @@ public class MyPageFragment extends Fragment {
         });
 
 
-        NetworkManager.getInstance().getMypage(getContext(),new NetworkManager.OnResultListener<MyProfileData>() {
+        NetworkManager.getInstance().getMypage(getContext(), new NetworkManager.OnResultListener<MyProfileData>() {
             @Override
             public void onSuccess(Request request, MyProfileData result) {
                 setMyPage(result);
@@ -87,6 +87,18 @@ public class MyPageFragment extends Fragment {
             }
         });
 
+        NetworkManager.getInstance().getMyScrap(getActivity(), new NetworkManager.OnResultListener<MyPageScrap>() {
+            @Override
+            public void onSuccess(Request request, MyPageScrap result) {
+                scrapAdapter.clear();
+                scrapAdapter.addAll(result.result.scrapData.list);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
 
         Button btn = (Button)view.findViewById(R.id.btn_myscrap);
         btn.performClick();
@@ -154,6 +166,8 @@ public class MyPageFragment extends Fragment {
     private void setMyPage(MyProfileData data){
         this.data = data;
         nameView.setText(data.getName());
+        scrapView.setText(""+data.myscrap_count);
+        myPostView.setText(""+data.mypost_count);
         Glide.with(getContext())
                 .load(data.getProfileImage())
                 .into(profileView);

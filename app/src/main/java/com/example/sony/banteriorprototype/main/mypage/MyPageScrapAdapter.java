@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.example.sony.banteriorprototype.data.Community.CommunityContentData;
 import com.example.sony.banteriorprototype.data.Mypage.ScrapData;
 
 import java.util.ArrayList;

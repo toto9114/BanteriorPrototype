@@ -471,7 +471,7 @@ public class NetworkManager {
 
     public Request setOrder(Context context,int postId,String address, String phone, int monthPrice, String payMethod, int period, final OnResultListener<PostTypeResult> listener) {
 
-        String url = String.format(BASE_URL_FORMAT + "/members");
+        String url = String.format(BASE_URL_FORMAT + "/orders");
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         RequestBody body = new FormBody.Builder()

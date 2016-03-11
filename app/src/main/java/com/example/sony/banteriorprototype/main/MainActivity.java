@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout)findViewById(R.id.tablayout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("tab1"));
-        tabLayout.addTab(tabLayout.newTab().setText("tab2"));
-        tabLayout.addTab(tabLayout.newTab().setText("tab3"));
-        tabLayout.addTab(tabLayout.newTab().setText("tab4"));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(new TabBangView(MainActivity.this)));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(new TabCommunityView(MainActivity.this)));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(new TabMypageView(MainActivity.this)));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(new TabSearchView(MainActivity.this)));
 
         if(savedInstanceState == null){
             getSupportFragmentManager()

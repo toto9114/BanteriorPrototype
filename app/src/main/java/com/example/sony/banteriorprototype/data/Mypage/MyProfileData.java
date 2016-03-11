@@ -11,6 +11,8 @@ public class MyProfileData {
     @SerializedName("photo_url")
     String profileImage;
 
+    public int mypost_count;
+    public int myscrap_count;
     public String getProfileImage() {
         return profileImage;
     }
