@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,8 +43,7 @@ public class WriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_write, container, false);
-        ActionBar actionBar = ((WriteActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
+
         setHasOptionsMenu(true);
 
         imageView = (ImageView)view.findViewById(R.id.image_load);

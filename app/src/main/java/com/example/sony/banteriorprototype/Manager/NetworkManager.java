@@ -543,7 +543,7 @@ public class NetworkManager {
     }
 
     private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1";
-    public Request getCommunityPost(Context context, final OnResultListener<CommunityResult> listener) {
+    public Request getCommunityPost(Context context, int postId, final OnResultListener<CommunityResult> listener) {
         String url = String.format(GET_COMMUNITY_URL);
 
         final CallbackObject<CommunityResult> callbackObject = new CallbackObject<>();

@@ -13,31 +13,28 @@
         android:layout_gravity="center"
         android:scaleType="centerCrop"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/text_test"
-        android:layout_gravity="center_horizontal|bottom" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left|bottom"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/detail_interior_btns_bottom_margin">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:layout_width="@dimen/btn_scrap_width"
+        android:layout_height="@dimen/btn_scrap_height"
         android:id="@+id/image_scrap"
         android:layout_gravity="left|bottom"
-        android:src="@mipmap/ic_launcher" />
+        android:background="@drawable/scrap_selector"
+        android:layout_marginLeft="@dimen/btn_scrap_left_margin" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/btn_share_width"
+        android:layout_height="@dimen/btn_share_height"
         android:id="@+id/image_share"
         android:layout_gravity="left|bottom"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/btn_share_normal"
+        android:layout_marginLeft="@dimen/btn_share_left_margin" />
     </LinearLayout>
+
 </FrameLayout>

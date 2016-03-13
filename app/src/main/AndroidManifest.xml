@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sony.banteriorprototype">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -16,15 +17,21 @@
             android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".main.MainInterior.DetailInterior.InteriorActivity" />
-        <activity android:name=".survey.SurveyActivity"
+        <activity
+            android:name=".main.MainInterior.DetailInterior.InteriorActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".survey.SurveyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".rent.RentalActivity" />
-        <activity android:name=".main.community.CommunityContentActivity" />
-        <activity android:name=".main.community.WriteActivity" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".rent.RentalActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".main.community.CommunityContentActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".main.community.WriteActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".main.mypage.NotificationActivity" />
         <activity
             android:name=".SplashActivity"
@@ -37,7 +44,21 @@
         </activity>
         <activity android:name=".login.AgreementActivity" />
         <activity android:name=".main.search.ResultActivity" />
-        <activity android:name=".main.MainInterior.DetailInterior.DetailInteriorListActivity" />
+        <activity android:name=".main.MainInterior.DetailInterior.DetailInteriorListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider598266196992718"
+            android:exported="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
 
 </manifest>

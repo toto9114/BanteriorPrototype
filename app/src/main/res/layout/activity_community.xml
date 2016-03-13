@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".main.community.CommunityContentActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/toolBar"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <com.example.sony.banteriorprototype.main.community.CommunityToolbar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/community_toolbar"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/appbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -30,74 +43,95 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/image_interior"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_width="@dimen/btn_pink_scrap_width"
+            android:layout_height="@dimen/btn_pink_scrap_height"
             android:id="@+id/btn_scrap"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:background="@drawable/scrap_pink_selector" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_width="@dimen/btn_share_pink_size"
+            android:layout_height="@dimen/btn_share_pink_size"
             android:id="@+id/btn_share"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btn_scrap"
-            android:layout_toEndOf="@+id/btn_scrap" />
+            android:layout_toEndOf="@+id/btn_scrap"
+            android:background="@drawable/btn_share_pink_normal"
+            android:layout_marginLeft="@dimen/btn_share_left_margin" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/linear_scrap_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/text_scrap_count"
+            android:orientation="horizontal"
             android:layout_below="@+id/btn_scrap"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_mini_scrap"
+                android:layout_gravity="center_vertical" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/text_scrap_count"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linear_edit"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/edit_comment"
             android:focusable="false"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/btn_send"
-            android:layout_toStartOf="@+id/btn_send" />
+            android:layout_weight="1" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Button"
-            android:id="@+id/btn_send"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_send"/>
+        </LinearLayout>
+        <Button
             android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_email"
-            android:layout_above="@+id/btn_send"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_width="@dimen/btn_write_size"
+            android:layout_height="@dimen/btn_write_size"
+            android:layout_alignBottom="@+id/recycler_comment"
+            android:layout_alignRight="@+id/recycler_comment"
+            android:layout_alignEnd="@+id/recycler_comment"
+            android:layout_marginBottom="@dimen/btn_write_margin_bottom"
+            android:background="@drawable/btn_write" />
         <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/recycler_comment"
-            android:layout_below="@+id/text_scrap_count"
+            android:layout_below="@+id/linear_scrap_count"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/edit_comment" />
+            android:layout_above="@+id/linear_edit" />
     </RelativeLayout>
 
 

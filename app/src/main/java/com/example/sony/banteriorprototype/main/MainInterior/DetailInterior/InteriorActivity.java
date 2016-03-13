@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Category;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.rent.RentalActivity;
 
@@ -23,16 +25,30 @@ public class InteriorActivity extends AppCompatActivity {
     ProductListAdapter productAdapter;
 
     ListView listView;
-    int productId;
+
     public static final String EXTRA_INTERIOR_MESSAGE = "interior";
     public static final String EXTRA_CATEGORY_MESSAGE = "category";
+
     String category;
+    int productId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
         category = getIntent().getStringExtra(EXTRA_CATEGORY_MESSAGE);
         int postId = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE, 0);
+
+        for(int i=0 ; i< Category.CATEGORY_ARRAY.length; i++){
+            if(category.equals(Category.CATEGORY_ARRAY[i])) {
+                toolbar.setLogo(Category.TITLE_IMAGE_ARRAY[i]);
+                break;
+            }
+        }
         NetworkManager.getInstance().getInteriorPostList(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
             @Override
             public void onSuccess(Request request, InteriorResult result) {
@@ -103,7 +119,28 @@ public class InteriorActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        btn = (Button)findViewById(R.id.image_left);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pager.getCurrentItem()>0) {
+                    pager.setCurrentItem(pager.getCurrentItem() - 1);
+                }
+            }
+        });
+
+        btn = (Button)findViewById(R.id.image_right);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pager.getCurrentItem()<imageAdapter.getCount()) {
+                    pager.setCurrentItem(pager.getCurrentItem() + 1);
+                }
+            }
+        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,8 +154,12 @@ public class InteriorActivity extends AppCompatActivity {
 
         if (id == R.id.action_show_interior) {
             Intent intent = new Intent(this, DetailInteriorListActivity.class);
-            intent.putExtra(DetailInteriorListActivity.EXTRA_CATEGORY_MESSAGE,category);
+            intent.putExtra(DetailInteriorListActivity.EXTRA_CATEGORY_MESSAGE, category);
             startActivity(intent);
+            return true;
+        }
+        if (id == android.R.id.home) {
+            finish();
             return true;
         }
         return false;

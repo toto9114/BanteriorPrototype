@@ -3,7 +3,6 @@ package com.example.sony.banteriorprototype.main.community;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,8 +46,8 @@ public class HashTagFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_hash_tag, container, false);
-        ActionBar actionBar = ((WriteActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ((WriteActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((WriteActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_exit);
         setHasOptionsMenu(true);
         keywordView = (EditText)view.findViewById(R.id.edit_hash);
         mFlowlayout = (FlowLayout)view.findViewById(R.id.flowlayout);

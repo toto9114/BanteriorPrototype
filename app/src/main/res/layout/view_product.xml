@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/product_item_height">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/product_image_width"
+        android:layout_height="@dimen/product_image_height"
         android:id="@+id/image_product"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="@dimen/product_image_left_margin"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_marginTop="@dimen/product_image_vertical_margin"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginBottom="@dimen/product_image_vertical_margin"
+        android:layout_marginRight="@dimen/product_image_right_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,9 +21,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Medium Text"
         android:id="@+id/text_brand"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/image_product"
         android:layout_toRightOf="@+id/image_product"
-        android:layout_toEndOf="@+id/image_product" />
+        android:layout_toEndOf="@+id/image_product"
+        android:layout_marginBottom="@dimen/product_text_brand_bottom_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,17 +44,20 @@
         android:id="@+id/text_size"
         android:layout_below="@+id/text_id"
         android:layout_toRightOf="@+id/image_product"
-        android:layout_toEndOf="@+id/image_product" />
+        android:layout_toEndOf="@+id/image_product"
+        android:layout_marginTop="@dimen/size_text_top_margin" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
+        android:layout_width="@dimen/btn_web_width"
+        android:layout_height="@dimen/btn_web_height"
         android:id="@+id/btn_link"
-        android:layout_below="@+id/text_size"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_web"
+        android:layout_marginRight="@dimen/btn_web_right_margin"
+        android:layout_marginBottom="@dimen/btn_web_bottom_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,7 +65,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/text_name"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/text_brand"
         android:layout_toRightOf="@+id/text_brand"
         android:layout_toEndOf="@+id/text_brand" />
 
@@ -69,13 +75,14 @@
         android:id="@+id/image_color_1"
         android:layout_below="@+id/text_size"
         android:layout_toRightOf="@+id/image_product"
-        android:layout_toEndOf="@+id/image_product" />
+        android:layout_toEndOf="@+id/image_product"
+        android:layout_marginTop="@dimen/image_color_top_margin" />
 
     <ImageView
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:id="@+id/image_color_2"
-        android:layout_below="@+id/text_size"
+        android:layout_alignTop="@+id/image_color_1"
         android:layout_toRightOf="@+id/image_color_1"
         android:layout_toEndOf="@+id/image_color_1" />
 

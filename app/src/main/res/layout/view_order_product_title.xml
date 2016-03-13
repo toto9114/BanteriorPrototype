@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/rental_title_image_width"
+        android:layout_height="@dimen/rental_title_image_height"
         android:id="@+id/image_interior"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
         android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/image_interior"
+        android:layout_toEndOf="@+id/image_interior"
+        android:layout_centerVertical="true">
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,8 +26,7 @@
         android:text="New Text"
         android:id="@+id/text_package"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/image_interior"
-        android:layout_toEndOf="@+id/image_interior" />
+        android:layout_marginBottom="@dimen/rental_title_line_spacing" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,4 +36,5 @@
         android:layout_below="@+id/text_package"
         android:layout_toRightOf="@+id/image_interior"
         android:layout_toEndOf="@+id/image_interior" />
+    </LinearLayout>
 </RelativeLayout>

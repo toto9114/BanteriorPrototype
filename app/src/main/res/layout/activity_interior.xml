@@ -1,39 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".main.MainInterior.DetailInterior.InteriorActivity">
 
-    <android.support.v4.view.ViewPager
-        android:layout_width="360dp"
-        android:layout_height="207dp"
-        android:id="@+id/interior_pager"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/interior_product_margin" />
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/product_listView"
-        android:layout_below="@+id/interior_pager"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/btn_rent" />
-    <Button
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/toolBar"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/detail_interior_image_height"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/appbar"
+        android:layout_marginBottom="@dimen/interior_product_margin">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/interior_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:layout_width="@dimen/ic_left_right_width"
+            android:layout_height="@dimen/ic_left_right_height"
+            android:id="@+id/image_left"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/ic_left" />
+
+        <Button
+            android:layout_width="@dimen/ic_left_right_width"
+            android:layout_height="@dimen/ic_left_right_height"
+            android:id="@+id/image_right"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/ic_right" />
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/product_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_rent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/frame_pager"
+        android:layout_marginBottom="@dimen/detail_interior_list_bottom_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" />
+
+    <Button
         android:id="@+id/btn_rent"
-        android:text="@string/text_rent"
-        android:layout_alignParentBottom="true"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_rent" />
 </RelativeLayout>

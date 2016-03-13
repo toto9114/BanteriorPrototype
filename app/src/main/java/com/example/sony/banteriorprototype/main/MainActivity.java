@@ -38,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        toolbar.setLogo(R.drawable.text_bangterior);
         tabLayout = (TabLayout)findViewById(R.id.tablayout);
 
         tabLayout.addTab(tabLayout.newTab().setCustomView(new TabBangView(MainActivity.this)));
@@ -59,24 +60,28 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()){
                     case 0:
+                        toolbar.setLogo(R.drawable.text_bangterior);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container, new InteriorFragment())
                                 .commit();
                         break;
                     case 1:
+                        toolbar.setLogo(R.drawable.text_community);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container, new CommunityFragment())
                                 .commit();
                         break;
                     case 2:
+                        toolbar.setLogo(R.drawable.text_my_page);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container,new MyPageFragment())
                                 .commit();
                         break;
                     case 3:
+                        toolbar.setLogo(R.drawable.text_search);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.login_container,new SearchFragment())

@@ -9,15 +9,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_address_icon"
-        android:src="@mipmap/ic_launcher"
-        android:layout_centerVertical="true"
+        android:src="@drawable/survey_tool"
+        android:layout_marginTop="@dimen/survey_margin_top"
+        android:layout_marginLeft="@dimen/survey_margin_left"
+        android:layout_marginStart="82dp"
+        android:layout_marginBottom="@dimen/survey_margin_bottom"
         android:layout_centerHorizontal="true" />
 
     <RadioGroup
         android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/text_title"
         android:layout_centerHorizontal="true">
 
         <RadioButton
@@ -55,9 +58,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/text_title"
         android:singleLine="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="73dp" />
+        android:layout_below="@+id/image_address_icon"
+        android:layout_marginLeft="@dimen/survey_title_left"
+        android:layout_marginStart="@dimen/survey_title_left"
+        android:layout_marginBottom="@dimen/survey_title_bottom"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -68,15 +73,5 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btn_login"
-        android:layout_below="@+id/text_title"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

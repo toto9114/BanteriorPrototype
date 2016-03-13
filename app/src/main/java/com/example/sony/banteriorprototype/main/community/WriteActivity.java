@@ -2,6 +2,7 @@ package com.example.sony.banteriorprototype.main.community;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.example.sony.banteriorprototype.R;
 
@@ -13,6 +14,11 @@ public class WriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         if(savedInstanceState == null){
             getSupportFragmentManager()
                     .beginTransaction()

@@ -2,29 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#757575"
+    android:alpha="0.8"
     tools:context=".main.search.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/textfield_search"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/search_top_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_search"
-        android:layout_alignParentTop="true"
-        android:imeOptions="actionSearch"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="@string/hint_search"
-        android:layout_toRightOf="@+id/image_search"
-        android:layout_toEndOf="@+id/image_search"
-        android:layout_alignBottom="@+id/image_search" />
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="@dimen/search_icon_width"
+            android:layout_height="@dimen/search_icon_height"
+            android:src="@drawable/ic_black_search"
+            android:layout_gravity="center_vertical" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image_search"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher" />
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_search"
+            android:imeOptions="actionSearch"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+    </LinearLayout>
 </RelativeLayout>

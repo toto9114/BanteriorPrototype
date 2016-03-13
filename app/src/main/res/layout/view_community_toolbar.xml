@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/community_toolbar_height"
+    android:paddingLeft="@dimen/community_toolbar_padding_horizontal"
+    android:paddingRight="@dimen/community_toolbar_padding_horizontal"
+    android:background="@color/community_toolbar_backgroud">
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_width="@dimen/profile_image_size"
         android:layout_height="@dimen/profile_image_size"
         android:id="@+id/image_profile"
-        android:layout_alignParentTop="true"
+        app:civ_border="false"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_marginRight="@dimen/profile_image_right_margin" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/btn_menu_width"
+        android:layout_height="@dimen/btn_menu_height"
         android:id="@+id/btn_menu"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/btn_moreover"
+        android:layout_marginTop="@dimen/btn_menu_margin_top" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-
         android:id="@+id/text_brand"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/image_profile"

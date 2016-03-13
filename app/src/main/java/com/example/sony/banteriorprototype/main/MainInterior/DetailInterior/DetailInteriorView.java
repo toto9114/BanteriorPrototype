@@ -28,6 +28,7 @@ public class DetailInteriorView extends FrameLayout {
     }
     public void setDetailInteriorView(InteriorContentData data){
         Glide.with(getContext()).load(data.interiorImage).into(interiorView);
-        Glide.with(getContext()).load(data.profileImage).into(profileView);
+        //Glide.with(getContext()).load(data.profileImage).into(profileView);
+        profileView.setImageResource(R.drawable.ic_line_logo);
     }
 }

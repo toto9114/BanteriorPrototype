@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="toolBar">#ffffff</color>
     <color name="tablayout">#ffffff</color>
+    <color name= "community_toolbar_backgroud">#eeeeee</color>
+    <color name= "white">#ffffff</color>
+    <color name="search_background">#757575</color>
+    <color name ="rental_activity_backgroud">#eeeeee</color>
 </resources>

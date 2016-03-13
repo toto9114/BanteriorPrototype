@@ -3,12 +3,12 @@ package com.example.sony.banteriorprototype.main.community;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
@@ -48,7 +48,7 @@ public class CommunityFragment extends Fragment {
         mAdapter = new CommunityAdapter();
         gridView.setAdapter(mAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+        Button fab = (Button)view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

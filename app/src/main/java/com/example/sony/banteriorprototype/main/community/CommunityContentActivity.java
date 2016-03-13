@@ -3,13 +3,12 @@ package com.example.sony.banteriorprototype.main.community;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,17 +36,21 @@ public class CommunityContentActivity extends AppCompatActivity {
     EditText commentView;
     CommentAdapter mAdapter;
     CommunityPopupWindow popup;
-    CommunityToolbar toolbar;
+    CommunityToolbar communityToolbar;
 
     public static final String EXTRA_POSTID_MESSAGE = "postid";
 
+    int postId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+        getSupportActionBar().setLogo(R.drawable.text_community);
+        Button fab = (Button) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +59,7 @@ public class CommunityContentActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        int postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
+        postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
 
 
         recycler = (RecyclerView) findViewById(R.id.recycler_comment);
@@ -66,8 +69,8 @@ public class CommunityContentActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
 
-        toolbar = (CommunityToolbar) findViewById(R.id.community_toolbar);
-        toolbar.setOnItemClickListener(new OnItemClickListener() {
+        communityToolbar = (CommunityToolbar) findViewById(R.id.community_toolbar);
+        communityToolbar.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 switch (view.getId()) {
@@ -84,6 +87,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                                         NetworkManager.getInstance().delPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<PostTypeResult>() {
                                             @Override
                                             public void onSuccess(Request request, PostTypeResult result) {
+                                                finish();
                                                 Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
                                             }
 
@@ -98,7 +102,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
-                                });
+                                }).show();
                         break;
                 }
             }
@@ -112,6 +116,42 @@ public class CommunityContentActivity extends AppCompatActivity {
         scrapCountView = (TextView) findViewById(R.id.text_scrap_count);
         commentView = (EditText) findViewById(R.id.edit_comment);
 
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+                NetworkManager.getInstance().delReply(CommunityContentActivity.this, 0, 0, new NetworkManager.OnResultListener<PostTypeResult>() {
+                    @Override
+                    public void onSuccess(Request request, PostTypeResult result) {
+                        Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                        NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<CommunityResult>() {
+                            @Override
+                            public void onSuccess(Request request, CommunityResult result) {
+                                mAdapter.clear();
+                                Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
+                                scrapCountView.setText("" + result.communityDetails.scrap_count);
+                                communityToolbar.setToolbar(result.communityDetails);
+                                mAdapter.addAll(result.communityDetails.reply);
+                            }
+
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+
+                    }
+                });
+            }
+        });
 
         Button btn = (Button) findViewById(R.id.btn_send);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -124,13 +164,13 @@ public class CommunityContentActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Request request, PostTypeResult result) {
                                 Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
-                                NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, new NetworkManager.OnResultListener<CommunityResult>() {
+                                NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<CommunityResult>() {
                                     @Override
                                     public void onSuccess(Request request, CommunityResult result) {
                                         mAdapter.clear();
                                         Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
                                         scrapCountView.setText("" + result.communityDetails.scrap_count);
-                                        toolbar.setToolbar(result.communityDetails);
+                                        communityToolbar.setToolbar(result.communityDetails);
                                         mAdapter.addAll(result.communityDetails.reply);
                                     }
 
@@ -153,12 +193,12 @@ public class CommunityContentActivity extends AppCompatActivity {
             }
         });
 
-        NetworkManager.getInstance().getCommunityPost(this, new NetworkManager.OnResultListener<CommunityResult>() {
+        NetworkManager.getInstance().getCommunityPost(this, 1, new NetworkManager.OnResultListener<CommunityResult>() {
             @Override
             public void onSuccess(Request request, CommunityResult result) {
                 Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
                 scrapCountView.setText("" + result.communityDetails.scrap_count);
-                toolbar.setToolbar(result.communityDetails);
+                communityToolbar.setToolbar(result.communityDetails);
                 mAdapter.addAll(result.communityDetails.reply);
             }
 
@@ -167,28 +207,6 @@ public class CommunityContentActivity extends AppCompatActivity {
 
             }
         });
-        mAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view) {
-
-            }
-
-            @Override
-            public void onItemClick(View view, int position) {
-                NetworkManager.getInstance().delReply(CommunityContentActivity.this, 1, 1, new NetworkManager.OnResultListener<PostTypeResult>() {
-                    @Override
-                    public void onSuccess(Request request, PostTypeResult result) {
-                        Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Request request, int code, Throwable cause) {
-
-                    }
-                });
-            }
-        });
-
     }
 
 

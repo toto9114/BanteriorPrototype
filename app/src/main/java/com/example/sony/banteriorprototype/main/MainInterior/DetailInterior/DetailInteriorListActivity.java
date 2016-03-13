@@ -3,12 +3,15 @@ package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Category;
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 
@@ -20,13 +23,25 @@ public class DetailInteriorListActivity extends AppCompatActivity {
 
     public static final String EXTRA_CATEGORY_MESSAGE = "category";
     String category;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_interior_list);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         Intent intent = getIntent();
         category = intent.getStringExtra(EXTRA_CATEGORY_MESSAGE);
+
+        for(int i=0 ; i< Category.CATEGORY_ARRAY.length; i++){
+            if(category.equals(Category.CATEGORY_ARRAY[i])) {
+                toolbar.setLogo(Category.TITLE_IMAGE_ARRAY[i]);
+                break;
+            }
+        }
 
         gridView = (GridView)findViewById(R.id.grid_interior_list);
         mAdapter = new DetailInteriorAdapter();
@@ -54,5 +69,16 @@ public class DetailInteriorListActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
