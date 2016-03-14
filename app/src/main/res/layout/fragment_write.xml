@@ -2,10 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sony.banteriorprototype.main.community.WriteFragment">
+    tools:context="com.example.sony.banteriorprototype.main.community.WriteFragment"
+    android:background="@color/write_activity_background">
 
     <!-- TODO: Update blank fragment layout -->
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/linear_floating_view"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,25 +41,30 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/fab"
         android:layout_alignEnd="@+id/fab" />
-
+</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/linear_floating_view"
+        android:layout_height="@dimen/floating_view_height"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/keyboard_floating_view_backgroud">
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
+        android:layout_width="@dimen/btn_camera_size"
+        android:layout_height="@dimen/btn_camera_size"
         android:id="@+id/btn_camera"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:background="@drawable/btn_camera"
+        android:layout_marginRight="@dimen/btn_camera_right_margin"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/btn_camera_left_margin" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
+        android:layout_width="@dimen/btn_album_width"
+        android:layout_height="@dimen/btn_album_height"
         android:id="@+id/btn_gallery"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btn_camera"
-        android:layout_toEndOf="@+id/btn_camera" />
-
+        android:background="@drawable/btn_album"
+        android:layout_gravity="center_vertical" />
+    </LinearLayout>
 </RelativeLayout>

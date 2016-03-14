@@ -294,7 +294,7 @@ public class NetworkManager {
         return request;
     }
 
-    public Request login(Context context, String email, String password, final OnResultListener<PostTypeResult> listener) {
+    public Request login(Context context, String email, String password, String token, final OnResultListener<PostTypeResult> listener) {
 
         String url = String.format(BASE_URL_FORMAT + "/members/login");
 
@@ -856,6 +856,46 @@ public class NetworkManager {
 
         Request request = new Request.Builder().url(url)
                 .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String FACEBOOK_LOGIN_URL = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/members/facebook/token?access_token=1";
+    public Request facebookLogin(Context context, String registrationToken, String facebookToken, final OnResultListener<PostTypeResult> listener) {
+
+        String url = String.format(FACEBOOK_LOGIN_URL);
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+
+        RequestBody body = new FormBody.Builder()
+                .add("access_token",facebookToken)
+                .add("token",registrationToken)
+                .build();
+
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
                 .build();
 
         callbackObject.request = request;

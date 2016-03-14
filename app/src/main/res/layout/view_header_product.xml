@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/order_title_vertical_margin"
+    android:paddingBottom="@dimen/order_title_vertical_margin">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/ic_cart_width"
+        android:layout_height="@dimen/ic_cart_height"
         android:id="@+id/image_address_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_cart"
+        android:layout_marginRight="@dimen/ic_cart_right_margin" />
 
     <TextView
         android:layout_width="wrap_content"

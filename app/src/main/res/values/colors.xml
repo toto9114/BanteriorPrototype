@@ -9,4 +9,10 @@
     <color name= "white">#ffffff</color>
     <color name="search_background">#757575</color>
     <color name ="rental_activity_backgroud">#eeeeee</color>
+    <color name="keyboard_floating_view_backgroud">#c4bdbe</color>
+    <color name="write_activity_background">#eeeeee</color>
+    <color name="tab_unselect_text">#757575</color>
+    <color name="tab_select_text">#ea8592</color>
+    <color name="mypage_background">#757575</color>
+    <color name="mypage_foreground">#f4f4f4</color>
 </resources>
