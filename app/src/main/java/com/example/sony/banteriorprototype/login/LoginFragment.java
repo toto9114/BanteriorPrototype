@@ -1,12 +1,16 @@
 package com.example.sony.banteriorprototype.login;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.io.UnsupportedEncodingException;
+
 import okhttp3.Request;
 
 /**
@@ -50,18 +56,21 @@ public class LoginFragment extends Fragment {
     CallbackManager callbackManager;
     LoginManager loginManager;
     LoginButton loginButton;
-    boolean isClickable =false;
-
+    Button localLoginBtn;
     String registrationToken;
+    String id;
+    String password;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         callbackManager = CallbackManager.Factory.create();
         loginManager = LoginManager.getInstance();
         loginButton = (LoginButton)view.findViewById(R.id.btn_facebook);
         loginButton.setFragment(this);
+
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
            @Override
            public void onSuccess(LoginResult loginResult) {
@@ -69,17 +78,21 @@ public class LoginFragment extends Fragment {
                String facebookToken = token.getToken();
                if(token != null) {
                    Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
-                   NetworkManager.getInstance().facebookLogin(getContext(), registrationToken, facebookToken, new NetworkManager.OnResultListener<PostTypeResult>() {
-                       @Override
-                       public void onSuccess(Request request, PostTypeResult result) {
-                           Toast.makeText(getContext(),result.result.message, Toast.LENGTH_SHORT).show();
-                       }
+                   try {
+                       NetworkManager.getInstance().facebookLogin(getContext(), registrationToken, facebookToken, new NetworkManager.OnResultListener<PostTypeResult>() {
+                           @Override
+                           public void onSuccess(Request request, PostTypeResult result) {
+                               Toast.makeText(getContext(),result.result.message, Toast.LENGTH_SHORT).show();
+                           }
 
-                       @Override
-                       public void onFailure(Request request, int code, Throwable cause) {
+                           @Override
+                           public void onFailure(Request request, int code, Throwable cause) {
 
-                       }
-                   });
+                           }
+                       });
+                   } catch (UnsupportedEncodingException e) {
+                       e.printStackTrace();
+                   }
                }
            }
 
@@ -95,37 +108,79 @@ public class LoginFragment extends Fragment {
        });
 
         idView = (EditText) view.findViewById(R.id.edit_id);
+        idView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                isIdEmpty = TextUtils.isEmpty(text);
+                isValid();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         passwordView = (EditText)view.findViewById(R.id.edit_password);
+        passwordView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                isPasswordEmpty = TextUtils.isEmpty(text);
+                isValid();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         mHandler = new Handler();
 
-        final String id = idView.getText().toString();
-        final String password = passwordView.getText().toString();
-        registrationToken = PropertyManager.getInstance().getRegistrationToken();
 
 
-        Button btn = (Button)view.findViewById(R.id.btn_login);
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        localLoginBtn= (Button)view.findViewById(R.id.btn_login);
+        localLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(!TextUtils.isEmpty(id) && !TextUtils.isEmpty(password)) {
+                id = idView.getText().toString();
+                password = passwordView.getText().toString();
+                registrationToken = PropertyManager.getInstance().getRegistrationToken();
                     NetworkManager.getInstance().login(getContext(), id, password, registrationToken, new NetworkManager.OnResultListener<PostTypeResult>() {
                         @Override
                         public void onSuccess(Request request, PostTypeResult result) {
-                            startActivity(new Intent(getContext(), MainActivity.class));
-                            getActivity().finish();
+                            if(result.error!= null){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setMessage("로그인실패")
+                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        }).show();
+                            }else {
+                                startActivity(new Intent(getContext(), MainActivity.class));
+                                getActivity().finish();
+                            }
                         }
 
                         @Override
                         public void onFailure(Request request, int code, Throwable cause) {
-                            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Error:" +code, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
-                else{
-                    Toast.makeText(getContext(),"입력오류",Toast.LENGTH_SHORT).show();
-                }
-            }
         });
         signupView = (TextView)view.findViewById(R.id.text_signup);
         signupView.setText(Html.fromHtml("<u>" + signupView.getText().toString()+"</u>"));
@@ -138,6 +193,15 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    boolean isIdEmpty = true, isPasswordEmpty = true;
+
+    private void isValid() {
+        if (!isIdEmpty && !isPasswordEmpty) {
+            localLoginBtn.setEnabled(true);
+        } else {
+             localLoginBtn.setEnabled(false);
+        }
+    }
 //    private void loginOrLogout() {
 //        AccessToken token = AccessToken.getCurrentAccessToken();
 //        if (token == null) { //토큰이 있는 경우는 스플래시에서 한다. 이미 가입을 한 상태이므로

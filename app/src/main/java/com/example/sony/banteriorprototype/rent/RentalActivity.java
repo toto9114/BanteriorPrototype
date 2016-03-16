@@ -16,6 +16,8 @@ import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 
+import java.io.UnsupportedEncodingException;
+
 import okhttp3.Request;
 
 public class RentalActivity extends AppCompatActivity {
@@ -44,17 +46,21 @@ public class RentalActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderView.setLayoutManager(layoutManager);
 
-        NetworkManager.getInstance().getInteriorPost(this, interiorContentData.post_id, interiorContentData.category, new NetworkManager.OnResultListener<InteriorResult>() {
-            @Override
-            public void onSuccess(Request request, InteriorResult result) {
-                mAdapter.addAll(result.detailData.productDataList);
-            }
+        try {
+            NetworkManager.getInstance().getInteriorPost(this, interiorContentData.post_id, interiorContentData.category, new NetworkManager.OnResultListener<InteriorResult>() {
+                @Override
+                public void onSuccess(Request request, InteriorResult result) {
+                    mAdapter.addAll(result.detailData.productDataList);
+                }
 
-            @Override
-            public void onFailure(Request request, int code, Throwable cause) {
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
 
-            }
-        });
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         Button btn = (Button) findViewById(R.id.btn_pay);
         btn.setOnClickListener(new View.OnClickListener() {

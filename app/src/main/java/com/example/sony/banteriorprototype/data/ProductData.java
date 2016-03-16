@@ -18,4 +18,5 @@ public class ProductData implements Serializable{
     @SerializedName("color_id")
     public String color;
     public String link;
+    public String price;
 }

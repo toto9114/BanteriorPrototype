@@ -22,7 +22,8 @@ import okhttp3.Request;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InteriorFragment extends Fragment {
+public class
+        InteriorFragment extends Fragment {
 
     public InteriorFragment() {
         // Required empty public constructor

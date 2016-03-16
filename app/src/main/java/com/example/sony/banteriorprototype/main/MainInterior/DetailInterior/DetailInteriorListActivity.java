@@ -15,6 +15,8 @@ import com.example.sony.banteriorprototype.data.Category;
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 
+import java.io.UnsupportedEncodingException;
+
 import okhttp3.Request;
 
 public class DetailInteriorListActivity extends AppCompatActivity {
@@ -50,25 +52,30 @@ public class DetailInteriorListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(DetailInteriorListActivity.this, InteriorActivity.class);
-                intent.putExtra(InteriorActivity.EXTRA_INTERIOR_MESSAGE,((InteriorContentData)gridView.getItemAtPosition(position)).post_id);
+                //intent.putExtra(InteriorActivity.EXTRA_INTERIOR_MESSAGE,((InteriorContentData)gridView.getItemAtPosition(position)).post_id);
+                intent.putExtra(InteriorActivity.EXTRA_INTERIOR_MESSAGE,position);
                 intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE,((InteriorContentData)gridView.getItemAtPosition(position)).category);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
-        NetworkManager.getInstance().getInteriorPostList(this, category , new NetworkManager.OnResultListener<InteriorResult>() {
-            @Override
-            public void onSuccess(Request request, InteriorResult result) {
-                for(InteriorContentData data : result.postData.interiorList) {
-                    mAdapter.add(data);
+        try {
+            NetworkManager.getInstance().getInteriorPostList(this, category , new NetworkManager.OnResultListener<InteriorResult>() {
+                @Override
+                public void onSuccess(Request request, InteriorResult result) {
+                    for(InteriorContentData data : result.postData.interiorList) {
+                        mAdapter.add(data);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Request request, int code, Throwable cause) {
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
 
-            }
-        });
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

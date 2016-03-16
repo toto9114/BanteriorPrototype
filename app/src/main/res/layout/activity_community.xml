@@ -81,7 +81,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/btn_mini_scrap"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="7dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,7 +94,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edit_layout_height"
             android:id="@+id/linear_edit"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
@@ -102,18 +103,21 @@
 
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/text_comment_width"
+            android:layout_height="@dimen/text_comment_height"
             android:id="@+id/edit_comment"
-            android:focusable="false"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:autoText="false"
+            android:background="@drawable/textfield"
+            android:layout_gravity="center_vertical" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/btn_send"/>
+            android:layout_width="@dimen/btn_comment_enter_width"
+            android:layout_height="@dimen/btn_comment_enter_height"
+            android:id="@+id/btn_send"
+            android:background="@drawable/btn_comment_enter"
+            android:layout_gravity="center_vertical" />
         </LinearLayout>
         <Button
             android:id="@+id/fab"

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
@@ -92,25 +91,37 @@ public class DetailInteriorFragment extends Fragment {
         scrapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isScrap){
-                    scrapView.setSelected(true);
-                    isScrap = false;
-                }
-                else {
-                    scrapView.setSelected(false);
-                    isScrap = true;
-                }
-                NetworkManager.getInstance().doScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
-                    @Override
-                    public void onSuccess(Request request, PostTypeResult result) {
-                        Toast.makeText(getContext(),result.result.message,Toast.LENGTH_SHORT).show();
-                    }
+               // if(isScrap){
+                    NetworkManager.getInstance().undoScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        @Override
+                        public void onSuccess(Request request, PostTypeResult result) {
+                           // Toast.makeText(getContext(),result.result.message,Toast.LENGTH_SHORT).show();
+                        }
 
-                    @Override
-                    public void onFailure(Request request, int code, Throwable cause) {
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
 
-                    }
-                });
+                        }
+                    });
+//                    scrapView.setSelected(true);
+//                    isScrap = false;
+//                }
+//                else {
+//                    NetworkManager.getInstance().doScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
+//                        @Override
+//                        public void onSuccess(Request request, PostTypeResult result) {
+//                            //Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Request request, int code, Throwable cause) {
+//
+//                        }
+//                    });
+//                    scrapView.setSelected(false);
+//                    isScrap = true;
+//                }
+
             }
         });
         Glide.with(getContext()).load(interiorContentData.interiorImage).into(interiorView);

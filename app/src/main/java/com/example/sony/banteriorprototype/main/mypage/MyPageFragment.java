@@ -25,9 +25,11 @@ import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
 import com.example.sony.banteriorprototype.data.Mypage.MyPost;
+import com.example.sony.banteriorprototype.data.Mypage.MyPostData;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
+import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
 
 import java.io.File;
 
@@ -96,7 +98,7 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onSuccess(Request request, MyPageScrap result) {
                 scrapAdapter.clear();
-                scrapAdapter.addAll(result.result.scrapData.list);
+                scrapAdapter.addAll(result.result.scrapData.postList);
             }
 
             @Override
@@ -120,7 +122,7 @@ public class MyPageFragment extends Fragment {
                         NetworkManager.getInstance().getMyScrap(getContext(), new NetworkManager.OnResultListener<MyPageScrap>() {
                             @Override
                             public void onSuccess(Request request, MyPageScrap result) {
-                                scrapAdapter.addAll(result.result.scrapData.list);
+                                scrapAdapter.addAll(result.result.scrapData.postList);
                                 Toast.makeText(getActivity(), result.result.message, Toast.LENGTH_SHORT).show();
                             }
 
@@ -159,55 +161,21 @@ public class MyPageFragment extends Fragment {
 
             }
         });
-//        Button btn = (Button)view.findViewById(R.id.btn_myscrap);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //getScrapData...
-//                gridView.setAdapter(scrapAdapter);
-//                scrapAdapter.clear();
-//                NetworkManager.getInstance().getMyScrap(getContext(),new NetworkManager.OnResultListener<MyPageScrap>() {
-//                    @Override
-//                    public void onSuccess(Request request, MyPageScrap result) {
-//                        scrapAdapter.addAll(result.result.scrapData.list);
-//                        Toast.makeText(getActivity(),result.result.message,Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Request request, int code, Throwable cause) {
-//
-//                    }
-//                });
-//
-//            }
-//        });
-//
-//        btn = (Button)view.findViewById(R.id.btn_mywrite);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //getMyWritingData...
-//               gridView.setAdapter(postAdapter);
-//                postAdapter.clear();
-//                NetworkManager.getInstance().getMyPost(getContext(),new NetworkManager.OnResultListener<MyPost>() {
-//                    @Override
-//                    public void onSuccess(Request request, MyPost result) {
-//                        postAdapter.addAll(result.result.postData.postList);
-//                        Toast.makeText(getActivity(),result.result.message,Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Request request, int code, Throwable cause) {
-//
-//                    }
-//                });
-//            }
-//        });
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getContext(), InteriorActivity.class));
+
+                switch (tabLayout.getSelectedTabPosition()) {
+                    case 0:
+                        startActivity(new Intent(getContext(), InteriorActivity.class));
+                        break;
+                    case 1:
+                        MyPostData data = (MyPostData)gridView.getItemAtPosition(position);
+                        Intent i = new Intent(getContext(), CommunityContentActivity.class);
+                        i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,data.post_id);
+                        startActivity(i);
+                }
             }
         });
         Button btn = (Button) view.findViewById(R.id.btn_notify);

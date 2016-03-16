@@ -105,7 +105,10 @@ public class SearchFragment extends Fragment {
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getContext(), ResultActivity.class));
+                String keyword = mAdapter.getItem(position);
+                Intent intent = new Intent(getContext(), ResultActivity.class);
+                intent.putExtra(ResultActivity.EXTRA_MESSAGE, keyword);
+                startActivity(intent);
                 searchView.setText("");
             }
         });

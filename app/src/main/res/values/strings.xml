@@ -46,4 +46,7 @@
     <string name="header_total">최종결제금액</string>
     <string name="scrap">스크랩</string>
     <string name="mypost">내가 쓴 글</string>
+    <string name="order_username">수령인</string>
+    <string name="order_phone">연락처</string>
+    <string name="order_address">배송지</string>
 </resources>

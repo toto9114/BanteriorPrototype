@@ -21,7 +21,7 @@ public class InteriorContentData implements Serializable{
     public String month_price;
     public String[] hash_tag;
     public String category;
-    @SerializedName("Package")
+    @SerializedName("package")
     public String packageName;
     @SerializedName("furnitures")
     public List<ProductData> productDataList;

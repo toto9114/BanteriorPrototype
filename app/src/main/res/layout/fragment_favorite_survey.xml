@@ -64,14 +64,4 @@
         android:layout_marginStart="@dimen/survey_title_left"
         android:layout_marginBottom="@dimen/survey_title_bottom" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btn_exit"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>

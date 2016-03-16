@@ -99,6 +99,18 @@
     <dimen name="mypage_profile_image_size">74dp</dimen>
     <dimen name="ic_cart_width">28dp</dimen>
     <dimen name="ic_cart_height">25dp</dimen>
-    <dimen name="ic_cart_right_margin">10dp</dimen>
+    <dimen name="order_icon_right_margin">10dp</dimen>
     <dimen name="order_title_vertical_margin">10dp</dimen>
+    <dimen name="btn_map_search_width">41dp</dimen>
+    <dimen name="btn_map_search_height">25dp</dimen>
+    <dimen name="order_info_right_margin">40dp</dimen>
+    <dimen name="order_text_search_width">152dp</dimen>
+    <dimen name="order_text_search_height">25dp</dimen>
+    <dimen name="textfield_zip_width">41dp</dimen>
+    <dimen name="btn_calender_left_margin">14dp</dimen>
+    <dimen name="btn_comment_enter_width">63dp</dimen>
+    <dimen name="btn_comment_enter_height">31dp</dimen>
+    <dimen name="text_comment_width">280dp</dimen>
+    <dimen name="text_comment_height">31dp</dimen>
+    <dimen name="edit_layout_height">51dp</dimen>
 </resources>

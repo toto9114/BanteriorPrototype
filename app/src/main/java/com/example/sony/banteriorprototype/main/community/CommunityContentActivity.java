@@ -35,7 +35,6 @@ public class CommunityContentActivity extends AppCompatActivity {
     TextView scrapCountView;
     EditText commentView;
     CommentAdapter mAdapter;
-    CommunityPopupWindow popup;
     CommunityToolbar communityToolbar;
 
     public static final String EXTRA_POSTID_MESSAGE = "postid";
@@ -84,25 +83,26 @@ public class CommunityContentActivity extends AppCompatActivity {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        NetworkManager.getInstance().delPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<PostTypeResult>() {
+                                        Toast.makeText(CommunityContentActivity.this,"click",Toast.LENGTH_SHORT).show();
+                                        NetworkManager.getInstance().delPost(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<PostTypeResult>() {
                                             @Override
                                             public void onSuccess(Request request, PostTypeResult result) {
-                                                finish();
                                                 Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                                                finish();
                                             }
 
                                             @Override
                                             public void onFailure(Request request, int code, Throwable cause) {
-
+                                                Toast.makeText(CommunityContentActivity.this , "error",Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                }).show();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show();
                         break;
                 }
             }
@@ -160,7 +160,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                 final String comment = commentView.getText().toString();
                 if (!TextUtils.isEmpty(comment)) {
                     try {
-                        NetworkManager.getInstance().setComment(CommunityContentActivity.this, 1, comment, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        NetworkManager.getInstance().setComment(CommunityContentActivity.this, postId, comment, new NetworkManager.OnResultListener<PostTypeResult>() {
                             @Override
                             public void onSuccess(Request request, PostTypeResult result) {
                                 Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
@@ -193,7 +193,7 @@ public class CommunityContentActivity extends AppCompatActivity {
             }
         });
 
-        NetworkManager.getInstance().getCommunityPost(this, 1, new NetworkManager.OnResultListener<CommunityResult>() {
+        NetworkManager.getInstance().getCommunityPost(this, postId, new NetworkManager.OnResultListener<CommunityResult>() {
             @Override
             public void onSuccess(Request request, CommunityResult result) {
                 Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);

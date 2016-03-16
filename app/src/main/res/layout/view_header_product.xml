@@ -13,7 +13,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:src="@drawable/ic_cart"
-        android:layout_marginRight="@dimen/ic_cart_right_margin" />
+        android:layout_marginRight="@dimen/order_icon_right_margin"
+        android:layout_gravity="center_vertical" />
 
     <TextView
         android:layout_width="wrap_content"

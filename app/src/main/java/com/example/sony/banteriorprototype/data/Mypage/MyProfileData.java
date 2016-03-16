@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by sony on 2016-02-22.
  */
 public class MyProfileData {
-    String name;
+    String username;
     @SerializedName("photo_url")
     String profileImage;
 
@@ -18,10 +18,10 @@ public class MyProfileData {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 }

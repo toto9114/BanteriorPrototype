@@ -301,6 +301,7 @@ public class NetworkManager {
         RequestBody body = new FormBody.Builder()
                 .add("email",email)
                 .add("password", password)
+                .add("token", token)
                 .build();
 
 
@@ -324,7 +325,8 @@ public class NetworkManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
-                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                String text = response.body().string();
+                PostTypeResult data = gson.fromJson(text, PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
@@ -429,6 +431,7 @@ public class NetworkManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
+                String text = response.body().string();
                 PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
@@ -542,9 +545,9 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1";
+    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s";
     public Request getCommunityPost(Context context, int postId, final OnResultListener<CommunityResult> listener) {
-        String url = String.format(GET_COMMUNITY_URL);
+        String url = String.format(GET_COMMUNITY_URL,postId);
 
         final CallbackObject<CommunityResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -606,10 +609,10 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1?category";
-    public Request getInteriorPost(Context context, int postId, String category, final OnResultListener<InteriorResult> listener) {
+    private static final String GET_INTERIOR_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s?category=%s";
+    public Request getInteriorPost(Context context, int postId, String category, final OnResultListener<InteriorResult> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(GET_INTERIOR_URL);
+        String url = String.format(GET_INTERIOR_URL,postId,URLEncoder.encode(category,"utf-8"));
 
         final CallbackObject<InteriorResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -639,10 +642,10 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_INTERIOR_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=1&page=1";
-    public Request getInteriorPostList(Context context, String category, final OnResultListener<InteriorResult> listener) {
+    private static final String GET_INTERIOR_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=%s&page=1";
+    public Request getInteriorPostList(Context context, String category, final OnResultListener<InteriorResult> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(GET_INTERIOR_LIST_URL);
+        String url = String.format(GET_INTERIOR_LIST_URL,URLEncoder.encode(category,"utf-8"));
 
         final CallbackObject<InteriorResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -847,7 +850,7 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String DELETE_POST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?post_id";
+    private static final String DELETE_POST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s";
     public Request delPost(Context context, int postId, final OnResultListener<PostTypeResult> listener) {
 
         String url = String.format(DELETE_POST_URL,postId);
@@ -855,6 +858,7 @@ public class NetworkManager {
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
 
         Request request = new Request.Builder().url(url)
+                .delete()
                 .tag(context)
                 .build();
 
@@ -881,10 +885,47 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String FACEBOOK_LOGIN_URL = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/members/facebook/token?access_token=1";
-    public Request facebookLogin(Context context, String registrationToken, String facebookToken, final OnResultListener<PostTypeResult> listener) {
+    public Request undoScrap(Context context, int postId, final OnResultListener<PostTypeResult> listener) {
 
-        String url = String.format(FACEBOOK_LOGIN_URL);
+        String url = String.format(BASE_URL_FORMAT + "/scraps");
+
+        RequestBody body = new FormBody.Builder()
+                .add("post_id",""+postId)
+                .build();
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+        Request request = new Request.Builder().url(url)
+                .delete(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                String text = response.body().string();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String FACEBOOK_LOGIN_URL = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/members/facebook/token?access_token=1";
+    public Request facebookLogin(Context context, String registrationToken, String facebookToken, final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
+
+        String url = String.format(FACEBOOK_LOGIN_URL,URLEncoder.encode(registrationToken,"utf-8"),URLEncoder.encode(facebookToken,"utf-8"));
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
 

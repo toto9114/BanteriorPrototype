@@ -14,8 +14,11 @@ import android.widget.ListView;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Category;
+import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.rent.RentalActivity;
+
+import java.io.UnsupportedEncodingException;
 
 import okhttp3.Request;
 
@@ -30,6 +33,7 @@ public class InteriorActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORY_MESSAGE = "category";
 
     String category;
+    int interiorPostion;
     int productId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,11 @@ public class InteriorActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         category = getIntent().getStringExtra(EXTRA_CATEGORY_MESSAGE);
-        int postId = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE, 0);
+        interiorPostion  = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE,0);
+
+        pager = (ViewPager) findViewById(R.id.interior_pager);
+        imageAdapter = new InteriorPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(imageAdapter);
 
         for(int i=0 ; i< Category.CATEGORY_ARRAY.length; i++){
             if(category.equals(Category.CATEGORY_ARRAY[i])) {
@@ -49,33 +57,41 @@ public class InteriorActivity extends AppCompatActivity {
                 break;
             }
         }
-        NetworkManager.getInstance().getInteriorPostList(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
-            @Override
-            public void onSuccess(Request request, InteriorResult result) {
-                imageAdapter.addAll(result.postData.interiorList);
-                int postId = result.postData.interiorList.get(0).post_id;
-                NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
-                    @Override
-                    public void onSuccess(Request request, InteriorResult result) {
-                        productAdapter.clear();
-                        productAdapter.addAll(result.detailData.productDataList);
+        try {
+            NetworkManager.getInstance().getInteriorPostList(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
+                @Override
+                public void onSuccess(Request request, InteriorResult result) {
+                    imageAdapter.addAll(result.postData.interiorList);
+                    int postId = result.postData.interiorList.get(0).post_id;
+                    try {
+                        NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
+                            @Override
+                            public void onSuccess(Request request, InteriorResult result) {
+                                productAdapter.clear();
+                                productAdapter.addAll(result.detailData.productDataList);
+                                pager.setCurrentItem(interiorPostion);
+                            }
+
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
+
+                            }
+                        });
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
+                }
 
-                    @Override
-                    public void onFailure(Request request, int code, Throwable cause) {
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
 
-                    }
-                });
-            }
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public void onFailure(Request request, int code, Throwable cause) {
 
-            }
-        });
-
-        pager = (ViewPager) findViewById(R.id.interior_pager);
-        imageAdapter = new InteriorPagerAdapter(getSupportFragmentManager());
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -84,18 +100,24 @@ public class InteriorActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 productAdapter.clear();
+                InteriorContentData data = imageAdapter.getInterior(position);
+                int postId = data.post_id;
                 productId = position;
-                NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, 1, category, new NetworkManager.OnResultListener<InteriorResult>() {
-                    @Override
-                    public void onSuccess(Request request, InteriorResult result) {
-                        productAdapter.addAll(result.detailData.productDataList);
-                    }
+                try {
+                    NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
+                        @Override
+                        public void onSuccess(Request request, InteriorResult result) {
+                            productAdapter.addAll(result.detailData.productDataList);
+                        }
 
-                    @Override
-                    public void onFailure(Request request, int code, Throwable cause) {
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
 
-                    }
-                });
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 //                for (ProductData data : imageAdapter.getInterior(position).productDataList) {
 //                    productAdapter.add(data);
 //                }
@@ -105,7 +127,7 @@ public class InteriorActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        pager.setAdapter(imageAdapter);
+
         listView = (ListView) findViewById(R.id.product_listView);
         productAdapter = new ProductListAdapter();
         listView.setAdapter(productAdapter);
