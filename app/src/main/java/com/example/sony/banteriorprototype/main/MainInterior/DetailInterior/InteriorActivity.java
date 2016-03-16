@@ -31,9 +31,11 @@ public class InteriorActivity extends AppCompatActivity {
 
     public static final String EXTRA_INTERIOR_MESSAGE = "interior";
     public static final String EXTRA_CATEGORY_MESSAGE = "category";
+    public static final String EXTRA_POST_ID_MESSAGE = "postId";
 
     String category;
     int interiorPostion;
+    int calledPostId = -1;
     int productId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class InteriorActivity extends AppCompatActivity {
 
         category = getIntent().getStringExtra(EXTRA_CATEGORY_MESSAGE);
         interiorPostion  = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE,0);
+        calledPostId = getIntent().getIntExtra(EXTRA_POST_ID_MESSAGE,-1);
 
         pager = (ViewPager) findViewById(R.id.interior_pager);
         imageAdapter = new InteriorPagerAdapter(getSupportFragmentManager());
@@ -62,7 +65,12 @@ public class InteriorActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Request request, InteriorResult result) {
                     imageAdapter.addAll(result.postData.interiorList);
-                    int postId = result.postData.interiorList.get(0).post_id;
+                    int postId;
+                    if(calledPostId != -1){
+                        postId = calledPostId;
+                    }else {
+                        postId = result.postData.interiorList.get(0).post_id;
+                    }
                     try {
                         NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
                             @Override

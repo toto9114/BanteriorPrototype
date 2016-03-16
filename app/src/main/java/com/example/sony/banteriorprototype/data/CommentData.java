@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class CommentData implements Serializable{
     public String username;
+    public int id;
     public String reply_content;
     public String reply_time;
 }

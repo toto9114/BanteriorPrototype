@@ -15,4 +15,6 @@
     <color name="tab_select_text">#ea8592</color>
     <color name="mypage_background">#757575</color>
     <color name="mypage_foreground">#f4f4f4</color>
+    <color name="edit_comment_layout">#f4f4f4</color>
+    <color name="join_background">#f4f4f4</color>
 </resources>

@@ -8,8 +8,6 @@
         android:id="@+id/image_thumb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:scaleType="centerCrop" />
 
     <com.mikhaellopez.circularimageview.CircularImageView

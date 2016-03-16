@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
@@ -83,19 +84,26 @@ public class DetailInteriorFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_detail_interior, container, false);
         interiorView = (ImageView)view.findViewById(R.id.image_detail_interior);
-//        textView = (TextView)view.findViewById(R.id.text_test);
         scrapView = (Button)view.findViewById(R.id.image_scrap);
         shareView = (ImageView)view.findViewById(R.id.image_share);
+        if(interiorContentData.state ==0){
+            isScrap =false;
+            scrapView.setSelected(false);
+        }else {
+            isScrap = true;
+            scrapView.setSelected(true);
+        }
 
-//        textView.setText(interiorContentData.category);
         scrapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // if(isScrap){
+                if(isScrap){
                     NetworkManager.getInstance().undoScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
                         @Override
                         public void onSuccess(Request request, PostTypeResult result) {
-                           // Toast.makeText(getContext(),result.result.message,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+                            isScrap = false;
+                            scrapView.setSelected(false);
                         }
 
                         @Override
@@ -103,24 +111,22 @@ public class DetailInteriorFragment extends Fragment {
 
                         }
                     });
-//                    scrapView.setSelected(true);
-//                    isScrap = false;
-//                }
-//                else {
-//                    NetworkManager.getInstance().doScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
-//                        @Override
-//                        public void onSuccess(Request request, PostTypeResult result) {
-//                            //Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Request request, int code, Throwable cause) {
-//
-//                        }
-//                    });
-//                    scrapView.setSelected(false);
-//                    isScrap = true;
-//                }
+                }
+                else {
+                    NetworkManager.getInstance().doScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        @Override
+                        public void onSuccess(Request request, PostTypeResult result) {
+                            Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+                            scrapView.setSelected(true);
+                            isScrap = true;
+                        }
+
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
+
+                        }
+                    });
+                }
 
             }
         });

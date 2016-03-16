@@ -27,6 +27,7 @@ import com.example.sony.banteriorprototype.data.Mypage.MyPageScrap;
 import com.example.sony.banteriorprototype.data.Mypage.MyPost;
 import com.example.sony.banteriorprototype.data.Mypage.MyPostData;
 import com.example.sony.banteriorprototype.data.Mypage.MyProfileData;
+import com.example.sony.banteriorprototype.data.Mypage.ScrapData;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
 import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
@@ -53,10 +54,9 @@ public class MyPageFragment extends Fragment {
     MyPageScrapAdapter scrapAdapter;
     MyPostAdapter postAdapter;
     TabLayout tabLayout;
-    int scrapCount, mypostCount;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
@@ -168,7 +168,11 @@ public class MyPageFragment extends Fragment {
 
                 switch (tabLayout.getSelectedTabPosition()) {
                     case 0:
-                        startActivity(new Intent(getContext(), InteriorActivity.class));
+                        ScrapData interiorData = (ScrapData)gridView.getItemAtPosition(position);
+                        Intent intent = new Intent(getContext(), InteriorActivity.class);
+                        intent.putExtra(InteriorActivity.EXTRA_POST_ID_MESSAGE,interiorData.post_id);
+                        intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE, interiorData.category);
+                        startActivity(intent);
                         break;
                     case 1:
                         MyPostData data = (MyPostData)gridView.getItemAtPosition(position);
@@ -198,6 +202,22 @@ public class MyPageFragment extends Fragment {
         Glide.with(getContext())
                 .load(data.getProfileImage())
                 .into(profileView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        NetworkManager.getInstance().getMypage(getContext(), new NetworkManager.OnResultListener<MyProfileData>() {
+            @Override
+            public void onSuccess(Request request, MyProfileData result) {
+                setMyPage(result);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
     }
 
     @Override

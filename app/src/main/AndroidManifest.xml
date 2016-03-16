@@ -34,7 +34,8 @@
         <activity android:name=".rent.RentalActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".main.community.CommunityContentActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".main.community.WriteActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -49,7 +50,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.AgreementActivity" />
-        <activity android:name=".main.search.ResultActivity" />
+        <activity android:name=".main.search.ResultActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".main.MainInterior.DetailInterior.DetailInteriorListActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

@@ -49,4 +49,5 @@
     <string name="order_username">수령인</string>
     <string name="order_phone">연락처</string>
     <string name="order_address">배송지</string>
+    <string name="comment_hint">댓글을 입력해주세요</string>
 </resources>

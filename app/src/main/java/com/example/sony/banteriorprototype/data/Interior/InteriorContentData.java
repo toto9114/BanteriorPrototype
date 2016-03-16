@@ -23,6 +23,7 @@ public class InteriorContentData implements Serializable{
     public String category;
     @SerializedName("package")
     public String packageName;
+    public int state;
     @SerializedName("furnitures")
     public List<ProductData> productDataList;
     public List<CommentData> reply;

@@ -36,10 +36,12 @@ public class CommunityContentActivity extends AppCompatActivity {
     EditText commentView;
     CommentAdapter mAdapter;
     CommunityToolbar communityToolbar;
-
+    Button scrapView;
     public static final String EXTRA_POSTID_MESSAGE = "postid";
+    public static final String EXTRA_IS_SCRAP_MESSAGE = "isScrap";
 
     int postId;
+    boolean isScrap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +58,17 @@ public class CommunityContentActivity extends AppCompatActivity {
                 startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
             }
         });
+        scrapView = (Button)findViewById(R.id.btn_scrap);
 
         Intent intent = getIntent();
         postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
-
+        if(intent.getIntExtra(EXTRA_IS_SCRAP_MESSAGE,0) == 0){
+            isScrap = false;
+            scrapView.setSelected(false);
+        }else {
+            isScrap = true;
+            scrapView.setSelected(true);
+        }
 
         recycler = (RecyclerView) findViewById(R.id.recycler_comment);
         mAdapter = new CommentAdapter();
@@ -74,7 +83,9 @@ public class CommunityContentActivity extends AppCompatActivity {
             public void onItemClick(View view) {
                 switch (view.getId()) {
                     case R.id.btn_edit:
-                        startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
+                        Intent i = new Intent(new Intent(CommunityContentActivity.this, WriteActivity.class));
+                        i.putExtra(WriteActivity.EXTRA_COMMUNITY_CONTENT_MESSAGE,postId);
+                        startActivity(i);
                         break;
                     case R.id.btn_delete:
                         AlertDialog.Builder builder = new AlertDialog.Builder(CommunityContentActivity.this);
@@ -99,10 +110,10 @@ public class CommunityContentActivity extends AppCompatActivity {
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    }).show();
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).show();
                         break;
                 }
             }
@@ -124,7 +135,9 @@ public class CommunityContentActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View view, int position) {
-                NetworkManager.getInstance().delReply(CommunityContentActivity.this, 0, 0, new NetworkManager.OnResultListener<PostTypeResult>() {
+                int replyId = mAdapter.getComment(position).id;
+                Toast.makeText(CommunityContentActivity.this,"click",Toast.LENGTH_SHORT).show();
+                NetworkManager.getInstance().delReply(CommunityContentActivity.this, postId, replyId, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {
                         Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
@@ -163,7 +176,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                         NetworkManager.getInstance().setComment(CommunityContentActivity.this, postId, comment, new NetworkManager.OnResultListener<PostTypeResult>() {
                             @Override
                             public void onSuccess(Request request, PostTypeResult result) {
-                                Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
                                 NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<CommunityResult>() {
                                     @Override
                                     public void onSuccess(Request request, CommunityResult result) {
@@ -189,6 +202,43 @@ public class CommunityContentActivity extends AppCompatActivity {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
+                }
+            }
+        });
+
+
+        scrapView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isScrap){
+                    NetworkManager.getInstance().undoScrap(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        @Override
+                        public void onSuccess(Request request, PostTypeResult result) {
+                            Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                            scrapView.setSelected(false);
+                            isScrap = false;
+                        }
+
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
+
+                        }
+                    });
+                }
+                else {
+                    NetworkManager.getInstance().doScrap(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        @Override
+                        public void onSuccess(Request request, PostTypeResult result) {
+                            Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                            scrapView.setSelected(true);
+                            isScrap = true;
+                        }
+
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
+
+                        }
+                    });
                 }
             }
         });

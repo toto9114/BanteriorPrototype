@@ -7,104 +7,144 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="@dimen/sign_up_whole_width"
+        android:layout_height="@dimen/sign_up_whole_height"
+        android:background="@color/join_background">
 
-            <ImageView
-                android:id="@+id/image_logo"
-                android:layout_width="139dp"
-                android:layout_height="125dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="58dp"
-                android:src="@drawable/signup_icon" />
+        <ImageView
+            android:id="@+id/image_logo"
+            android:layout_width="@dimen/join_logo_width"
+            android:layout_height="@dimen/join_logo_height"
+            android:layout_marginTop="58dp"
+            android:src="@drawable/join_logo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-            <EditText
-                android:id="@+id/edit_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/image_logo"
-                android:hint="@string/id_hint" />
+        <EditText
+            android:id="@+id/edit_id"
+            android:layout_width="@dimen/text_field_width"
+            android:layout_height="@dimen/text_field_height"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/image_logo"
+            android:hint="@string/id_hint"
+            android:layout_marginLeft="@dimen/sign_up_margin_left"
+            android:layout_marginRight="@dimen/sign_up_margin_left"
+            android:background="@drawable/textfield_join"
+            android:layout_marginTop="@dimen/edit_id_margin_top"
+            android:paddingLeft="@dimen/sigh_up_padding_left" />
 
-            <EditText
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/edit_id"
-                android:hint="@string/text_user_name" />
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="@dimen/text_field_width"
+            android:layout_height="@dimen/text_field_height"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_id"
+            android:hint="@string/text_user_name"
+            android:layout_marginTop="@dimen/text_field_margin_top"
+            android:layout_marginLeft="@dimen/sign_up_margin_left"
+            android:layout_marginRight="@dimen/sign_up_margin_left"
+            android:background="@drawable/textfield_join"
+            android:paddingLeft="@dimen/sigh_up_padding_left" />
 
-            <EditText
-                android:id="@+id/edit_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/edit_name"
-                android:hint="@string/pw_hint" />
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="@dimen/text_field_width"
+            android:layout_height="@dimen/text_field_height"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_name"
+            android:hint="@string/pw_hint"
+            android:layout_marginTop="@dimen/text_field_margin_top1"
+            android:layout_marginLeft="@dimen/sign_up_margin_left"
+            android:layout_marginRight="@dimen/sign_up_margin_left"
+            android:background="@drawable/textfield_join"
+            android:paddingLeft="@dimen/sigh_up_padding_left" />
 
 
-                <CheckBox
-                    android:id="@+id/check_service"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:layout_below="@+id/edit_password"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+        <CheckBox
+            android:id="@+id/check_service"
+            android:layout_width="@dimen/btn_check_off_width"
+            android:layout_height="@dimen/btn_check_off_height"
+            android:checked="false"
+            android:button="@null"
+            android:layout_below="@+id/edit_password"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/btn_check_margin_top"
+            android:layout_marginLeft="@dimen/sign_up_margin_left"
+            android:background="@drawable/agreement_selector" />
 
 
-                <CheckBox
-                    android:id="@+id/check_personal_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:layout_below="@+id/check_service"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+        <CheckBox
+            android:id="@+id/check_personal_info"
+            android:layout_width="@dimen/btn_check_off_width"
+            android:layout_height="@dimen/btn_check_off_height"
+            android:checked="false"
+            android:button="@null"
+            android:layout_below="@+id/check_service"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/sign_up_margin_left"
+            android:background="@drawable/agreement_selector"
+            android:layout_marginTop="@dimen/personal_info_agree" />
 
-            <Button
-                android:id="@+id/btn_agree"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/text_btn_signup"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+        <Button
+            android:id="@+id/btn_agree"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="@dimen/btn_join_normal_width"
+            android:layout_height="@dimen/btn_join_normal_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/text_personal_info_agreement"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/signup_selector"
+            android:layout_marginTop="@dimen/sign_up_margin_top" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/text_service_agreement"
-                android:id="@+id/text_service_agreement"
-                android:layout_alignBottom="@+id/check_service"
-                android:layout_toRightOf="@+id/check_service"
-                android:layout_toEndOf="@+id/check_service"
-                android:layout_marginBottom="5dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/text_service_agreement"
+            android:id="@+id/text_service_agreement"
+            android:layout_alignBottom="@+id/check_service"
+            android:layout_toRightOf="@+id/check_service"
+            android:layout_toEndOf="@+id/check_service"
+            android:layout_marginTop="@dimen/service_contract_margin_top"
+            android:layout_marginLeft="@dimen/service_contract_margin_left" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/text_personal_info_agreement"
-                android:id="@+id/text_personal_info_agreement"
-                android:layout_alignBottom="@+id/check_personal_info"
-                android:layout_toRightOf="@+id/check_service"
-                android:layout_toEndOf="@+id/check_service"
-                android:layout_marginBottom="5dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/text_personal_info_agreement"
+            android:id="@+id/text_personal_info_agreement"
+            android:layout_alignBottom="@+id/check_personal_info"
+            android:layout_toRightOf="@+id/check_service"
+            android:layout_toEndOf="@+id/check_service"
+            android:layout_marginTop="@dimen/service_contract_margin_top"
+            android:layout_marginLeft="@dimen/personal_info_agree_margin_left" />
 
-        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="사용가능한 이메일입니다."
+            android:id="@+id/possible_email"
+            android:layout_below="@+id/edit_id"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/sign_up_margin_left"
+            android:textColor="#d20707"
+            android:layout_marginTop="@dimen/text_field_margin_top1" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

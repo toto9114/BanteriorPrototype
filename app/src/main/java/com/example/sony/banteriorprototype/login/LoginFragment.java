@@ -76,13 +76,18 @@ public class LoginFragment extends Fragment {
            public void onSuccess(LoginResult loginResult) {
                AccessToken token = AccessToken.getCurrentAccessToken();
                String facebookToken = token.getToken();
+               registrationToken = PropertyManager.getInstance().getRegistrationToken();
                if(token != null) {
                    Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
                    try {
-                       NetworkManager.getInstance().facebookLogin(getContext(), registrationToken, facebookToken, new NetworkManager.OnResultListener<PostTypeResult>() {
+                       NetworkManager.getInstance().facebookLogin(getContext(), facebookToken, registrationToken ,new NetworkManager.OnResultListener<PostTypeResult>() {
                            @Override
                            public void onSuccess(Request request, PostTypeResult result) {
                                Toast.makeText(getContext(),result.result.message, Toast.LENGTH_SHORT).show();
+                               if(result.error == null){
+                                   startActivity(new Intent(getContext(), MainActivity.class));
+                                   getActivity().finish();
+                               }
                            }
 
                            @Override

@@ -3,7 +3,6 @@ package com.example.sony.banteriorprototype.main.community;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -55,13 +54,13 @@ public class CommunityToolbar extends FrameLayout implements OnItemClickListener
 
     ImageView profileView;
     TextView nameView;
-    Button menuBtn;
+    ImageView menuBtn;
 
     private void init() {
         inflate(getContext(), R.layout.view_community_toolbar, this);
         profileView = (ImageView) findViewById(R.id.image_profile);
         nameView = (TextView) findViewById(R.id.text_brand);
-        menuBtn = (Button) findViewById(R.id.btn_menu);
+        menuBtn = (ImageView) findViewById(R.id.btn_menu);
     }
 
     public void setToolbar(CommunityContentData data){

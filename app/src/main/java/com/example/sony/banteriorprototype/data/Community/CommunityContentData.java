@@ -21,5 +21,6 @@ public class CommunityContentData implements ThumbnailData {
     public String profileImage;
     public List<String> hash_tag;
     public int scrap_count;
+    public int state;
     public List<CommentData> reply;
 }

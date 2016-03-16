@@ -29,6 +29,9 @@ public class CommentAdapter extends RecyclerView.Adapter implements OnItemClickL
         items.clear();
     }
 
+    public CommentData getComment(int position){
+        return items.get(position);
+    }
     OnItemClickListener itemClickListener;
     public void setOnItemClickListener(OnItemClickListener listener){
         itemClickListener = listener;
@@ -49,8 +52,10 @@ public class CommentAdapter extends RecyclerView.Adapter implements OnItemClickL
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.view_comment,parent,false);
-        return new CommentViewHolder(view);
+        View view = inflater.inflate(R.layout.view_comment, parent, false);
+        CommentViewHolder holder = new CommentViewHolder(view);
+        holder.setOnItemClickListener(this);
+        return holder;
     }
 
     @Override

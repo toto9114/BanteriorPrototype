@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.community.CommunityContentActivity">
+    tools:context=".main.community.CommunityContentActivity"
+    android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -24,7 +25,7 @@
 
     <com.example.sony.banteriorprototype.main.community.CommunityToolbar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/community_toolbar_height"
         android:id="@+id/community_toolbar"
         android:layout_below="@id/appbar"
         android:layout_alignParentLeft="true"
@@ -34,9 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/community_content_image_height"
         android:id="@+id/image_interior"
+        android:scaleType="centerCrop"
         android:layout_below="@+id/community_toolbar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="@dimen/community_content_image_bottom_margin" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,7 +48,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="@color/white">
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -86,6 +90,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/scrap"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/text_scrap_count"/>
         </LinearLayout>
@@ -99,7 +109,10 @@
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:background="@color/edit_comment_layout"
+            android:paddingLeft="@dimen/edit_comment_layout_horizontal_padding"
+            android:paddingRight="@dimen/edit_comment_layout_horizontal_padding">
 
 
         <EditText
@@ -109,7 +122,9 @@
             android:layout_weight="1"
             android:autoText="false"
             android:background="@drawable/textfield"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:hint="@string/comment_hint"
+            android:paddingLeft="@dimen/edit_comment_left_padding" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -117,7 +132,8 @@
             android:layout_height="@dimen/btn_comment_enter_height"
             android:id="@+id/btn_send"
             android:background="@drawable/btn_comment_enter"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/btn_comment_send_left_margin" />
         </LinearLayout>
         <Button
             android:id="@+id/fab"

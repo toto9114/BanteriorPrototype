@@ -19,12 +19,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.Community.CommunityResult;
 
 import java.io.File;
+
+import okhttp3.Request;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,11 +43,26 @@ public class WriteFragment extends Fragment {
 
     private static final int PICK_IMAGE = 0;
     private static final int PICK_CAPTURE = 1;
+
     private static final String SELECTED_URI = "selected_uri";
+    public static final String EXTRA_POST_ID_MESSAGE = "postId";
+
     ImageView imageView;
     EditText contentView;
+    TextView hashTagView;
     File file;
     ImageView titleView;
+
+    int postId = -1;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            postId = args.getInt(EXTRA_POST_ID_MESSAGE,-1);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +83,22 @@ public class WriteFragment extends Fragment {
 
         imageView = (ImageView)view.findViewById(R.id.image_load);
         contentView = (EditText)view.findViewById(R.id.edit_content);
+        hashTagView = (TextView)view.findViewById(R.id.text_hash);
+
+        if(postId != -1){
+            NetworkManager.getInstance().getCommunityPost(getContext(), postId, new NetworkManager.OnResultListener<CommunityResult>() {
+                @Override
+                public void onSuccess(Request request, CommunityResult result) {
+                    Glide.with(getContext()).load(result.communityDetails.mainImage).into(imageView);
+                    contentView.setText(result.communityDetails.content);
+                }
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+
+                }
+            });
+        }
 
         Button btn = (Button)view.findViewById(R.id.btn_camera);
         btn.setOnClickListener(new View.OnClickListener() {

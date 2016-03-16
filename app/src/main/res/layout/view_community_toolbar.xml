@@ -18,15 +18,15 @@
         android:layout_alignParentStart="true"
         android:layout_marginRight="@dimen/profile_image_right_margin" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="@dimen/btn_menu_width"
-        android:layout_height="@dimen/btn_menu_height"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/btn_menu"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/btn_moreover"
-        android:layout_marginTop="@dimen/btn_menu_margin_top" />
+        android:src="@drawable/btn_moreover"
+        android:layout_marginTop="@dimen/btn_menu_margin_top"
+        android:layout_centerVertical="true" />
 
     <TextView
         android:layout_width="wrap_content"

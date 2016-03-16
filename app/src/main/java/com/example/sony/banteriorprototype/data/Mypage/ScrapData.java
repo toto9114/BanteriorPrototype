@@ -14,5 +14,6 @@ public class ScrapData{
     public String interiorImage;
     @SerializedName("photo_url")
     public String profileImage;
+    public String category;
     public List<String> hash_tag;
 }

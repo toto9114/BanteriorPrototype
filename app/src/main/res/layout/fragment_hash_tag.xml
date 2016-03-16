@@ -5,25 +5,23 @@
     tools:context="com.example.sony.banteriorprototype.main.community.HashTagFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="@dimen/flowlayout_height"
+     android:id="@+id/relativ_flowlayout">
     <com.wefika.flowlayout.FlowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/flowlayout"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:visibility="invisible">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </com.wefika.flowlayout.FlowLayout>
-
+        android:layout_alignParentStart="true" />
+ </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/flowlayout"
+        android:layout_below="@+id/relativ_flowlayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout2">

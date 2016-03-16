@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,12 +14,15 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/text_comment"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/comment_left_margin" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btn_delete" />
+        android:layout_width="@dimen/btn_comment_remove_size"
+        android:layout_height="@dimen/btn_comment_remove_size"
+        android:id="@+id/btn_delete"
+        android:background="@drawable/btn_exit"
+        android:layout_marginRight="@dimen/btn_comment_remove_right_margin"
+        android:layout_gravity="center_vertical" />
 </LinearLayout>

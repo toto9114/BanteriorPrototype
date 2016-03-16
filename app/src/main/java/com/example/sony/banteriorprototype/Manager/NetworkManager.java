@@ -432,7 +432,7 @@ public class NetworkManager {
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
                 String text = response.body().string();
-                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                PostTypeResult data = gson.fromJson(text, PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
@@ -577,7 +577,7 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_COMMUNITY_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?page=1";
+    private static final String GET_COMMUNITY_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=community&page=1";
     public Request getCommunityPostList(Context context, final OnResultListener<CommunityResult> listener) {
         String url = String.format(GET_COMMUNITY_LIST_URL);
 
@@ -708,7 +708,7 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_HASHTAG_RESULT_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/keywords?word=의";
+    private static final String GET_HASHTAG_RESULT_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/keywords?word=%s";
     public Request getHashTagResultList(Context context, String keyword, final OnResultListener<HashTagResult> listener) throws UnsupportedEncodingException {
 
         String url = String.format(GET_HASHTAG_RESULT_LIST_URL, URLEncoder.encode(keyword, "utf-8"));
@@ -741,14 +741,14 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String SET_COMMENT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/1/replies?page=1";
+    private static final String SET_COMMENT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s/replies?page=1";
     public Request setComment(Context context, int postId, String comment,final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(SET_COMMENT_URL,postId,URLEncoder.encode(comment,"utf-8"));
+        String url = String.format(SET_COMMENT_URL,postId);
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         RequestBody body = new FormBody.Builder()
-                .add("reply_content","" )
+                .add("reply_content",comment)
                 .build();
         Request request = new Request.Builder().url(url)
                 .post(body)
@@ -784,12 +784,56 @@ public class NetworkManager {
         String url = String.format(UPLOAD_COMMUNITY_POST_URL);
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
-        RequestBody body = new MultipartBody.Builder()
+        MultipartBody.Builder builder = new MultipartBody.Builder()
                 .addFormDataPart("file_url",file.getName(),RequestBody.create(MEDIA_TYPE_PNG,file))
-//                .addFormDataPart()
-                .build();
+                .addFormDataPart("content",content);
+        for (int i = 0; i < hashTag.size(); i++) {
+            builder.addFormDataPart("hash_tag[" + i + "]", hashTag.get(i));
+        }
+        RequestBody body = builder.build();
         Request request = new Request.Builder().url(url)
                 .post(body)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    private static final String MODIFY_COMMUNITY_POST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s";
+    public Request modifyPost(Context context, int postId, File file, List<String> hashTag, String content, final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
+
+        String url = String.format(UPLOAD_COMMUNITY_POST_URL,postId);
+
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .addFormDataPart("file_url",file.getName(),RequestBody.create(MEDIA_TYPE_PNG,file))
+                .addFormDataPart("content",content);
+        for (int i = 0; i < hashTag.size(); i++) {
+            builder.addFormDataPart("hash_tag[" + i + "]", hashTag.get(i));
+        }
+        RequestBody body = builder.build();
+        Request request = new Request.Builder().url(url)
+                .put(body)
                 .tag(context)
                 .build();
 
@@ -825,6 +869,7 @@ public class NetworkManager {
 
         Request request = new Request.Builder().url(url)
                 .tag(context)
+                .delete()
                 .build();
 
         callbackObject.request = request;
@@ -913,7 +958,7 @@ public class NetworkManager {
             public void onResponse(Call call, Response response) throws IOException {
                 Gson gson = new Gson();
                 String text = response.body().string();
-                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                PostTypeResult data = gson.fromJson(text, PostTypeResult.class);
                 callbackObject.result = data;
                 Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
                 mHandler.sendMessage(msg);
@@ -922,10 +967,10 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String FACEBOOK_LOGIN_URL = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/members/facebook/token?access_token=1";
-    public Request facebookLogin(Context context, String registrationToken, String facebookToken, final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
+    private static final String FACEBOOK_LOGIN_URL = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/members/facebook/token";
+    public Request facebookLogin(Context context, String facebookToken, String registrationToken, final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(FACEBOOK_LOGIN_URL,URLEncoder.encode(registrationToken,"utf-8"),URLEncoder.encode(facebookToken,"utf-8"));
+        String url = String.format(FACEBOOK_LOGIN_URL);
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
 
