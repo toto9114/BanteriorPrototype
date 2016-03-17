@@ -185,6 +185,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                                         scrapCountView.setText("" + result.communityDetails.scrap_count);
                                         communityToolbar.setToolbar(result.communityDetails);
                                         mAdapter.addAll(result.communityDetails.reply);
+                                        commentView.setText("");
                                     }
 
                                     @Override

@@ -262,12 +262,12 @@ public class NetworkManager {
 
         RequestBody body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("photo_url", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file))
+                .addFormDataPart("photo", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file))
                 .build();
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
-                .post(body)
+                .put(body)
                 .tag(context)
                 .build();
 
@@ -341,7 +341,7 @@ public class NetworkManager {
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         RequestBody body = new FormBody.Builder()
-                .add("name", name)
+                .add("username", name)
                 .add("email", email)
                 .add("password", password)
                 .build();
@@ -545,7 +545,7 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s";
+    private static final String GET_COMMUNITY_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s?category=community";
     public Request getCommunityPost(Context context, int postId, final OnResultListener<CommunityResult> listener) {
         String url = String.format(GET_COMMUNITY_URL,postId);
 
@@ -785,10 +785,10 @@ public class NetworkManager {
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         MultipartBody.Builder builder = new MultipartBody.Builder()
-                .addFormDataPart("file_url",file.getName(),RequestBody.create(MEDIA_TYPE_PNG,file))
+                .addFormDataPart("photo",file.getName(),RequestBody.create(MEDIA_TYPE_PNG,file))
                 .addFormDataPart("content",content);
         for (int i = 0; i < hashTag.size(); i++) {
-            builder.addFormDataPart("hash_tag[" + i + "]", hashTag.get(i));
+            builder.addFormDataPart("tag[" + i + "]", hashTag.get(i));
         }
         RequestBody body = builder.build();
         Request request = new Request.Builder().url(url)

@@ -12,6 +12,8 @@ import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Search.Search;
 import com.example.sony.banteriorprototype.data.Search.SearchContentData;
+import com.example.sony.banteriorprototype.main.MainInterior.DetailInterior.InteriorActivity;
+import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
 
 import java.io.UnsupportedEncodingException;
 
@@ -20,7 +22,7 @@ import okhttp3.Request;
 public class ResultActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "message";
-
+    private static final String COMMUNITY_DATA = "community";
     GridView resultView;
     SearchResultAdapter mAdapter;
 
@@ -60,16 +62,16 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SearchContentData data= (SearchContentData)resultView.getItemAtPosition(position);
-//                if(data.category != null){
-//                    Intent i = new Intent(ResultActivity.this, CommunityContentActivity.class);
-//                    i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,data.post_id);
-//                    startActivity(i);
-//                }else {
-//                    Intent i = new Intent(ResultActivity.this, InteriorActivity.class);
-//                    i.putExtra(InteriorActivity.EXTRA_INTERIOR_MESSAGE,data.post_id);
-//                    i.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE,data.category);
-//                    startActivity(i);
-//                }
+                if(data.category.equals(COMMUNITY_DATA)){
+                    Intent i = new Intent(ResultActivity.this, CommunityContentActivity.class);
+                    i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,data.post_id);
+                    startActivity(i);
+                }else {
+                    Intent i = new Intent(ResultActivity.this, InteriorActivity.class);
+                    i.putExtra(InteriorActivity.EXTRA_INTERIOR_MESSAGE,data.post_id);
+                    i.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE,data.category);
+                    startActivity(i);
+                }
             }
         });
     }

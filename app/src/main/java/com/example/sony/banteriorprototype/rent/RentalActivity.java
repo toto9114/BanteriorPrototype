@@ -25,7 +25,7 @@ public class RentalActivity extends AppCompatActivity {
     public static final String EXTRA_PRODUCT_MESSAGE ="product";
     RecyclerView orderView;
     OrderAdapter mAdapter;
-
+    InteriorContentData interiorContentData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +36,7 @@ public class RentalActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
         getSupportActionBar().setLogo(R.drawable.text_buy);
         Intent intent = getIntent();
-        final InteriorContentData interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
+        interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
 
         orderView = (RecyclerView)findViewById(R.id.orderView);
         mAdapter = new OrderAdapter();

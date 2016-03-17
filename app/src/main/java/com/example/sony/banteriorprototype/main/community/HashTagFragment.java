@@ -130,7 +130,7 @@ public class HashTagFragment extends Fragment {
                 NetworkManager.getInstance().uploadPost(getContext(), file, hashTagList, content, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {
-                        Toast.makeText(getActivity(), result.result.message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

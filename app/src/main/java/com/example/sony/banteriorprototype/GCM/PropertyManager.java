@@ -23,7 +23,17 @@ public class PropertyManager {
 	}
 
 	private static final String REG_ID = "regToken";
-	
+	private static final String FACEBOOK_ID = "facebookToken";
+	public void setFacebookId(String userId){
+		mEditor.putString(FACEBOOK_ID,userId);
+		mEditor.commit();
+	}
+	public String getFacebookId(){
+		return mPrefs.getString(FACEBOOK_ID,"");
+	}
+
+
+
 	public void setRegistrationToken(String regId) {
 		mEditor.putString(REG_ID, regId);
 		mEditor.commit();

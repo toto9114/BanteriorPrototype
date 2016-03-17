@@ -25,7 +25,6 @@ import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.example.sony.banteriorprototype.main.MainActivity;
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -52,7 +51,6 @@ public class LoginFragment extends Fragment {
     EditText passwordView;
     TextView signupView;
     Handler mHandler;
-    AccessTokenTracker tracker;
     CallbackManager callbackManager;
     LoginManager loginManager;
     LoginButton loginButton;
@@ -207,34 +205,6 @@ public class LoginFragment extends Fragment {
              localLoginBtn.setEnabled(false);
         }
     }
-//    private void loginOrLogout() {
-//        AccessToken token = AccessToken.getCurrentAccessToken();
-//        if (token == null) { //토큰이 있는 경우는 스플래시에서 한다. 이미 가입을 한 상태이므로
-//            loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-//                @Override
-//                public void onSuccess(LoginResult loginResult) {
-//                    //페이스북 로그인 성공
-//                    startActivity(new Intent(getContext(), MainActivity.class));
-//                    getActivity().finish();
-//                }
-//
-//                @Override
-//                public void onCancel() {
-//
-//                }
-//
-//                @Override
-//                public void onError(FacebookException error) {
-//
-//                }
-//            });
-//            loginManager.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
-//            loginManager.setDefaultAudience(DefaultAudience.FRIENDS);
-//            loginManager.logInWithReadPermissions(this, null);
-//        } else {
-//            loginManager.logOut();
-//        }
-//    }
 
 
     @Override

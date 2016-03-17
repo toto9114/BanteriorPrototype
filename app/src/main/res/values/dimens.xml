@@ -156,4 +156,5 @@
     <dimen name="sign_up_margin_top">47dp</dimen>
     <dimen name="btn_image_cancel_size">18dp</dimen>
     <dimen name="flowlayout_height">48dp</dimen>
+    <dimen name="thumbview_profile_image_right_margin">6dp</dimen>
 </resources>

@@ -5,5 +5,7 @@ package com.example.sony.banteriorprototype.data.Search;
  */
 public class SearchResult {
     public String message;
+    public int page;
+    public int listperPage;
     public SearchData postData;
 }
