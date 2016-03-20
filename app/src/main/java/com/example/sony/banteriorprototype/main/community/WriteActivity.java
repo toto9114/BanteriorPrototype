@@ -13,9 +13,12 @@ import java.io.File;
 public class WriteActivity extends AppCompatActivity {
 
     public static final String EXTRA_COMMUNITY_CONTENT_MESSAGE = "community_content";
+    public static final String EXTRA_FILE = "file";
 
     int postId = -1;
+
     Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,13 +28,16 @@ public class WriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-         bundle = new Bundle();
+        bundle = new Bundle();
 
         Intent intent = getIntent();
         postId = intent.getIntExtra(EXTRA_COMMUNITY_CONTENT_MESSAGE, -1);
+        String file = intent.getStringExtra(EXTRA_FILE);
+
         if (postId != -1) {
-            bundle.putInt(WriteFragment.EXTRA_POST_ID_MESSAGE,postId);
-            bundle.putInt(HashTagFragment.EXTRA_POST_ID_MESSAGE,postId);
+            bundle.putInt(WriteFragment.EXTRA_POST_ID_MESSAGE, postId);
+            bundle.putString(WriteFragment.EXTRA_FILE_URI,file);
+            bundle.putInt(HashTagFragment.EXTRA_POST_ID_MESSAGE, postId);
         }
         if (savedInstanceState == null) {
             Fragment wf = new WriteFragment();

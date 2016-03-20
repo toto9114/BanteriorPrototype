@@ -39,7 +39,8 @@
         <activity android:name=".main.community.WriteActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".main.mypage.NotificationActivity" />
+        <activity android:name=".main.mypage.NotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">

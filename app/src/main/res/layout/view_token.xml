@@ -11,19 +11,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/tag_button"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_marginRight="7dp">
 
         <TextView
             android:id="@+id/text_token"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
+            android:textColor="@color/tag_text_color"
             android:text="Large Text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/tag_text_color"
             android:text="X" />
 
     </LinearLayout>

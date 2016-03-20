@@ -43,6 +43,7 @@ public class CommunityFragment extends Fragment {
                 Intent intent = new Intent(getContext(),CommunityContentActivity.class);
                 intent.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE, ((CommunityContentData)gridView.getItemAtPosition(position)).post_id);
                 intent.putExtra(CommunityContentActivity.EXTRA_IS_SCRAP_MESSAGE, ((CommunityContentData)gridView.getItemAtPosition(position)).state);
+                intent.putExtra(CommunityContentActivity.EXTRA_FILE,((CommunityContentData) gridView.getItemAtPosition(position)).mainImage);
                 startActivity(intent);
             }
         });

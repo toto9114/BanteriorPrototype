@@ -93,7 +93,9 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                 View title = inflater.inflate(R.layout.view_order_product_title, parent, false);
                 return new OrderProductTitleViewHolder(title);
             case VIEW_PRODUCT_HEADER:
-                headerView = inflater.inflate(R.layout.view_header_product, parent, false);
+                if(headerView == null) {
+                    headerView = inflater.inflate(R.layout.view_header_product, parent, false);
+                }
                 return new OrderProductHeaderViewHolder(headerView);
             case VIEW_PRODUCT_ITEM:
                 View item = inflater.inflate(R.layout.view_order_product_list, parent, false);
@@ -103,6 +105,7 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                     footerView = inflater.inflate(R.layout.view_order_other, parent, false);
                 }
                 OrderProductOtherViewHolder holder = new OrderProductOtherViewHolder(footerView);
+                info = holder.getAddress();
                 holder.setOnItemClickListener(this);
                 return holder;
         }
@@ -132,12 +135,8 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
         }
     }
 
-    AddressInfo info = new AddressInfo();
 
-    public AddressInfo getAddressInfo() {
-        return info;
-    }
-
+    AddressInfo info;
     @Override
     public int getItemCount() {
         return HEADER_COUNT + items.size() + FOOTER_COUNT + 1;

@@ -51,4 +51,5 @@
     <string name="order_phone">연락처</string>
     <string name="order_address">배송지</string>
     <string name="comment_hint">댓글을 입력해주세요</string>
+    <string name="write_fragment_hint">소품명과 브랜드정보를 입력해주세요. 사진은 최대 1개까지 업로드할 수 있습니다.</string>
 </resources>

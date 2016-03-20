@@ -25,7 +25,7 @@
             android:layout_below="@+id/edit_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Medium Text"
+            android:textColor="#d94755"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
@@ -51,7 +51,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/image_load" />
+            android:layout_below="@+id/image_load"
+            android:hint="@string/write_fragment_hint" />
     </RelativeLayout>
 
     <LinearLayout

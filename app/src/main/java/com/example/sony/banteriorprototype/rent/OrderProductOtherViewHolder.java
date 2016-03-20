@@ -22,7 +22,7 @@ import java.util.Locale;
  */
 public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
 
-    private static final String[] method ={"카드","폰","무통장입금"};
+    private static final String[] method = {"카드", "폰", "무통장입금"};
 
     Button cardBtn;
     Button phoneBtn;
@@ -33,11 +33,12 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
     Context mContext;
 
     public OnItemClickListener itemClickListener;
-    public void setOnItemClickListener(OnItemClickListener listener){
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         itemClickListener = listener;
     }
 
-    public OrderProductOtherViewHolder(View itemView)  {
+    public OrderProductOtherViewHolder(View itemView) {
         super(itemView);
         mContext = itemView.getContext();
         phoneView = (EditText) itemView.findViewById(R.id.edit_phone);
@@ -48,8 +49,7 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         monthView = (EditText) itemView.findViewById(R.id.edit_month);
 
 
-
-        todayView = (TextView)itemView.findViewById(R.id.text_today);
+        todayView = (TextView) itemView.findViewById(R.id.text_today);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         String ds = sdf.format(new Date());
         todayView.setText(ds);
@@ -97,7 +97,7 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    AddressInfo info = new AddressInfo();
+    AddressInfo info;
 
     public AddressInfo getAddress() {
         info.phone = phoneView.getText().toString();
@@ -107,6 +107,7 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         int month = c.get(Calendar.MONTH);
         int diff = (this.year - year) * 12 + (this.month - month);
         info.period = diff;
+
         return info;
     }
 
@@ -115,10 +116,11 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
     }
 
     int year, month;
-    public void setDate(int year, int month){
+
+    public void setDate(int year, int month) {
         this.year = year;
         this.month = month;
-        yearView.setText(""+year);
-        monthView.setText(""+month);
+        yearView.setText("" + year);
+        monthView.setText("" + month);
     }
 }

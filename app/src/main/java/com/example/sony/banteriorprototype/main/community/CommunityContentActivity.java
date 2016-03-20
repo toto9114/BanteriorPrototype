@@ -39,8 +39,9 @@ public class CommunityContentActivity extends AppCompatActivity {
     Button scrapView;
     public static final String EXTRA_POSTID_MESSAGE = "postid";
     public static final String EXTRA_IS_SCRAP_MESSAGE = "isScrap";
-
+    public static final String EXTRA_FILE = "file";
     int postId;
+    String file;
     boolean isScrap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class CommunityContentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
+        file = intent.getStringExtra(EXTRA_FILE);
+
         if(intent.getIntExtra(EXTRA_IS_SCRAP_MESSAGE,0) == 0){
             isScrap = false;
             scrapView.setSelected(false);
@@ -85,6 +88,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                     case R.id.btn_edit:
                         Intent i = new Intent(new Intent(CommunityContentActivity.this, WriteActivity.class));
                         i.putExtra(WriteActivity.EXTRA_COMMUNITY_CONTENT_MESSAGE,postId);
+                        i.putExtra(WriteActivity.EXTRA_FILE,file);
                         startActivity(i);
                         break;
                     case R.id.btn_delete:
@@ -136,7 +140,6 @@ public class CommunityContentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 int replyId = mAdapter.getComment(position).id;
-                Toast.makeText(CommunityContentActivity.this,"click",Toast.LENGTH_SHORT).show();
                 NetworkManager.getInstance().delReply(CommunityContentActivity.this, postId, replyId, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {

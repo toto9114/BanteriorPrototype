@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -147,7 +146,9 @@ public class HashTagFragment extends Fragment {
                 public void onSuccess(Request request, CommunityResult result) {
                     for(int i=0; i<result.communityDetails.hash_tag.size();i++){
                         TokenView hashTag = new TokenView(getContext());
-                        hashTag.setToken(result.communityDetails.hash_tag.get(i));
+                        String keyword = result.communityDetails.hash_tag.get(i);
+                        hashTagList.add(keyword);
+                        hashTag.setToken(keyword);
                         mFlowlayout.addView(hashTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     }
                 }
@@ -159,13 +160,6 @@ public class HashTagFragment extends Fragment {
             });
         }
 
-        Button btn = (Button)view.findViewById(R.id.btn_add);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         file = ((WriteActivity) getActivity()).getFile();
         content = ((WriteActivity) getActivity()).getContent();
@@ -183,23 +177,41 @@ public class HashTagFragment extends Fragment {
         int id = item.getItemId();
 
         if(id==R.id.regist_post){
-            try {
-                NetworkManager.getInstance().uploadPost(getContext(), file, hashTagList, content, new NetworkManager.OnResultListener<PostTypeResult>() {
-                    @Override
-                    public void onSuccess(Request request, PostTypeResult result) {
-                        Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
-                        getActivity().finish();
-                    }
+            if(postId == -1) {
+                try {
+                    NetworkManager.getInstance().uploadPost(getContext(), file, hashTagList, content, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        @Override
+                        public void onSuccess(Request request, PostTypeResult result) {
+                            Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
+                        }
 
-                    @Override
-                    public void onFailure(Request request, int code, Throwable cause) {
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
 
-                    }
-                });
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }else {
+                try {
+                    NetworkManager.getInstance().modifyPost(getContext(), postId, file, hashTagList, content, new NetworkManager.OnResultListener<PostTypeResult>() {
+                        @Override
+                        public void onSuccess(Request request, PostTypeResult result) {
+                            getActivity().finish();
+                        }
+
+                        @Override
+                        public void onFailure(Request request, int code, Throwable cause) {
+
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
-            return true;
         }
         if(id == android.R.id.home){
             getActivity().getSupportFragmentManager()

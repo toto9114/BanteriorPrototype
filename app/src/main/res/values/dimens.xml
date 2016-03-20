@@ -159,4 +159,5 @@
     <dimen name="thumbview_profile_image_right_margin">6dp</dimen>
     <dimen name="btn_calender_width">22dp</dimen>
     <dimen name="btn_calender_height">24dp</dimen>
+    <dimen name="text_desc_right_margin">57dp</dimen>
 </resources>

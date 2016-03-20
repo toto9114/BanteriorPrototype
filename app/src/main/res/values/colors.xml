@@ -17,4 +17,5 @@
     <color name="mypage_foreground">#f4f4f4</color>
     <color name="edit_comment_layout">#f4f4f4</color>
     <color name="join_background">#f4f4f4</color>
+    <color name="tag_text_color">#d94755</color>
 </resources>

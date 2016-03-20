@@ -28,7 +28,12 @@ public class NotifyView extends FrameLayout {
     NotificationData data;
     public void setNotify(NotificationData data){
         this.data = data;
-        iconView.setImageResource(data.notifyIcon);
-        messageView.setText(data.notification);
+    //    if() {
+            iconView.setImageResource(R.drawable.ic_comment);
+            messageView.setText(data.notification);
+     //   }else {
+            iconView.setImageResource(R.drawable.ic_dday);
+            messageView.setText(data.notification);
+//        }
     }
 }

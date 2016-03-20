@@ -2,49 +2,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.example.sony.banteriorprototype.main.community.HashTagFragment">
 
     <!-- TODO: Update blank fragment layout -->
- <RelativeLayout
-     android:layout_width="match_parent"
-     android:layout_height="@dimen/flowlayout_height"
-     android:id="@+id/relativ_flowlayout">
-    <com.wefika.flowlayout.FlowLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/flowlayout"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
- </RelativeLayout>
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
+        android:id="@+id/relativ_flowlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativ_flowlayout"
+        android:layout_height="@dimen/flowlayout_height"
+        android:background="#f4f4f4"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <com.wefika.flowlayout.FlowLayout
+            android:id="@+id/flowlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+
+   <View
+       android:layout_width="match_parent"
+       android:layout_height="1dp"
+       android:id="@+id/divider"
+       android:layout_below="@+id/relativ_flowlayout"
+       android:background="#d1cccc"/>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flowlayout_height"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2">
+        android:layout_below="@+id/divider"
+        android:background="#f4f4f4"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="2dp">
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/desc_hash_tag"
             android:id="@+id/edit_hash"
-            android:layout_weight="1" />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button2"
-            android:visibility="invisible" />
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/textfield"
+            android:hint="@string/desc_hash_tag" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_add"
-            android:background="@android:drawable/ic_input_add" />
     </LinearLayout>
 </RelativeLayout>

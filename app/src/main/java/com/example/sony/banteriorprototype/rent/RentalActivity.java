@@ -31,10 +31,6 @@ public class RentalActivity extends AppCompatActivity{
     OrderAdapter mAdapter;
     InteriorContentData interiorContentData;
 
-    public OnRentalBtnClickListener btnClickListener;
-    public void setOnRentalBtnClickListener(OnRentalBtnClickListener listener){
-        btnClickListener = listener;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,24 +42,7 @@ public class RentalActivity extends AppCompatActivity{
         getSupportActionBar().setLogo(R.drawable.text_buy);
         Intent intent = getIntent();
         interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
-//        int postId = intent.getIntExtra(EXTRA_POST_ID_MESSAGE, -1);
-//        String category = intent.getStringExtra(EXTRA_CATEGORY_MESSAGE);
-        //interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
-//        try {
-//            NetworkManager.getInstance().getInteriorPost(this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
-//                @Override
-//                public void onSuccess(Request request, InteriorResult result) {
-//                    interiorContentData = result.detailData;
-//                }
-//
-//                @Override
-//                public void onFailure(Request request, int code, Throwable cause) {
-//
-//                }
-//            });
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+
         orderView = (RecyclerView)findViewById(R.id.orderView);
         mAdapter = new OrderAdapter();
 
@@ -93,10 +72,7 @@ public class RentalActivity extends AppCompatActivity{
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnClickListener != null){
-                    btnClickListener.onClick(v);
-                }
-                AddressInfo info = mAdapter.getAddressInfo();
+                AddressInfo info = mAdapter.info;
                 info.total_price = interiorContentData.month_price * info.period;
                 NetworkManager.getInstance().setOrder(RentalActivity.this, interiorContentData.post_id, info.address, info.phone, info.total_price, info.paymethod, info.period, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override

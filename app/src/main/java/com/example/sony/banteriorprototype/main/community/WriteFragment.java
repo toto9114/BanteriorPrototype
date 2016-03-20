@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,8 +45,10 @@ public class WriteFragment extends Fragment {
     private static final int PICK_IMAGE = 0;
     private static final int PICK_CAPTURE = 1;
 
-    private static final String SELECTED_URI = "selected_uri";
+    public static final String SELECTED_URI = "selected_uri";
     public static final String EXTRA_POST_ID_MESSAGE = "postId";
+    public static final String EXTRA_FILE_URI = "file";
+
 
     ImageView imageView;
     EditText contentView;
@@ -54,12 +57,14 @@ public class WriteFragment extends Fragment {
     ImageView titleView;
 
     int postId = -1;
+    String fileUrl;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             Bundle args = getArguments();
             postId = args.getInt(EXTRA_POST_ID_MESSAGE,-1);
+            fileUrl = args.getString(EXTRA_FILE_URI);
         }
     }
 
@@ -91,6 +96,14 @@ public class WriteFragment extends Fragment {
                 public void onSuccess(Request request, CommunityResult result) {
                     Glide.with(getContext()).load(result.communityDetails.mainImage).into(imageView);
                     contentView.setText(result.communityDetails.content);
+                    if(result.communityDetails.hash_tag != null) {
+                        StringBuilder sb = new StringBuilder();
+                        for (String s : result.communityDetails.hash_tag) {
+                            sb.append(s);
+                            sb.append(" ");
+                        }
+                        hashTagView.setText(sb.toString());
+                    }
                 }
 
                 @Override
@@ -183,6 +196,12 @@ public class WriteFragment extends Fragment {
         int id = item.getItemId();
 
         if(id == R.id.regist_hash) {
+            if(postId != -1){
+              //  file = new File(new URL(getFileUri()));
+                String s = file.getAbsolutePath();
+                Log.i("WriteFagment",s);
+            }
+
             ((WriteActivity)getActivity()).setContent(file,contentView.getText().toString());
             ((WriteActivity)getActivity()).changeHashTag();
             return true;
