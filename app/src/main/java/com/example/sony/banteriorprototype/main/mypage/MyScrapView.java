@@ -26,13 +26,14 @@ public class MyScrapView extends FrameLayout {
     ImageView profileView;
     TextView scrapView;
     FlowLayout mFlowLayout;
+
     private void init() {
         inflate(getContext(), R.layout.view_thumb, this);
         thumbView = (ImageView) findViewById(R.id.image_thumb);
         profileView = (ImageView) findViewById(R.id.image_profile);
-       // tagView = (TextView) findViewById(R.id.text_hash_tag);
-        mFlowLayout = (FlowLayout)findViewById(R.id.flow_layout);
-        scrapView = (TextView)findViewById(R.id.text_scrap_count);
+        // tagView = (TextView) findViewById(R.id.text_hash_tag);
+        mFlowLayout = (FlowLayout) findViewById(R.id.flow_layout);
+        scrapView = (TextView) findViewById(R.id.text_scrap_count);
     }
 
     MyPostData myPost;
@@ -43,29 +44,30 @@ public class MyScrapView extends FrameLayout {
         Glide.with(getContext()).load(myPost.profileImage).into(profileView);
 
         mFlowLayout.removeAllViews();
-        if(info.hash_tag != null) {
-            for (int i = 0; i < info.hash_tag.size(); i++) {
-                TextView hashTag = new TextView(getContext());
-                hashTag.setTextColor(Color.WHITE);
-                hashTag.setText(info.hash_tag.get(i) + " ");
-                mFlowLayout.addView(hashTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            }
+
+        for (int i = 0; i < info.hash_tag.size(); i++) {
+            TextView hashTag = new TextView(getContext());
+            hashTag.setTextColor(Color.WHITE);
+            hashTag.setText(info.hash_tag.get(i) + " ");
+            mFlowLayout.addView(hashTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+
     }
 
 
     ScrapData data;
+
     public void setScrapData(ScrapData data) {
         this.data = data;
         Glide.with(getContext()).load(data.interiorImage).into(thumbView);
-        if(data.profileImage != null) {
+        if (data.profileImage != null) {
             Glide.with(getContext()).load(data.profileImage).into(profileView);
         }
         mFlowLayout.removeAllViews();
-        for(int i =0; i< data.hash_tag.size();i++){
+        for (int i = 0; i < data.hash_tag.size(); i++) {
             TextView hashTag = new TextView(getContext());
             hashTag.setTextColor(Color.WHITE);
-            hashTag.setText(data.hash_tag.get(i)+" ");
+            hashTag.setText(data.hash_tag.get(i) + " ");
             mFlowLayout.addView(hashTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }

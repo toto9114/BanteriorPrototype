@@ -35,4 +35,5 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
         Glide.with(MyApplication.getContext()).load(data.productImage).into(productView);
         nameView.setText(data.name);
     }
+
 }

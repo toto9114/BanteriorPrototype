@@ -12,20 +12,29 @@ import android.widget.Toast;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
+import com.example.sony.banteriorprototype.data.AddressInfo;
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
+import com.example.sony.banteriorprototype.main.community.OnItemClickListener;
 
 import java.io.UnsupportedEncodingException;
 
 import okhttp3.Request;
 
-public class RentalActivity extends AppCompatActivity {
+public class RentalActivity extends AppCompatActivity{
 
     public static final String EXTRA_PRODUCT_MESSAGE ="product";
+    public static final String EXTRA_POST_ID_MESSAGE ="postId";
+    public static final String EXTRA_CATEGORY_MESSAGE ="category";
     RecyclerView orderView;
     OrderAdapter mAdapter;
     InteriorContentData interiorContentData;
+
+    public OnRentalBtnClickListener btnClickListener;
+    public void setOnRentalBtnClickListener(OnRentalBtnClickListener listener){
+        btnClickListener = listener;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +46,27 @@ public class RentalActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.text_buy);
         Intent intent = getIntent();
         interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
-
+//        int postId = intent.getIntExtra(EXTRA_POST_ID_MESSAGE, -1);
+//        String category = intent.getStringExtra(EXTRA_CATEGORY_MESSAGE);
+        //interiorContentData = (InteriorContentData)intent.getSerializableExtra(EXTRA_PRODUCT_MESSAGE);
+//        try {
+//            NetworkManager.getInstance().getInteriorPost(this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
+//                @Override
+//                public void onSuccess(Request request, InteriorResult result) {
+//                    interiorContentData = result.detailData;
+//                }
+//
+//                @Override
+//                public void onFailure(Request request, int code, Throwable cause) {
+//
+//                }
+//            });
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         orderView = (RecyclerView)findViewById(R.id.orderView);
         mAdapter = new OrderAdapter();
-        orderView.setAdapter(mAdapter);
-        mAdapter.setInterior(interiorContentData);
+
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderView.setLayoutManager(layoutManager);
@@ -50,7 +75,9 @@ public class RentalActivity extends AppCompatActivity {
             NetworkManager.getInstance().getInteriorPost(this, interiorContentData.post_id, interiorContentData.category, new NetworkManager.OnResultListener<InteriorResult>() {
                 @Override
                 public void onSuccess(Request request, InteriorResult result) {
+                    mAdapter.setInterior(result.detailData);
                     mAdapter.addAll(result.detailData.productDataList);
+                    orderView.setAdapter(mAdapter);
                 }
 
                 @Override
@@ -66,10 +93,16 @@ public class RentalActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NetworkManager.getInstance().setOrder(RentalActivity.this, interiorContentData.post_id, "", "", 1, "", 1, new NetworkManager.OnResultListener<PostTypeResult>() {
+                if(btnClickListener != null){
+                    btnClickListener.onClick(v);
+                }
+                AddressInfo info = mAdapter.getAddressInfo();
+                info.total_price = interiorContentData.month_price * info.period;
+                NetworkManager.getInstance().setOrder(RentalActivity.this, interiorContentData.post_id, info.address, info.phone, info.total_price, info.paymethod, info.period, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {
                         Toast.makeText(RentalActivity.this,result.result.message,Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
@@ -82,5 +115,22 @@ public class RentalActivity extends AppCompatActivity {
             }
         });
 
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                MyDatePickerDialog f = new MyDatePickerDialog();
+                f.show(getSupportFragmentManager(), "dialog");
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
+
     }
+    public void setDate(int year, int month){
+        mAdapter.setDate(year,month);
+    }
+
 }

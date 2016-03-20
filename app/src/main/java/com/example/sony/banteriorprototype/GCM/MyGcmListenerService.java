@@ -28,6 +28,7 @@ import android.util.Log;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.main.MainActivity;
+import com.example.sony.banteriorprototype.main.mypage.NotificationActivity;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -54,6 +55,7 @@ public class MyGcmListenerService extends GcmListenerService {
             // normal downstream message.
         }
 
+
         // [START_EXCLUDE]
         /**
          * Production applications would usually process the message here.
@@ -66,7 +68,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+        sendNotificationReply(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]
@@ -76,7 +78,29 @@ public class MyGcmListenerService extends GcmListenerService {
      *
      * @param message GCM message received.
      */
-    private void sendNotification(String message) {
+    private void sendNotificationReply(String message) {
+        Intent intent = new Intent(this, NotificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setTicker("Reply Message")
+                .setSmallIcon(R.drawable.ic_line_logo)
+                .setContentTitle("Reply Message")
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendNotificationRental(String message) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -84,9 +108,9 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setTicker("GCM Message")
+                .setTicker("Rental Message")
                 .setSmallIcon(R.drawable.ic_line_logo)
-                .setContentTitle("GCM Message")
+                .setContentTitle("Rental Message")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

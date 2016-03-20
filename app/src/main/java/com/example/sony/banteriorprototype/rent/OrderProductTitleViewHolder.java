@@ -31,6 +31,6 @@ public class OrderProductTitleViewHolder extends RecyclerView.ViewHolder {
         this.data = data;
         Glide.with(mContext).load(data.interiorImage).into(interiorView);
         packageView.setText(data.packageName);
-        monthPriceView.setText(data.month_price);
+        monthPriceView.setText(""+data.month_price);
     }
 }

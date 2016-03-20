@@ -157,4 +157,6 @@
     <dimen name="btn_image_cancel_size">18dp</dimen>
     <dimen name="flowlayout_height">48dp</dimen>
     <dimen name="thumbview_profile_image_right_margin">6dp</dimen>
+    <dimen name="btn_calender_width">22dp</dimen>
+    <dimen name="btn_calender_height">24dp</dimen>
 </resources>

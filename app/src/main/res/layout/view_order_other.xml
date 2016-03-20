@@ -185,10 +185,10 @@
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout8">
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/text_today"
             android:layout_weight="2" />
 
         <TextView
@@ -200,7 +200,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2"
+            android:id="@+id/edit_year"
             android:layout_weight="1" />
 
         <TextView
@@ -212,7 +212,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText3"
+            android:id="@+id/edit_month"
             android:layout_weight="1" />
 
         <TextView
@@ -355,21 +355,21 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             android:id="@+id/btn_card"
             android:layout_weight="1"
             android:background="@drawable/btn_card_selector" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             android:id="@+id/btn_phone"
             android:layout_weight="1"
             android:background="@drawable/btn_phone_selector" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             android:id="@+id/btn_check"
             android:layout_weight="1"
             android:background="@drawable/btn_wallet_selector" />

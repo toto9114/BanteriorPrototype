@@ -30,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/desc_hash_tag"
-            android:id="@+id/edit_hash" />
+            android:id="@+id/edit_hash"
+            android:layout_weight="1" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -44,7 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_add"
-            android:background="@android:drawable/ic_input_add"
-            android:layout_gravity="center_vertical" />
+            android:background="@android:drawable/ic_input_add" />
     </LinearLayout>
 </RelativeLayout>

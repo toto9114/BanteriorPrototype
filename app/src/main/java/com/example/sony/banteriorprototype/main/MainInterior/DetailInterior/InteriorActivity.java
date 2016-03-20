@@ -36,7 +36,7 @@ public class InteriorActivity extends AppCompatActivity {
     String category;
     int interiorPostion;
     int calledPostId = -1;
-    int productId;
+    int productId=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ public class InteriorActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         category = getIntent().getStringExtra(EXTRA_CATEGORY_MESSAGE);
-        interiorPostion  = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE,0);
+        interiorPostion  = getIntent().getIntExtra(EXTRA_INTERIOR_MESSAGE, 0);
         calledPostId = getIntent().getIntExtra(EXTRA_POST_ID_MESSAGE,-1);
 
         pager = (ViewPager) findViewById(R.id.interior_pager);
@@ -70,6 +70,7 @@ public class InteriorActivity extends AppCompatActivity {
                         postId = calledPostId;
                     }else {
                         postId = result.postData.interiorList.get(0).post_id;
+                    //    productId =postId;
                     }
                     try {
                         NetworkManager.getInstance().getInteriorPost(InteriorActivity.this, postId, category, new NetworkManager.OnResultListener<InteriorResult>() {
@@ -145,7 +146,9 @@ public class InteriorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(InteriorActivity.this, RentalActivity.class);
-                i.putExtra(RentalActivity.EXTRA_PRODUCT_MESSAGE, imageAdapter.getInterior(productId));
+//                i.putExtra(RentalActivity.EXTRA_POST_ID_MESSAGE, imageAdapter.getInterior(productId).post_id);
+//                i.putExtra(RentalActivity.EXTRA_CATEGORY_MESSAGE, imageAdapter.getInterior(productId).category);
+                i.putExtra(RentalActivity.EXTRA_PRODUCT_MESSAGE,imageAdapter.getInterior(productId));
                 startActivity(i);
             }
         });

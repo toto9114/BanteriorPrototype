@@ -4,6 +4,10 @@ package com.example.sony.banteriorprototype.main.community;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.ListPopupWindow;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +27,7 @@ import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.TokenView;
 import com.example.sony.banteriorprototype.data.Community.CommunityResult;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
+import com.example.sony.banteriorprototype.data.Search.HashTagResult;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.io.File;
@@ -46,7 +53,8 @@ public class HashTagFragment extends Fragment {
     File file;
     String content;
     ImageView titleView;
-
+    ListPopupWindow popupWindow;
+    ArrayAdapter<String> mAdapter;
     public static final String EXTRA_POST_ID_MESSAGE = "postId";
     int postId = -1;
 
@@ -78,6 +86,60 @@ public class HashTagFragment extends Fragment {
         setHasOptionsMenu(true);
         keywordView = (EditText)view.findViewById(R.id.edit_hash);
         mFlowlayout = (FlowLayout)view.findViewById(R.id.flowlayout);
+        popupWindow = new ListPopupWindow(getContext());
+        mAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1);
+        popupWindow.setAdapter(mAdapter);
+        popupWindow.setAnchorView(keywordView);
+
+        keywordView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String keyword = s.toString();
+                if (!TextUtils.isEmpty(keyword)) {
+                    try {
+                        NetworkManager.getInstance().getHashTagResultList(getActivity(), keyword, new NetworkManager.OnResultListener<HashTagResult>() {
+                            @Override
+                            public void onSuccess(Request request, HashTagResult result) {
+                                mAdapter.clear();
+                                mAdapter.addAll(result.words);
+                            }
+
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
+
+                            }
+                        });
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    popupWindow.show();
+                } else {
+                    popupWindow.dismiss();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TokenView hashTag = new TokenView(getContext());
+                String keyword = mAdapter.getItem(position);
+                hashTag.setToken(keyword);
+                hashTagList.add(keyword);
+                mFlowlayout.addView(hashTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                keywordView.setText("");
+            }
+        });
 
         if(postId != -1){
             NetworkManager.getInstance().getCommunityPost(getContext(), postId, new NetworkManager.OnResultListener<CommunityResult>() {
@@ -101,11 +163,7 @@ public class HashTagFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TokenView hashTag = new TokenView(getContext());
-                String keyword = keywordView.getText().toString();
-                hashTag.setToken(keyword);
-                hashTagList.add(keyword);
-                mFlowlayout.addView(hashTag,ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
             }
         });
 
@@ -125,12 +183,12 @@ public class HashTagFragment extends Fragment {
         int id = item.getItemId();
 
         if(id==R.id.regist_post){
-            getActivity().finish();
             try {
                 NetworkManager.getInstance().uploadPost(getContext(), file, hashTagList, content, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {
                         Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
                     }
 
                     @Override

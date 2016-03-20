@@ -472,17 +472,17 @@ public class NetworkManager {
         return request;
     }
 
-    public Request setOrder(Context context,int postId,String address, String phone, int monthPrice, String payMethod, int period, final OnResultListener<PostTypeResult> listener) {
+    public Request setOrder(Context context,int postId,String address, String phone, int totalPrice, String payMethod, int period, final OnResultListener<PostTypeResult> listener) {
 
         String url = String.format(BASE_URL_FORMAT + "/orders");
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         RequestBody body = new FormBody.Builder()
-                .add("postId", ""+postId)
+                .add("post_id", ""+postId)
                 .add("address", address)
                 .add("phone", phone)
-                .add("monthPrice",""+monthPrice)
-                .add("payMethod",payMethod)
+                .add("total_price",""+totalPrice)
+                .add("paymethod",payMethod)
                 .add("period",""+period)
                 .build();
         Request request = new Request.Builder().url(url)

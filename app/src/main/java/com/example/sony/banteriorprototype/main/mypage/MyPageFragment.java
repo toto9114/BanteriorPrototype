@@ -111,7 +111,7 @@ public class MyPageFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("내가 쓴 글"), 1);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_select_text));
         tabLayout.setTabTextColors(ContextCompat.getColor(getContext(), R.color.tab_unselect_text),
-                ContextCompat.getColor(getContext(),R.color.tab_select_text));
+                ContextCompat.getColor(getContext(), R.color.tab_select_text));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -168,16 +168,16 @@ public class MyPageFragment extends Fragment {
 
                 switch (tabLayout.getSelectedTabPosition()) {
                     case 0:
-                        ScrapData interiorData = (ScrapData)gridView.getItemAtPosition(position);
+                        ScrapData interiorData = (ScrapData) gridView.getItemAtPosition(position);
                         Intent intent = new Intent(getContext(), InteriorActivity.class);
-                        intent.putExtra(InteriorActivity.EXTRA_POST_ID_MESSAGE,interiorData.post_id);
+                        intent.putExtra(InteriorActivity.EXTRA_POST_ID_MESSAGE, interiorData.post_id);
                         intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE, interiorData.category);
                         startActivity(intent);
                         break;
                     case 1:
-                        MyPostData data = (MyPostData)gridView.getItemAtPosition(position);
+                        MyPostData data = (MyPostData) gridView.getItemAtPosition(position);
                         Intent i = new Intent(getContext(), CommunityContentActivity.class);
-                        i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,data.post_id);
+                        i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE, data.post_id);
                         startActivity(i);
                 }
             }
@@ -218,6 +218,36 @@ public class MyPageFragment extends Fragment {
 
             }
         });
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            gridView.setAdapter(scrapAdapter);
+            scrapAdapter.clear();
+            NetworkManager.getInstance().getMyScrap(getContext(), new NetworkManager.OnResultListener<MyPageScrap>() {
+                @Override
+                public void onSuccess(Request request, MyPageScrap result) {
+                    scrapAdapter.addAll(result.result.scrapData.postList);
+                }
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+
+                }
+            });
+        } else {
+            gridView.setAdapter(postAdapter);
+            postAdapter.clear();
+            NetworkManager.getInstance().getMyPost(getContext(), new NetworkManager.OnResultListener<MyPost>() {
+                @Override
+                public void onSuccess(Request request, MyPost result) {
+                    postAdapter.addAll(result.result.postData.postList);
+                }
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+
+                }
+            });
+        }
+
     }
 
     @Override
