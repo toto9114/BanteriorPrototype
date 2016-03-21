@@ -27,7 +27,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.main.MainActivity;
-import com.example.sony.banteriorprototype.main.mypage.NotificationActivity;
+import com.example.sony.banteriorprototype.main.community.CommunityContentActivity;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -87,8 +87,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Intent[] intents = new Intent[2];
         intents[0] = new Intent(this, MainActivity.class);
         intents[0].addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        Intent intent = new Intent(this, NotificationActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(this, CommunityContentActivity.class);
+        intent.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,""+message);
         intents[1] = intent;
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0 /* Request code */, intents,
                 PendingIntent.FLAG_UPDATE_CURRENT);
