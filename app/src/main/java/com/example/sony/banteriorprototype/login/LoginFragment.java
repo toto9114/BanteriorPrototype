@@ -159,6 +159,8 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 id = idView.getText().toString();
                 password = passwordView.getText().toString();
+                PropertyManager.getInstance().setLocalId(id);
+                PropertyManager.getInstance().setLocalPassword(password);
                 registrationToken = PropertyManager.getInstance().getRegistrationToken();
                     NetworkManager.getInstance().login(getContext(), id, password, registrationToken, new NetworkManager.OnResultListener<PostTypeResult>() {
                         @Override
@@ -174,6 +176,7 @@ public class LoginFragment extends Fragment {
                                         }).show();
                             }else {
                                 startActivity(new Intent(getContext(), MainActivity.class));
+                                PropertyManager.getInstance().setId(result.result.id);
                                 getActivity().finish();
                             }
                         }

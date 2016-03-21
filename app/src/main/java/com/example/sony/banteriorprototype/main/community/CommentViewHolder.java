@@ -26,7 +26,7 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     public CommentViewHolder(View itemView) {
         super(itemView);
         mContext = itemView.getContext();
-        nameView = (TextView)itemView.findViewById(R.id.text_brand);
+        nameView = (TextView)itemView.findViewById(R.id.text_name);
         commentView = (TextView)itemView.findViewById(R.id.text_comment);
         delButton = (Button)itemView.findViewById(R.id.btn_delete);
 

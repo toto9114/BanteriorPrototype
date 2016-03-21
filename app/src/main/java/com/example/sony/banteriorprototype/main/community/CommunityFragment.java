@@ -73,4 +73,20 @@ public class CommunityFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.clear();
+        NetworkManager.getInstance().getCommunityPostList(getContext(), new NetworkManager.OnResultListener<CommunityResult>() {
+            @Override
+            public void onSuccess(Request request, CommunityResult result) {
+                mAdapter.addAll(result.communityData.communityList);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+    }
 }

@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.AddressInfo;
@@ -12,12 +14,13 @@ import com.example.sony.banteriorprototype.data.ProductData;
 import com.example.sony.banteriorprototype.main.community.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by sony on 2016-03-02.
  */
-public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickListener{
+public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickListener {
     List<ProductData> items = new ArrayList<>();
 
     private static final int TITILE_COUNT = 1;
@@ -69,6 +72,9 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
     public void setInterior(InteriorContentData interiorContentData) {
         this.interiorContentData = interiorContentData;
     }
+    public InteriorContentData getInterior(){
+        return  this.interiorContentData;
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -93,7 +99,7 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                 View title = inflater.inflate(R.layout.view_order_product_title, parent, false);
                 return new OrderProductTitleViewHolder(title);
             case VIEW_PRODUCT_HEADER:
-                if(headerView == null) {
+                if (headerView == null) {
                     headerView = inflater.inflate(R.layout.view_header_product, parent, false);
                 }
                 return new OrderProductHeaderViewHolder(headerView);
@@ -103,13 +109,50 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
             case VIEW_FOOTER:
                 if (footerView == null) {
                     footerView = inflater.inflate(R.layout.view_order_other, parent, false);
+                    phoneView = (EditText)footerView.findViewById(R.id.edit_phone);
+                    DetailAddressView = (EditText)footerView.findViewById(R.id.edit_detail_address);
+                    addressView1 = (EditText) footerView.findViewById(R.id.edit_adderess1);
+                    addressView2 = (EditText) footerView.findViewById(R.id.edit_address2);
+                    yearView = (EditText) footerView.findViewById(R.id.edit_year);
+                    monthView = (EditText) footerView.findViewById(R.id.edit_month);
+                    cardBtn = (Button) footerView.findViewById(R.id.btn_card);
+                    phoneBtn = (Button) footerView.findViewById(R.id.btn_phone);
+                    checkBtn = (Button) footerView.findViewById(R.id.btn_check);
                 }
                 OrderProductOtherViewHolder holder = new OrderProductOtherViewHolder(footerView);
-                info = holder.getAddress();
                 holder.setOnItemClickListener(this);
                 return holder;
         }
         return null;
+    }
+
+    EditText phoneView, addressView1, addressView2, DetailAddressView, yearView, monthView;
+    Button cardBtn;
+    Button phoneBtn;
+    Button checkBtn;
+
+    private static final String[] method = {"카드", "폰", "무통장입금"};
+
+    public AddressInfo getAddress() {
+        AddressInfo info = new AddressInfo();
+        if (footerView == null) {
+            return null;
+        }
+        info.address = DetailAddressView.getText().toString();
+        info.phone = phoneView.getText().toString();
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int diff = (this.year - year) * 12 + (this.month - month);
+        info.period = diff;
+        if(cardBtn.isSelected()) {
+            info.paymethod = method[0];
+        }else if(phoneBtn.isSelected()){
+            info.paymethod = method[1];
+        }else {
+            info.paymethod = method[2];
+        }
+        return info;
     }
 
     @Override
@@ -135,8 +178,6 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
         }
     }
 
-
-    AddressInfo info;
     @Override
     public int getItemCount() {
         return HEADER_COUNT + items.size() + FOOTER_COUNT + 1;

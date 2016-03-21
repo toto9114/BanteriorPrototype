@@ -151,7 +151,9 @@
             android:layout_below="@+id/linear_scrap_count"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/linear_edit" />
+            android:layout_above="@+id/linear_edit"
+            android:layout_alignRight="@+id/linear_edit"
+            android:layout_alignEnd="@+id/linear_edit" />
     </RelativeLayout>
 
 

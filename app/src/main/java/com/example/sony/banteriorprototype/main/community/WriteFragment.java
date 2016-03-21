@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -196,12 +195,6 @@ public class WriteFragment extends Fragment {
         int id = item.getItemId();
 
         if(id == R.id.regist_hash) {
-            if(postId != -1){
-              //  file = new File(new URL(getFileUri()));
-                String s = file.getAbsolutePath();
-                Log.i("WriteFagment",s);
-            }
-
             ((WriteActivity)getActivity()).setContent(file,contentView.getText().toString());
             ((WriteActivity)getActivity()).changeHashTag();
             return true;

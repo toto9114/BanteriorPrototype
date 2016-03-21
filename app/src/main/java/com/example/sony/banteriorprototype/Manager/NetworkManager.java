@@ -379,6 +379,7 @@ public class NetworkManager {
 
         final CallbackObject<MyPageScrap> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
+                .tag(context)
                 .build();
 
         callbackObject.request = request;
@@ -415,6 +416,7 @@ public class NetworkManager {
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
                 .post(body)
+                .tag(context)
                 .build();
 
         callbackObject.request = request;
@@ -447,6 +449,7 @@ public class NetworkManager {
 
         final CallbackObject<MyPost> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
+                .tag(context)
                 .build();
 
         callbackObject.request = request;
@@ -822,14 +825,16 @@ public class NetworkManager {
     private static final String MODIFY_COMMUNITY_POST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts/%s";
     public Request modifyPost(Context context, int postId, File file, List<String> hashTag, String content, final OnResultListener<PostTypeResult> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(UPLOAD_COMMUNITY_POST_URL,postId);
+        String url = String.format(MODIFY_COMMUNITY_POST_URL,postId);
 
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .addFormDataPart("file_url",file.getName(),RequestBody.create(MEDIA_TYPE_PNG,file))
-                .addFormDataPart("content",content);
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+            if(file !=null) {
+                builder.addFormDataPart("file_url", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+            }
+                builder.addFormDataPart("content",content);
         for (int i = 0; i < hashTag.size(); i++) {
-            builder.addFormDataPart("hash_tag[" + i + "]", hashTag.get(i));
+            builder.addFormDataPart("tag[" + i + "]", hashTag.get(i));
         }
         RequestBody body = builder.build();
         Request request = new Request.Builder().url(url)
@@ -941,6 +946,7 @@ public class NetworkManager {
         final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
                 .delete(body)
+                .tag(context)
                 .build();
 
         callbackObject.request = request;
@@ -1007,6 +1013,43 @@ public class NetworkManager {
         return request;
     }
 
+    private static final String PUSH_ON_OFF = "https://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/mypages/push";
+    public Request push(Context context,int push, final OnResultListener<PostTypeResult> listener) {
+
+        String url = String.format(PUSH_ON_OFF);
+
+        RequestBody body = new FormBody.Builder()
+                .add("push",""+push)
+                .build();
+        final CallbackObject<PostTypeResult> callbackObject = new CallbackObject<>();
+
+        Request request = new Request.Builder().url(url)
+                .put(body)
+                .tag(context)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FAILURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                PostTypeResult data = gson.fromJson(response.body().string(), PostTypeResult.class);
+                callbackObject.result = data;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
     public Request testSSL(Context context, final OnResultListener<String> listener) {
         Request request = new Request.Builder().url("https://192.168.210.51:8443/test.html").build();
         final CallbackObject<String> callbackObject = new CallbackObject<String>();

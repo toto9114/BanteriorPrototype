@@ -72,8 +72,8 @@ public class RentalActivity extends AppCompatActivity{
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddressInfo info = mAdapter.info;
-                info.total_price = interiorContentData.month_price * info.period;
+                AddressInfo info = mAdapter.getAddress();
+                info.total_price = mAdapter.getInterior().month_price * info.period;
                 NetworkManager.getInstance().setOrder(RentalActivity.this, interiorContentData.post_id, info.address, info.phone, info.total_price, info.paymethod, info.period, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {

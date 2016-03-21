@@ -85,7 +85,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
-
+    boolean isPush;
     private void doRealStart() {
         // activity start...
         new AsyncTask<Void, Void,Boolean>() {
@@ -100,6 +100,15 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Request request, PostTypeResult result) {
                                 Toast.makeText(SplashActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+
+                                if(result.result.push == 0) {
+                                    isPush = false;
+                                }
+                                else {
+                                    isPush = true;
+                                }
+                                PropertyManager.getInstance().setPush(isPush);
+
                                 if (result.error == null) {
                                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                                     finish();
@@ -114,14 +123,40 @@ public class SplashActivity extends AppCompatActivity {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(SplashActivity.this, SurveyActivity.class));
-                            finish();
-                        }
-                    },1500);
+                } else{
+                    String id = PropertyManager.getInstance().getLocalId();
+                    String password = PropertyManager.getInstance().getLocalPassword();
+                    if(!id.isEmpty() || !password.isEmpty()) {
+                        NetworkManager.getInstance().login(SplashActivity.this, id, password, registrationToken, new NetworkManager.OnResultListener<PostTypeResult>() {
+                            @Override
+                            public void onSuccess(Request request, PostTypeResult result) {
+                                if(result.result.push == 0) {
+                                    isPush = false;
+                                }
+                                else {
+                                    isPush = true;
+                                }
+                                PropertyManager.getInstance().setPush(isPush);
+                                if(result.error==null) {
+                                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
+
+                            }
+                        });
+                    }else {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(SplashActivity.this, SurveyActivity.class));
+                                finish();
+                            }
+                        }, 1500);
+                    }
                 }
                 return null;
             }

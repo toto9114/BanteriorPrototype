@@ -5,5 +5,6 @@ package com.example.sony.banteriorprototype.data;
  */
 public class Result {
     public String message;
-    public String id;
+    public int id;
+    public int push;
 }

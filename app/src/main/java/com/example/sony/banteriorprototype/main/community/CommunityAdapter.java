@@ -23,6 +23,11 @@ public class CommunityAdapter extends BaseAdapter {
         items.addAll(data);
         notifyDataSetChanged();
     }
+
+    public void clear(){
+        items.clear();
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return items.size();

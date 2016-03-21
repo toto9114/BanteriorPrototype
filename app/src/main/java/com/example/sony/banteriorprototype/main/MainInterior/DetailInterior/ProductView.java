@@ -2,6 +2,8 @@ package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,14 +21,27 @@ public class ProductView extends FrameLayout {
         init();
     }
 
+    OnProductItemClickListener onItemClickListener;
+    public void setOnItemClickListener(OnProductItemClickListener listener){
+        onItemClickListener = listener;
+    }
     public ProductView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+        siteLink.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickListener != null){
+                    onItemClickListener.onItemClick(v,data);
+                }
+            }
+        });
     }
 
     ImageView productView;
     TextView brandView,idView,nameView,sizeView;
-
+    ImageView colorView;
+    Button siteLink;
     private void init(){
         inflate(getContext(), R.layout.view_product,this);
         productView = (ImageView)findViewById(R.id.image_product);
@@ -34,6 +49,8 @@ public class ProductView extends FrameLayout {
         idView = (TextView)findViewById(R.id.text_id);
         nameView = (TextView)findViewById(R.id.text_brand);
         sizeView = (TextView)findViewById(R.id.text_size);
+        colorView = (ImageView)findViewById(R.id.image_color_1);
+        siteLink = (Button)findViewById(R.id.btn_link);
     }
 
     ProductData data;
@@ -44,5 +61,6 @@ public class ProductView extends FrameLayout {
         idView.setText(data.productId);
         nameView.setText(data.name);
         sizeView.setText(data.size);
+        colorView.setBackgroundColor(Integer.parseInt(data.color));
     }
 }

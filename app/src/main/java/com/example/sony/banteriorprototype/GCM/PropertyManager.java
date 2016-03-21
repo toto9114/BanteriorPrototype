@@ -42,5 +42,43 @@ public class PropertyManager {
 	public String getRegistrationToken() {
 		return mPrefs.getString(REG_ID, "");
 	}
-	
+
+	private static final String FIELD_PUSH = "push";
+	public boolean isPush(){
+		return mPrefs.getBoolean(FIELD_PUSH,true);
+	}
+
+	public void setPush(boolean push){
+		mEditor.putBoolean(FIELD_PUSH,push);
+		mEditor.commit();
+	}
+
+	private static final String FIELD_ID = "id";
+	public void setId(int id){
+		mEditor.putInt(FIELD_ID, id);
+		mEditor.commit();
+	}
+
+	public int getId(){
+		return mPrefs.getInt(FIELD_LOCAL_ID,-1);
+	}
+	private static final String FIELD_LOCAL_ID = "Local_Id";
+	public void setLocalId(String id){
+		mEditor.putString(FIELD_ID, id);
+		mEditor.commit();
+	}
+
+	public String getLocalId(){
+		return mPrefs.getString(FIELD_LOCAL_ID,"");
+	}
+
+	private static final String FIELD_LOCAL_PASSWORD = "Local_Password";
+	public void setLocalPassword(String password){
+		mEditor.putString(FIELD_LOCAL_PASSWORD,password);
+		mEditor.commit();
+	}
+
+	public String getLocalPassword(){
+		return	mPrefs.getString(FIELD_LOCAL_PASSWORD,"");
+	}
 }

@@ -1,6 +1,7 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.Category;
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 import com.example.sony.banteriorprototype.data.Interior.InteriorResult;
+import com.example.sony.banteriorprototype.data.ProductData;
 import com.example.sony.banteriorprototype.rent.RentalActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -170,6 +172,15 @@ public class InteriorActivity extends AppCompatActivity {
                 if(pager.getCurrentItem()<imageAdapter.getCount()) {
                     pager.setCurrentItem(pager.getCurrentItem() + 1);
                 }
+            }
+        });
+
+        productAdapter.setOnItemClickListener(new OnProductItemClickListener() {
+            @Override
+            public void onItemClick(View view, ProductData data) {
+                Uri uri = Uri.parse(data.link);
+                Intent intent  = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
             }
         });
     }

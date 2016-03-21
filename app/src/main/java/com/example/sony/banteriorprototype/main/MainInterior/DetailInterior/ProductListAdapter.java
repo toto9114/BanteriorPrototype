@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by sony on 2016-02-23.
  */
-public class ProductListAdapter extends BaseAdapter {
+public class ProductListAdapter extends BaseAdapter implements OnProductItemClickListener{
     List<ProductData> items = new ArrayList<>();
 
     public void add(ProductData data){
@@ -52,6 +52,19 @@ public class ProductListAdapter extends BaseAdapter {
             view = (ProductView)convertView;
         }
         view.setProduct(items.get(position));
+        view.setOnItemClickListener(this);
         return view;
+    }
+
+    OnProductItemClickListener onItemClickListener;
+    public void setOnItemClickListener(OnProductItemClickListener listener){
+        onItemClickListener = listener;
+    }
+
+    @Override
+    public void onItemClick(View view, ProductData data) {
+        if(onItemClickListener != null){
+            onItemClickListener.onItemClick(view,data);
+        }
     }
 }

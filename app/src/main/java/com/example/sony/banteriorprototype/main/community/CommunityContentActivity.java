@@ -180,7 +180,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Request request, PostTypeResult result) {
                                 //Toast.makeText(CommunityContentActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
-                                NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, 1, new NetworkManager.OnResultListener<CommunityResult>() {
+                                NetworkManager.getInstance().getCommunityPost(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<CommunityResult>() {
                                     @Override
                                     public void onSuccess(Request request, CommunityResult result) {
                                         mAdapter.clear();

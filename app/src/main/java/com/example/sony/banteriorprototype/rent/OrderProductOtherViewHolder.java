@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sony.banteriorprototype.R;
-import com.example.sony.banteriorprototype.data.AddressInfo;
 import com.example.sony.banteriorprototype.main.community.OnItemClickListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,8 +19,6 @@ import java.util.Locale;
  * Created by sony on 2016-03-02.
  */
 public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
-
-    private static final String[] method = {"카드", "폰", "무통장입금"};
 
     Button cardBtn;
     Button phoneBtn;
@@ -61,7 +57,6 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
                 v.setSelected(true);
                 phoneBtn.setSelected(false);
                 checkBtn.setSelected(false);
-                info.paymethod = method[0];
             }
         });
         phoneBtn = (Button) itemView.findViewById(R.id.btn_phone);
@@ -71,7 +66,6 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
                 v.setSelected(true);
                 cardBtn.setSelected(false);
                 checkBtn.setSelected(false);
-                info.paymethod = method[1];
             }
         });
 
@@ -82,7 +76,6 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
                 v.setSelected(true);
                 phoneBtn.setSelected(false);
                 cardBtn.setSelected(false);
-                info.paymethod = method[2];
             }
         });
 
@@ -96,20 +89,20 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-
-    AddressInfo info;
-
-    public AddressInfo getAddress() {
-        info.phone = phoneView.getText().toString();
-        info.address = DetailAddressView.getText().toString();
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int diff = (this.year - year) * 12 + (this.month - month);
-        info.period = diff;
-
-        return info;
-    }
+//
+//    AddressInfo info;
+//
+//    public AddressInfo getAddress() {
+//        info.phone = phoneView.getText().toString();
+//        info.address = DetailAddressView.getText().toString();
+//        Calendar c = Calendar.getInstance();
+//        int year = c.get(Calendar.YEAR);
+//        int month = c.get(Calendar.MONTH);
+//        int diff = (this.year - year) * 12 + (this.month - month);
+//        info.period = diff;
+//
+//        return info;
+//    }
 
     public void setAddress() {
 

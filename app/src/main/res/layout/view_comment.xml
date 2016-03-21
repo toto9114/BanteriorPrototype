@@ -7,14 +7,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:id="@+id/text_brand" />
+        android:id="@+id/text_name" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:id="@+id/text_comment"
         android:layout_weight="1"
+        android:id="@+id/text_comment"
         android:layout_marginLeft="@dimen/comment_left_margin" />
 
     <Button
@@ -24,5 +24,6 @@
         android:id="@+id/btn_delete"
         android:background="@drawable/btn_exit"
         android:layout_marginRight="@dimen/btn_comment_remove_right_margin"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginLeft="@dimen/btn_comment_delete_left_margin" />
 </LinearLayout>
