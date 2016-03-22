@@ -33,6 +33,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Request;
 
@@ -58,6 +60,7 @@ public class LoginFragment extends Fragment {
     String registrationToken;
     String id;
     String password;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,49 +69,48 @@ public class LoginFragment extends Fragment {
 
         callbackManager = CallbackManager.Factory.create();
         loginManager = LoginManager.getInstance();
-        loginButton = (LoginButton)view.findViewById(R.id.btn_facebook);
+        loginButton = (LoginButton) view.findViewById(R.id.btn_facebook);
         loginButton.setFragment(this);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-           @Override
-           public void onSuccess(LoginResult loginResult) {
-               AccessToken token = AccessToken.getCurrentAccessToken();
-               String facebookToken = token.getToken();
-               registrationToken = PropertyManager.getInstance().getRegistrationToken();
-               if(token != null) {
-                   Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
-                   try {
-                       NetworkManager.getInstance().facebookLogin(getContext(), facebookToken, registrationToken ,new NetworkManager.OnResultListener<PostTypeResult>() {
-                           @Override
-                           public void onSuccess(Request request, PostTypeResult result) {
-                               Toast.makeText(getContext(),result.result.message, Toast.LENGTH_SHORT).show();
-                               if(result.error == null){
-                                   startActivity(new Intent(getContext(), MainActivity.class));
-                                   getActivity().finish();
-                               }
-                           }
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                AccessToken token = AccessToken.getCurrentAccessToken();
+                String facebookToken = token.getToken();
+                registrationToken = PropertyManager.getInstance().getRegistrationToken();
+                if (token != null) {
+                    try {
+                        NetworkManager.getInstance().facebookLogin(getContext(), facebookToken, registrationToken, new NetworkManager.OnResultListener<PostTypeResult>() {
+                            @Override
+                            public void onSuccess(Request request, PostTypeResult result) {
+                                Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+                                if (result.error == null) {
+                                    startActivity(new Intent(getContext(), MainActivity.class));
+                                    getActivity().finish();
+                                }
+                            }
 
-                           @Override
-                           public void onFailure(Request request, int code, Throwable cause) {
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
 
-                           }
-                       });
-                   } catch (UnsupportedEncodingException e) {
-                       e.printStackTrace();
-                   }
-               }
-           }
+                            }
+                        });
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-           @Override
-           public void onCancel() {
-               Toast.makeText(getContext(),"cancel",Toast.LENGTH_SHORT).show();
-           }
+            @Override
+            public void onCancel() {
+                Toast.makeText(getContext(), "cancel", Toast.LENGTH_SHORT).show();
+            }
 
-           @Override
-           public void onError(FacebookException error) {
-               Toast.makeText(getContext(),"error",Toast.LENGTH_SHORT).show();
-           }
-       });
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         idView = (EditText) view.findViewById(R.id.edit_id);
         idView.addTextChangedListener(new TextWatcher() {
@@ -129,7 +131,7 @@ public class LoginFragment extends Fragment {
 
             }
         });
-        passwordView = (EditText)view.findViewById(R.id.edit_password);
+        passwordView = (EditText) view.findViewById(R.id.edit_password);
         passwordView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -151,9 +153,7 @@ public class LoginFragment extends Fragment {
         mHandler = new Handler();
 
 
-
-
-        localLoginBtn= (Button)view.findViewById(R.id.btn_login);
+        localLoginBtn = (Button) view.findViewById(R.id.btn_login);
         localLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,34 +162,34 @@ public class LoginFragment extends Fragment {
                 PropertyManager.getInstance().setLocalId(id);
                 PropertyManager.getInstance().setLocalPassword(password);
                 registrationToken = PropertyManager.getInstance().getRegistrationToken();
-                    NetworkManager.getInstance().login(getContext(), id, password, registrationToken, new NetworkManager.OnResultListener<PostTypeResult>() {
-                        @Override
-                        public void onSuccess(Request request, PostTypeResult result) {
-                            if(result.error!= null){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                builder.setMessage("로그인실패")
-                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                NetworkManager.getInstance().login(getContext(), id, password, registrationToken, new NetworkManager.OnResultListener<PostTypeResult>() {
+                    @Override
+                    public void onSuccess(Request request, PostTypeResult result) {
+                        if (result.error != null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("로그인실패")
+                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        }).show();
-                            }else {
-                                startActivity(new Intent(getContext(), MainActivity.class));
-                                PropertyManager.getInstance().setId(result.result.id);
-                                getActivity().finish();
-                            }
+                                        }
+                                    }).show();
+                        } else {
+                            startActivity(new Intent(getContext(), MainActivity.class));
+                            PropertyManager.getInstance().setId(result.result.id);
+                            getActivity().finish();
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Request request, int code, Throwable cause) {
-                            Toast.makeText(getContext(), "Error:" +code, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(Request request, int code, Throwable cause) {
+                        Toast.makeText(getContext(), "Error:" + code, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
-        signupView = (TextView)view.findViewById(R.id.text_signup);
-        signupView.setText(Html.fromHtml("<u>" + signupView.getText().toString()+"</u>"));
+        signupView = (TextView) view.findViewById(R.id.text_signup);
+        signupView.setText(Html.fromHtml("<u>" + signupView.getText().toString() + "</u>"));
         signupView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,14 +205,20 @@ public class LoginFragment extends Fragment {
         if (!isIdEmpty && !isPasswordEmpty) {
             localLoginBtn.setEnabled(true);
         } else {
-             localLoginBtn.setEnabled(false);
+            localLoginBtn.setEnabled(false);
         }
     }
 
+    private boolean checkEmail(String email){
+        String mail = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+        Pattern p = Pattern.compile(mail);
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(!callbackManager.onActivityResult(requestCode, resultCode, data)){ // 페이스북에서 결과가 내려온게 맞으면 처리하게 하려고. 그냥 super 밑에 처리해도 됨
+        if (!callbackManager.onActivityResult(requestCode, resultCode, data)) { // 페이스북에서 결과가 내려온게 맞으면 처리하게 하려고. 그냥 super 밑에 처리해도 됨
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

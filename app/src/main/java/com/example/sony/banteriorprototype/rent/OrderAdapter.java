@@ -172,12 +172,15 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                 ((OrderProductViewHolder) holder).setData(items.get(index));
                 return;
             case VIEW_FOOTER:
-                ((OrderProductOtherViewHolder) holder).setAddress();
                 ((OrderProductOtherViewHolder) holder).setDate(year, month);
+                ((OrderProductOtherViewHolder) holder).setPrice(price);
                 return;
         }
     }
-
+    int price;
+    public void setPrice(int price){
+        this.price = price;
+    }
     @Override
     public int getItemCount() {
         return HEADER_COUNT + items.size() + FOOTER_COUNT + 1;

@@ -164,4 +164,5 @@
     <dimen name="notify_view_height">72dp</dimen>
     <dimen name="notify_icon_size">48dp</dimen>
     <dimen name="reply_push_on_off">48dp</dimen>
+    <dimen name="order_other_layout_horizontal_margin">12dp</dimen>
 </resources>

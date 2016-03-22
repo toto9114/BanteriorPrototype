@@ -49,11 +49,10 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:scheme="@string/kakao_scheme"
-                    android:host="@string/kakaolink_host" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.AgreementActivity" />
+        <activity android:name=".login.AgreementActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".main.search.ResultActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".main.MainInterior.DetailInterior.DetailInteriorListActivity"
@@ -99,9 +98,6 @@
             android:name="com.example.sony.banteriorprototype.GCM.RegistrationIntentService"
             android:exported="false">
         </service>
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key" />
     </application>
 
 </manifest>

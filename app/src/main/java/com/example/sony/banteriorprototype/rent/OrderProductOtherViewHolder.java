@@ -12,6 +12,7 @@ import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.main.community.OnItemClickListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -27,7 +28,7 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
     TextView todayView;
     ImageView calenderView;
     Context mContext;
-
+    TextView fieldPrice,totalPriceVIew,priceView;
     public OnItemClickListener itemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -43,10 +44,13 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         DetailAddressView = (EditText) itemView.findViewById(R.id.edit_detail_address);
         yearView = (EditText) itemView.findViewById(R.id.edit_year);
         monthView = (EditText) itemView.findViewById(R.id.edit_month);
+        fieldPrice = (TextView)itemView.findViewById(R.id.text_field_price);
+        totalPriceVIew = (TextView)itemView.findViewById(R.id.text_total_price);
+        priceView = (TextView)itemView.findViewById(R.id.text_price);
 
 
         todayView = (TextView) itemView.findViewById(R.id.text_today);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
         String ds = sdf.format(new Date());
         todayView.setText(ds);
 
@@ -88,32 +92,32 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+        init();
     }
-//
-//    AddressInfo info;
-//
-//    public AddressInfo getAddress() {
-//        info.phone = phoneView.getText().toString();
-//        info.address = DetailAddressView.getText().toString();
-//        Calendar c = Calendar.getInstance();
-//        int year = c.get(Calendar.YEAR);
-//        int month = c.get(Calendar.MONTH);
-//        int diff = (this.year - year) * 12 + (this.month - month);
-//        info.period = diff;
-//
-//        return info;
-//    }
-
-    public void setAddress() {
-
+    private void init(){
+        Calendar c= Calendar.getInstance();
+        yearView.setText(""+c.get(Calendar.YEAR));
+        monthView.setText(""+c.get(Calendar.MONTH));
     }
 
+    public void setPrice(int price){
+        priceView.setText(""+price);
+    }
     int year, month;
 
+    private static final int DEPOSIT_PRICE = 50000;
+    private static final int FEE_PRICE = 20000;
     public void setDate(int year, int month) {
         this.year = year;
         this.month = month;
         yearView.setText("" + year);
         monthView.setText("" + month);
+        Calendar c = Calendar.getInstance();
+        int diff = (year- c.get(Calendar.YEAR))*12 + (month-c.get(Calendar.MONTH));
+        int price = Integer.parseInt(priceView.getText().toString());
+        fieldPrice.setText(fieldPrice.getText().toString()+"(x"+diff+"개월)");
+        priceView.setText(price*diff);
+        int totalPrice = price*diff + DEPOSIT_PRICE + FEE_PRICE;
+        totalPriceVIew.setText(totalPrice);
     }
 }

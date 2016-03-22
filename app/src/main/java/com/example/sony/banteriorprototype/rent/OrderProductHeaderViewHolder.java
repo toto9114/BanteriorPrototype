@@ -19,7 +19,6 @@ public class OrderProductHeaderViewHolder extends RecyclerView.ViewHolder {
         titleView = (TextView)itemView.findViewById(R.id.text_title);
     }
     public void setHeader(){
-        iconView.setImageResource(R.mipmap.ic_launcher);
         titleView.setText("주문상품정보");
     }
 }

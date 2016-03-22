@@ -17,5 +17,9 @@
     <color name="mypage_foreground">#f4f4f4</color>
     <color name="edit_comment_layout">#f4f4f4</color>
     <color name="join_background">#f4f4f4</color>
+    <color name="survey_backgroud">#f4f4f4</color>
     <color name="tag_text_color">#d94755</color>
+    <color name="indicator_color">#d94755</color>
+    <color name="indicator_stroke_color">#ea8592</color>
+    <color name="indicator_background">#F0D79A</color>
 </resources>

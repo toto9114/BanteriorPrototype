@@ -31,7 +31,7 @@
         android:layout_alignLeft="@+id/btn_login"
         android:layout_alignStart="@+id/btn_login"
         android:nextFocusDown="@+id/edit_password"
-        android:text="jihoon90@naver.com" />
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:layout_width="@dimen/login_text_width"
@@ -47,7 +47,7 @@
         android:layout_alignStart="@+id/edit_id"
         android:layout_alignRight="@+id/edit_id"
         android:layout_alignEnd="@+id/edit_id"
-        android:text="1234567" />
+        android:inputType="textPassword" />
 
     <Button
         android:layout_width="@dimen/login_btn_width"

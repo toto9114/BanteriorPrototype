@@ -1,6 +1,7 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -131,6 +132,20 @@ public class DetailInteriorFragment extends Fragment {
             }
         });
         Glide.with(getContext()).load(interiorContentData.interiorImage).into(interiorView);
+
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "방테리어\n");
+                intent.putExtra(Intent.EXTRA_TEXT, "방테리어로 초대합니다");
+                intent.setPackage("com.kakao.talk");
+
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

@@ -55,6 +55,7 @@ public class RentalActivity extends AppCompatActivity{
                 @Override
                 public void onSuccess(Request request, InteriorResult result) {
                     mAdapter.setInterior(result.detailData);
+                    mAdapter.setPrice(result.detailData.month_price);
                     mAdapter.addAll(result.detailData.productDataList);
                     orderView.setAdapter(mAdapter);
                 }
@@ -108,5 +109,4 @@ public class RentalActivity extends AppCompatActivity{
     public void setDate(int year, int month){
         mAdapter.setDate(year,month);
     }
-
 }

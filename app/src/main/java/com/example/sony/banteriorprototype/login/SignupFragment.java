@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
 import com.example.sony.banteriorprototype.main.MainActivity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Request;
 
@@ -42,7 +45,8 @@ public class SignupFragment extends Fragment {
     EditText passwordView;
     CheckBox serviceCheck, personalCheck;
     TextView serviceView, personalView;
-
+    TextView idWarning;
+    Button agreeBtn;
     boolean[] check = {false, false};
 
     @Override
@@ -56,12 +60,18 @@ public class SignupFragment extends Fragment {
         passwordView = (EditText) view.findViewById(R.id.edit_password);
         serviceCheck = (CheckBox) view.findViewById(R.id.check_service);
         personalCheck = (CheckBox) view.findViewById(R.id.check_personal_info);
-
+        idWarning = (TextView)view.findViewById(R.id.text_possible_email);
+        agreeBtn = (Button) view.findViewById(R.id.btn_agree);
 
         serviceCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 check[AgreementActivity.SERVICE_CHECK] = isChecked;
+                if(serviceCheck.isChecked() && personalCheck.isChecked()){
+                    agreeBtn.setEnabled(true);
+                }else {
+                    agreeBtn.setEnabled(false);
+                }
             }
         });
 
@@ -69,6 +79,11 @@ public class SignupFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 check[AgreementActivity.PERSONAL_CHECK] = isChecked;
+                if(serviceCheck.isChecked() && personalCheck.isChecked()){
+                    agreeBtn.setEnabled(true);
+                }else {
+                    agreeBtn.setEnabled(false);
+                }
             }
         });
 
@@ -97,45 +112,62 @@ public class SignupFragment extends Fragment {
             }
         });
 
-        Button btn = (Button) view.findViewById(R.id.btn_agree);
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        agreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email = idView.getText().toString();
                 String name = nameView.getText().toString();
                 String password = passwordView.getText().toString();
-                NetworkManager.getInstance().signupUser(getContext(), name, email, password, new NetworkManager.OnResultListener<PostTypeResult>() {
-                    @Override
-                    public void onSuccess(Request request, PostTypeResult result) {
-                        if (result.error == null) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setMessage(result.result.message)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            startActivity(new Intent(getContext(), MainActivity.class));
-                                            getActivity().finish();
-                                        }
-                                    }).show();
-                        }
-                    }
+                if(checkEmail(email)) {
+                    idWarning.setText(R.string.possible_id);
+                    if(password.length() > 6) {
+                        NetworkManager.getInstance().signupUser(getContext(), name, email, password, new NetworkManager.OnResultListener<PostTypeResult>() {
+                            @Override
+                            public void onSuccess(Request request, PostTypeResult result) {
+                                if (result.error == null) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setMessage(result.result.message)
+                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    startActivity(new Intent(getContext(), MainActivity.class));
+                                                    getActivity().finish();
+                                                }
+                                            }).show();
+                                }
+                            }
 
-                    @Override
-                    public void onFailure(Request request, int code, Throwable cause) {
+                            @Override
+                            public void onFailure(Request request, int code, Throwable cause) {
 
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getContext(),R.string.warning_password,Toast.LENGTH_SHORT).show();
                     }
-                });
+                }else {
+                    idWarning.setText(R.string.warning_id);
+                }
             }
         });
         return view;
     }
 
+    private boolean checkEmail(String email)
+
+    {
+        String mail = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+        Pattern p = Pattern.compile(mail);
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Log.i("AgreementActivity", "0");
             boolean[] result = data.getBooleanArrayExtra(AgreementActivity.RESULT_DATA);
 
             serviceCheck.setChecked(result[AgreementActivity.SERVICE_CHECK]);

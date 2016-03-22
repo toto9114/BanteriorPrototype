@@ -8,9 +8,14 @@
 
 
     <RelativeLayout
-        android:layout_width="@dimen/sign_up_whole_width"
-        android:layout_height="@dimen/sign_up_whole_height"
-        android:background="@color/join_background">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:id="@+id/image_logo"
@@ -35,7 +40,8 @@
             android:layout_marginRight="@dimen/sign_up_margin_left"
             android:background="@drawable/textfield_join"
             android:layout_marginTop="@dimen/edit_id_margin_top"
-            android:paddingLeft="@dimen/sigh_up_padding_left" />
+            android:paddingLeft="@dimen/sigh_up_padding_left"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/edit_name"
@@ -51,7 +57,8 @@
             android:layout_marginLeft="@dimen/sign_up_margin_left"
             android:layout_marginRight="@dimen/sign_up_margin_left"
             android:background="@drawable/textfield_join"
-            android:paddingLeft="@dimen/sigh_up_padding_left" />
+            android:paddingLeft="@dimen/sigh_up_padding_left"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/edit_password"
@@ -67,7 +74,8 @@
             android:layout_marginLeft="@dimen/sign_up_margin_left"
             android:layout_marginRight="@dimen/sign_up_margin_left"
             android:background="@drawable/textfield_join"
-            android:paddingLeft="@dimen/sigh_up_padding_left" />
+            android:paddingLeft="@dimen/sigh_up_padding_left"
+            android:inputType="textPassword" />
 
 
         <CheckBox
@@ -102,6 +110,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="@dimen/btn_join_normal_width"
             android:layout_height="@dimen/btn_join_normal_height"
+            android:enabled="false"
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/text_personal_info_agreement"
             android:layout_centerHorizontal="true"
@@ -136,8 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="사용가능한 이메일입니다."
-            android:id="@+id/possible_email"
+            android:id="@+id/text_possible_email"
             android:layout_below="@+id/edit_id"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"

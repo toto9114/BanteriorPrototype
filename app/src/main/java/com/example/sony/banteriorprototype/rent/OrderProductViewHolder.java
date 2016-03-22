@@ -15,17 +15,17 @@ import com.example.sony.banteriorprototype.data.ProductData;
  */
 public class OrderProductViewHolder extends RecyclerView.ViewHolder {
     ImageView productView;
-    TextView nameView;
+    TextView brandView,nameView;
     ImageView colorView;
-    TextView colorNameView;
+
     TextView priceView;
 
     public OrderProductViewHolder(View itemView) {
         super(itemView);
         productView = (ImageView)itemView.findViewById(R.id.image_product);
-        nameView = (TextView)itemView.findViewById(R.id.text_brand);
+        brandView = (TextView)itemView.findViewById(R.id.text_brand);
+        nameView = (TextView)itemView.findViewById(R.id.text_name);
         colorView = (ImageView)itemView.findViewById(R.id.image_color);
-        colorNameView = (TextView)itemView.findViewById(R.id.text_color);
         priceView = (TextView)itemView.findViewById(R.id.text_price);
     }
 
@@ -33,7 +33,10 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
     public void setData(ProductData data){
         this.data = data;
         Glide.with(MyApplication.getContext()).load(data.productImage).into(productView);
+        brandView.setText(data.brand);
         nameView.setText(data.name);
+        colorView.setBackgroundColor(Integer.parseInt(data.color));
+        priceView.setText(data.price);
     }
 
 }

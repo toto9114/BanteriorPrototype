@@ -28,14 +28,6 @@ public class ProductView extends FrameLayout {
     public ProductView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
-        siteLink.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener != null){
-                    onItemClickListener.onItemClick(v,data);
-                }
-            }
-        });
     }
 
     ImageView productView;
@@ -47,10 +39,18 @@ public class ProductView extends FrameLayout {
         productView = (ImageView)findViewById(R.id.image_product);
         brandView = (TextView)findViewById(R.id.text_brand);
         idView = (TextView)findViewById(R.id.text_id);
-        nameView = (TextView)findViewById(R.id.text_brand);
+        nameView = (TextView)findViewById(R.id.text_name);
         sizeView = (TextView)findViewById(R.id.text_size);
         colorView = (ImageView)findViewById(R.id.image_color_1);
         siteLink = (Button)findViewById(R.id.btn_link);
+        siteLink.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClickListener != null){
+                    onItemClickListener.onItemClick(v,data);
+                }
+            }
+        });
     }
 
     ProductData data;

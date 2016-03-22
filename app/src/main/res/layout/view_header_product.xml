@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="328dp"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:paddingTop="@dimen/order_title_vertical_margin"
-    android:paddingBottom="@dimen/order_title_vertical_margin">
+    android:paddingBottom="@dimen/order_title_vertical_margin"
+    android:paddingLeft="@dimen/order_other_layout_horizontal_margin"
+    android:paddingRight="@dimen/order_other_layout_horizontal_margin">
 
     <ImageView
         android:layout_width="@dimen/ic_cart_width"

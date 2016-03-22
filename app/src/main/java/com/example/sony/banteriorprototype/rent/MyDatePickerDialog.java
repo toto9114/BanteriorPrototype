@@ -12,6 +12,8 @@ import android.widget.NumberPicker;
 
 import com.example.sony.banteriorprototype.R;
 
+import java.util.Calendar;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -36,6 +38,19 @@ public class MyDatePickerDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_my_date_picker_dialog, container, false);
         yearPicker = (NumberPicker)view.findViewById(R.id.numberPicker_year);
         monthPicker = (NumberPicker)view.findViewById(R.id.numberPicker_month);
+
+        yearPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
+            @Override
+            public void onScrollStateChange(NumberPicker view, int scrollState) {
+                Calendar c = Calendar.getInstance();
+
+                if(view.getValue() == c.get(Calendar.YEAR)){
+                    monthPicker.setMinValue(c.get(Calendar.MONTH)+1);
+                }else {
+                    monthPicker.setMinValue(1);
+                }
+            }
+        });
         Button btn = (Button)view.findViewById(R.id.btn_cancel);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +70,12 @@ public class MyDatePickerDialog extends DialogFragment {
         return view;
     }
     private void initDate(){
-        yearPicker.setMinValue(2000);
-        yearPicker.setMaxValue(2018);
-        monthPicker.setMinValue(1);
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        yearPicker.setMinValue(year);
+        yearPicker.setMaxValue(year+10);
+        monthPicker.setMinValue(month+2);
         monthPicker.setMaxValue(12);
     }
 
