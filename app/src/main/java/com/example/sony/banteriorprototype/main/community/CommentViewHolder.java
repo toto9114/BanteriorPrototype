@@ -23,26 +23,32 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     TextView commentView;
     Button delButton;
     Context mContext;
+    boolean isMyPost =false;
     public CommentViewHolder(View itemView) {
         super(itemView);
         mContext = itemView.getContext();
         nameView = (TextView)itemView.findViewById(R.id.text_name);
         commentView = (TextView)itemView.findViewById(R.id.text_comment);
         delButton = (Button)itemView.findViewById(R.id.btn_delete);
-
         delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(itemClickListener != null){
-                    itemClickListener.onItemClick(v,getAdapterPosition());
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(v, getAdapterPosition());
                 }
             }
         });
     }
     CommentData data;
-    public void setComment(CommentData data){
+    public void setComment(CommentData data,boolean isMyPost){
         this.data = data;
         nameView.setText(data.username);
         commentView.setText(data.reply_content);
+        if(!isMyPost){
+            delButton.setVisibility(View.GONE);
+        }else {
+            delButton.setVisibility(View.VISIBLE);
+        }
     }
+
 }

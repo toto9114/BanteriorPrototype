@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -25,7 +26,8 @@ public class ResultActivity extends AppCompatActivity {
     private static final String COMMUNITY_DATA = "community";
     GridView resultView;
     SearchResultAdapter mAdapter;
-
+    boolean isLast = false;
+    String keyword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +38,13 @@ public class ResultActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.text_search);
 
         Intent intent = getIntent();
-        String keyword = intent.getStringExtra(EXTRA_MESSAGE);
+        keyword = intent.getStringExtra(EXTRA_MESSAGE);
         resultView = (GridView) findViewById(R.id.grid_search);
         mAdapter = new SearchResultAdapter();
         resultView.setAdapter(mAdapter);
 
         try {
-            NetworkManager.getInstance().getHashTagResult(this, keyword, new NetworkManager.OnResultListener<Search>() {
+            NetworkManager.getInstance().getHashTagResult(this, keyword,1, new NetworkManager.OnResultListener<Search>() {
                 @Override
                 public void onSuccess(Request request, Search result) {
                     mAdapter.clear();
@@ -74,6 +76,49 @@ public class ResultActivity extends AppCompatActivity {
                 }
             }
         });
+
+        resultView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    getMoreItem();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount > 0 && firstVisibleItem + visibleItemCount >= totalItemCount - 1) {
+                    isLast = true;
+                } else {
+                    isLast = false;
+                }
+            }
+        });
+    }
+
+    boolean isMoreData = false;
+    private void getMoreItem(){
+        if(isMoreData) return;
+        isMoreData = true;
+
+        int page = mAdapter.getCurrentPage()+1;
+        mAdapter.setCurrentPage(page);
+        try {
+            NetworkManager.getInstance().getHashTagResult(this, keyword, 1, new NetworkManager.OnResultListener<Search>() {
+                @Override
+                public void onSuccess(Request request, Search result) {
+                    mAdapter.addAll(result.result.postData.postList);
+                    isMoreData = false;
+                }
+
+                @Override
+                public void onFailure(Request request, int code, Throwable cause) {
+                    isMoreData = false;
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

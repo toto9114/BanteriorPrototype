@@ -50,6 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
     }
 
     int year, month;
+    Calendar a = Calendar.getInstance();
 
     public void setDate(int year, int month) {
         this.year = year;
@@ -118,8 +119,12 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                     cardBtn = (Button) footerView.findViewById(R.id.btn_card);
                     phoneBtn = (Button) footerView.findViewById(R.id.btn_phone);
                     checkBtn = (Button) footerView.findViewById(R.id.btn_check);
+                    Calendar c= Calendar.getInstance();
+                    year = c.get(Calendar.YEAR);
+                    month = c.get(Calendar.MONTH)+2;
                 }
                 OrderProductOtherViewHolder holder = new OrderProductOtherViewHolder(footerView);
+                holder.setPrice(price);
                 holder.setOnItemClickListener(this);
                 return holder;
         }
@@ -173,7 +178,6 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                 return;
             case VIEW_FOOTER:
                 ((OrderProductOtherViewHolder) holder).setDate(year, month);
-                ((OrderProductOtherViewHolder) holder).setPrice(price);
                 return;
         }
     }

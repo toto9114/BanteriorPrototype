@@ -60,11 +60,13 @@ public class PropertyManager {
 	}
 
 	public int getId(){
-		return mPrefs.getInt(FIELD_LOCAL_ID,-1);
+		return mPrefs.getInt(FIELD_ID,-1);
 	}
+
+
 	private static final String FIELD_LOCAL_ID = "Local_Id";
 	public void setLocalId(String id){
-		mEditor.putString(FIELD_ID, id);
+		mEditor.putString(FIELD_LOCAL_ID, id);
 		mEditor.commit();
 	}
 

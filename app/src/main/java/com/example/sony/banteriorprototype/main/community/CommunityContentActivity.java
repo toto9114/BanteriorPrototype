@@ -43,6 +43,8 @@ public class CommunityContentActivity extends AppCompatActivity {
     int postId;
     String file;
     boolean isScrap;
+    boolean isMyPost = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +61,16 @@ public class CommunityContentActivity extends AppCompatActivity {
                 startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
             }
         });
-        scrapView = (Button)findViewById(R.id.btn_scrap);
+        scrapView = (Button) findViewById(R.id.btn_scrap);
 
         Intent intent = getIntent();
         postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
         file = intent.getStringExtra(EXTRA_FILE);
 
-        if(intent.getIntExtra(EXTRA_IS_SCRAP_MESSAGE,0) == 0){
+        if (intent.getIntExtra(EXTRA_IS_SCRAP_MESSAGE, 0) == 0) {
             isScrap = false;
             scrapView.setSelected(false);
-        }else {
+        } else {
             isScrap = true;
             scrapView.setSelected(true);
         }
@@ -87,8 +89,8 @@ public class CommunityContentActivity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.btn_edit:
                         Intent i = new Intent(new Intent(CommunityContentActivity.this, WriteActivity.class));
-                        i.putExtra(WriteActivity.EXTRA_COMMUNITY_CONTENT_MESSAGE,postId);
-                        i.putExtra(WriteActivity.EXTRA_FILE,file);
+                        i.putExtra(WriteActivity.EXTRA_COMMUNITY_CONTENT_MESSAGE, postId);
+                        i.putExtra(WriteActivity.EXTRA_FILE, file);
                         startActivity(i);
                         break;
                     case R.id.btn_delete:
@@ -98,7 +100,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(CommunityContentActivity.this,"click",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CommunityContentActivity.this, "click", Toast.LENGTH_SHORT).show();
                                         NetworkManager.getInstance().delPost(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<PostTypeResult>() {
                                             @Override
                                             public void onSuccess(Request request, PostTypeResult result) {
@@ -108,7 +110,7 @@ public class CommunityContentActivity extends AppCompatActivity {
 
                                             @Override
                                             public void onFailure(Request request, int code, Throwable cause) {
-                                                Toast.makeText(CommunityContentActivity.this , "error",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(CommunityContentActivity.this, "error", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }
@@ -214,7 +216,7 @@ public class CommunityContentActivity extends AppCompatActivity {
         scrapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isScrap){
+                if (isScrap) {
                     NetworkManager.getInstance().undoScrap(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<PostTypeResult>() {
                         @Override
                         public void onSuccess(Request request, PostTypeResult result) {
@@ -228,8 +230,7 @@ public class CommunityContentActivity extends AppCompatActivity {
 
                         }
                     });
-                }
-                else {
+                } else {
                     NetworkManager.getInstance().doScrap(CommunityContentActivity.this, postId, new NetworkManager.OnResultListener<PostTypeResult>() {
                         @Override
                         public void onSuccess(Request request, PostTypeResult result) {
@@ -246,6 +247,7 @@ public class CommunityContentActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         NetworkManager.getInstance().getCommunityPost(this, postId, new NetworkManager.OnResultListener<CommunityResult>() {
             @Override

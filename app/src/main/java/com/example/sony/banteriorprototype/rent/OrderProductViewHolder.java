@@ -1,5 +1,7 @@
 package com.example.sony.banteriorprototype.rent;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,7 +37,9 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
         Glide.with(MyApplication.getContext()).load(data.productImage).into(productView);
         brandView.setText(data.brand);
         nameView.setText(data.name);
-        colorView.setBackgroundColor(Integer.parseInt(data.color));
+        GradientDrawable gd = (GradientDrawable)colorView.getDrawable();
+        gd.setColor(Color.parseColor(data.color));
+//        colorView.setBackgroundColor(Color.parseColor(data.color));
         priceView.setText(data.price);
     }
 

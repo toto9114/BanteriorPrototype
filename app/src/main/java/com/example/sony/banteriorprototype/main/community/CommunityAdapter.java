@@ -28,6 +28,15 @@ public class CommunityAdapter extends BaseAdapter {
         items.clear();
         notifyDataSetChanged();
     }
+
+    int page=1;
+    public void setCurrentPage(int page){
+        this.page = page;
+    }
+    public int getCurrentPage(){
+        return page;
+    }
+
     @Override
     public int getCount() {
         return items.size();

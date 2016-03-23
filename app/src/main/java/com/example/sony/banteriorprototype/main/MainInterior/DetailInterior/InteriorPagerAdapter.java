@@ -26,6 +26,14 @@ public class InteriorPagerAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
+    int page=1;
+    public void setCurrentPage(int page){
+        this.page = page;
+    }
+    public int getCurrentPage(){
+        return page;
+    }
+
     public InteriorContentData getInterior(int position){
         return items.get(position);
     }

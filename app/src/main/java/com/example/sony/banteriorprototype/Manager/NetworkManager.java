@@ -580,9 +580,9 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_COMMUNITY_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=community&page=1";
-    public Request getCommunityPostList(Context context, final OnResultListener<CommunityResult> listener) {
-        String url = String.format(GET_COMMUNITY_LIST_URL);
+    private static final String GET_COMMUNITY_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=community&page=%s";
+    public Request getCommunityPostList(Context context, int page, final OnResultListener<CommunityResult> listener) {
+        String url = String.format(GET_COMMUNITY_LIST_URL,page);
 
         final CallbackObject<CommunityResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -645,10 +645,10 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_INTERIOR_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=%s&page=1";
-    public Request getInteriorPostList(Context context, String category, final OnResultListener<InteriorResult> listener) throws UnsupportedEncodingException {
+    private static final String GET_INTERIOR_LIST_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/posts?category=%s&page=%s";
+    public Request getInteriorPostList(Context context, String category, int page ,final OnResultListener<InteriorResult> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(GET_INTERIOR_LIST_URL,URLEncoder.encode(category,"utf-8"));
+        String url = String.format(GET_INTERIOR_LIST_URL,URLEncoder.encode(category,"utf-8"),page);
 
         final CallbackObject<InteriorResult> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)
@@ -678,10 +678,10 @@ public class NetworkManager {
         return request;
     }
 
-    private static final String GET_HASHTAG_RESULT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/tags?tag=%s&page=1";
-    public Request getHashTagResult(Context context, String keyword, final OnResultListener<Search> listener) throws UnsupportedEncodingException {
+    private static final String GET_HASHTAG_RESULT_URL = "http://ec2-52-79-116-69.ap-northeast-2.compute.amazonaws.com/tags?tag=%s&page=%s";
+    public Request getHashTagResult(Context context, String keyword,int page, final OnResultListener<Search> listener) throws UnsupportedEncodingException {
 
-        String url = String.format(GET_HASHTAG_RESULT_URL, URLEncoder.encode(keyword, "utf-8"));
+        String url = String.format(GET_HASHTAG_RESULT_URL, URLEncoder.encode(keyword, "utf-8"),page);
 
         final CallbackObject<Search> callbackObject = new CallbackObject<>();
         Request request = new Request.Builder().url(url)

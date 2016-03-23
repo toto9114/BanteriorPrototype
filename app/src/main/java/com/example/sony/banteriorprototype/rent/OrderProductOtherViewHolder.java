@@ -99,14 +99,16 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         yearView.setText(""+c.get(Calendar.YEAR));
         monthView.setText(""+c.get(Calendar.MONTH));
     }
-
+    int price;
     public void setPrice(int price){
+        this.price = price;
         priceView.setText(""+price);
     }
     int year, month;
 
     private static final int DEPOSIT_PRICE = 50000;
     private static final int FEE_PRICE = 20000;
+    private static final String TEXT_FIELD_PRICE = "상품금액";
     public void setDate(int year, int month) {
         this.year = year;
         this.month = month;
@@ -114,10 +116,10 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         monthView.setText("" + month);
         Calendar c = Calendar.getInstance();
         int diff = (year- c.get(Calendar.YEAR))*12 + (month-c.get(Calendar.MONTH));
-        int price = Integer.parseInt(priceView.getText().toString());
-        fieldPrice.setText(fieldPrice.getText().toString()+"(x"+diff+"개월)");
-        priceView.setText(price*diff);
+        fieldPrice.setText("");
+        fieldPrice.setText(TEXT_FIELD_PRICE+"(x"+diff+"개월)");
+        priceView.setText(""+price*diff);
         int totalPrice = price*diff + DEPOSIT_PRICE + FEE_PRICE;
-        totalPriceVIew.setText(totalPrice);
+        totalPriceVIew.setText(""+totalPrice);
     }
 }

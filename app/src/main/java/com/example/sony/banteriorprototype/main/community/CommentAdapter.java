@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.sony.banteriorprototype.GCM.PropertyManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.CommentData;
 
@@ -60,7 +61,9 @@ public class CommentAdapter extends RecyclerView.Adapter implements OnItemClickL
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CommentViewHolder)holder).setComment(items.get(position));
+        int id = PropertyManager.getInstance().getId();
+        CommentData data = items.get(position);
+        ((CommentViewHolder) holder).setComment(data, data.userid==id);
     }
 
     @Override

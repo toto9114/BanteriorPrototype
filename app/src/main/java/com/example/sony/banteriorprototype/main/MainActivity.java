@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
         if(!isBackPressed){
-            Toast.makeText(this,"",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.back_pressed_message,Toast.LENGTH_SHORT).show();
             isBackPressed = true;
             mHandler.sendEmptyMessageDelayed(MESSAGE_BACK_KEY_TIMEOUT, BACK_KEY_TIME);
         }

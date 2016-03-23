@@ -1,6 +1,8 @@
 package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -61,6 +63,7 @@ public class ProductView extends FrameLayout {
         idView.setText(data.productId);
         nameView.setText(data.name);
         sizeView.setText(data.size);
-        colorView.setBackgroundColor(Integer.parseInt(data.color));
+        GradientDrawable gd = (GradientDrawable)colorView.getDrawable();
+        gd.setColor(Color.parseColor(data.color));
     }
 }

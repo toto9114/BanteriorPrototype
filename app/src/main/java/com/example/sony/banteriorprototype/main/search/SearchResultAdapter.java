@@ -4,7 +4,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.sony.banteriorprototype.data.Mypage.ThumbnailData;
 import com.example.sony.banteriorprototype.data.Search.SearchContentData;
 import com.example.sony.banteriorprototype.main.community.ThumbnailView;
 
@@ -26,6 +25,15 @@ public class SearchResultAdapter extends BaseAdapter {
         items.clear();
         notifyDataSetChanged();
     }
+
+    int page=1;
+    public void setCurrentPage(int page){
+        this.page = page;
+    }
+    public int getCurrentPage(){
+        return page;
+    }
+
     @Override
     public int getCount() {
         return items.size();

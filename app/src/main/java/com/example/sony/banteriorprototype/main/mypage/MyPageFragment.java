@@ -46,7 +46,7 @@ public class MyPageFragment extends Fragment {
     public MyPageFragment() {
         // Required empty public constructor
     }
-
+    private static final String COMMUNITY_DATA = "community";
     private static final int PICK_IMAGE = 0;
     ImageView profileView;
     TextView nameView, scrapView, myPostView;
@@ -82,17 +82,17 @@ public class MyPageFragment extends Fragment {
         });
 
 
-        NetworkManager.getInstance().getMypage(getContext(), new NetworkManager.OnResultListener<MyProfileData>() {
-            @Override
-            public void onSuccess(Request request, MyProfileData result) {
-                setMyPage(result);
-            }
-
-            @Override
-            public void onFailure(Request request, int code, Throwable cause) {
-
-            }
-        });
+//        NetworkManager.getInstance().getMypage(getContext(), new NetworkManager.OnResultListener<MyProfileData>() {
+//            @Override
+//            public void onSuccess(Request request, MyProfileData result) {
+//                setMyPage(result);
+//            }
+//
+//            @Override
+//            public void onFailure(Request request, int code, Throwable cause) {
+//
+//            }
+//        });
 
         NetworkManager.getInstance().getMyScrap(getActivity(), new NetworkManager.OnResultListener<MyPageScrap>() {
             @Override
@@ -109,7 +109,7 @@ public class MyPageFragment extends Fragment {
 
         tabLayout.addTab(tabLayout.newTab().setText("스크랩"), 0, true);
         tabLayout.addTab(tabLayout.newTab().setText("내가 쓴 글"), 1);
-        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_select_text));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(),R.color.tab_select_text));
         tabLayout.setTabTextColors(ContextCompat.getColor(getContext(), R.color.tab_unselect_text),
                 ContextCompat.getColor(getContext(), R.color.tab_select_text));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -169,10 +169,16 @@ public class MyPageFragment extends Fragment {
                 switch (tabLayout.getSelectedTabPosition()) {
                     case 0:
                         ScrapData interiorData = (ScrapData) gridView.getItemAtPosition(position);
-                        Intent intent = new Intent(getContext(), InteriorActivity.class);
-                        intent.putExtra(InteriorActivity.EXTRA_POST_ID_MESSAGE, interiorData.post_id);
-                        intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE, interiorData.category);
-                        startActivity(intent);
+                        if(interiorData.category.equals(COMMUNITY_DATA)){
+                            Intent i = new Intent(getContext(), CommunityContentActivity.class);
+                            i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,interiorData.post_id);
+                            startActivity(i);
+                        }else {
+                            Intent intent = new Intent(getContext(), InteriorActivity.class);
+                            intent.putExtra(InteriorActivity.EXTRA_POST_ID_MESSAGE, interiorData.post_id);
+                            intent.putExtra(InteriorActivity.EXTRA_CATEGORY_MESSAGE, interiorData.category);
+                            startActivity(intent);
+                        }
                         break;
                     case 1:
                         MyPostData data = (MyPostData) gridView.getItemAtPosition(position);

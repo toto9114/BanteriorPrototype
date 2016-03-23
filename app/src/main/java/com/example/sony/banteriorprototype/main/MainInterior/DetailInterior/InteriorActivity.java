@@ -78,7 +78,7 @@ public class InteriorActivity extends AppCompatActivity {
             }
         }
         try {
-            NetworkManager.getInstance().getInteriorPostList(this, category, new NetworkManager.OnResultListener<InteriorResult>() {
+            NetworkManager.getInstance().getInteriorPostList(this, category,1, new NetworkManager.OnResultListener<InteriorResult>() {
                 @Override
                 public void onSuccess(Request request, InteriorResult result) {
                     imageAdapter.addAll(result.postData.interiorList);
@@ -194,10 +194,11 @@ public class InteriorActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, ProductData data) {
                 Uri uri = Uri.parse(data.link);
-                Intent intent  = new Intent(Intent.ACTION_VIEW,uri);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
         });
+
     }
 
 

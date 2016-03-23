@@ -19,6 +19,24 @@ public class DetailInteriorAdapter extends BaseAdapter {
         items.add(data);
         notifyDataSetChanged();
     }
+
+    public void addAll(List<InteriorContentData> list){
+        items.addAll(list);
+        notifyDataSetChanged();
+    }
+    public void clear(){
+        items.clear();
+        notifyDataSetChanged();
+    }
+    int page=1;
+    public void setCurrentPage(int page){
+        this.page = page;
+    }
+    public int getCurrentPage(){
+        return page;
+    }
+
+
     @Override
     public int getCount() {
         return items.size();

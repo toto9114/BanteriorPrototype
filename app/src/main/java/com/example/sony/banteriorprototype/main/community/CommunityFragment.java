@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -31,6 +32,7 @@ public class CommunityFragment extends Fragment {
 
     GridView gridView;
     CommunityAdapter mAdapter;
+    boolean isLast = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,32 +56,59 @@ public class CommunityFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(),WriteActivity.class);
+                Intent intent = new Intent(getContext(), WriteActivity.class);
                 startActivity(intent);
             }
         });
 
-        NetworkManager.getInstance().getCommunityPostList(getContext(), new NetworkManager.OnResultListener<CommunityResult>() {
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    getMoreItem();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount > 0 && firstVisibleItem + visibleItemCount >= totalItemCount - 1) {
+                    isLast = true;
+                } else {
+                    isLast = false;
+                }
+            }
+        });
+        return view;
+    }
+    boolean isMoreData = false;
+    private void getMoreItem(){
+        if(isMoreData) return;
+        isMoreData = true;
+
+        int page = mAdapter.getCurrentPage()+1;
+        mAdapter.setCurrentPage(page);
+        NetworkManager.getInstance().getCommunityPostList(getContext(), page, new NetworkManager.OnResultListener<CommunityResult>() {
             @Override
             public void onSuccess(Request request, CommunityResult result) {
                 mAdapter.addAll(result.communityData.communityList);
+
+                isMoreData =false;
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-
+                isMoreData=false;
             }
         });
-        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mAdapter.clear();
-        NetworkManager.getInstance().getCommunityPostList(getContext(), new NetworkManager.OnResultListener<CommunityResult>() {
+        NetworkManager.getInstance().getCommunityPostList(getContext(),1, new NetworkManager.OnResultListener<CommunityResult>() {
             @Override
             public void onSuccess(Request request, CommunityResult result) {
+                mAdapter.clear();
                 mAdapter.addAll(result.communityData.communityList);
             }
 
