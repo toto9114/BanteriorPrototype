@@ -37,13 +37,13 @@ public class CommunityContentActivity extends AppCompatActivity {
     CommentAdapter mAdapter;
     CommunityToolbar communityToolbar;
     Button scrapView, shareView;
+    TextView nameView, hashTagView;
     public static final String EXTRA_POSTID_MESSAGE = "postid";
     public static final String EXTRA_IS_SCRAP_MESSAGE = "isScrap";
     public static final String EXTRA_FILE = "file";
     int postId;
     String file;
     boolean isScrap;
-    boolean isMyPost = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +61,12 @@ public class CommunityContentActivity extends AppCompatActivity {
                 startActivity(new Intent(CommunityContentActivity.this, WriteActivity.class));
             }
         });
+        nameView = (TextView)findViewById(R.id.text_name);
+        hashTagView = (TextView)findViewById(R.id.text_hash_tag);
+
         scrapView = (Button) findViewById(R.id.btn_scrap);
         shareView = (Button)findViewById(R.id.btn_share);
+
         Intent intent = getIntent();
         postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
         file = intent.getStringExtra(EXTRA_FILE);
@@ -270,6 +274,13 @@ public class CommunityContentActivity extends AppCompatActivity {
                 Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
                 scrapCountView.setText("" + result.communityDetails.scrap_count);
                 communityToolbar.setToolbar(result.communityDetails);
+                nameView.setText(result.communityDetails.username);
+                StringBuilder sb = new StringBuilder();
+                for(String s : result.communityDetails.hash_tag){
+                    sb.append(s);
+                    sb.append(" ");
+                }
+                hashTagView.setText(sb.toString());
                 mAdapter.addAll(result.communityDetails.reply);
             }
 

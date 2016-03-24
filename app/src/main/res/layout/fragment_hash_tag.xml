@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/relativ_flowlayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/flowlayout_height"
+        android:layout_height="wrap_content"
         android:background="#f4f4f4"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
@@ -17,7 +17,7 @@
         <com.wefika.flowlayout.FlowLayout
             android:id="@+id/flowlayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/flowlayout_height"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true" />
@@ -52,7 +52,9 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:background="@drawable/textfield"
-            android:hint="@string/desc_hash_tag" />
+            android:hint="@string/desc_hash_tag"
+            android:paddingLeft="5dp"
+            android:textSize="13sp" />
 
     </LinearLayout>
 </RelativeLayout>

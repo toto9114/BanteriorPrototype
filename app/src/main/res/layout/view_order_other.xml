@@ -333,7 +333,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
         <TextView
@@ -382,28 +381,42 @@
             android:id="@+id/text_fee"
             app:layout_columnWeight = "3"
             app:layout_gravity="right" />
+    </android.support.v7.widget.GridLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_total"
+        android:layout_below="@+id/android.support.v7.widget.GridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="#ee9da8"
+        android:layout_marginBottom="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="총 결제 금액"
             android:id="@+id/textView19"
-            app:layout_columnWeight = "0"/>
+            android:textColor="#ffffff" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="0"
             android:id="@+id/text_total_price"
-            app:layout_columnWeight = "3"
-            app:layout_gravity="right" />
-    </android.support.v7.widget.GridLayout>
+            app:layout_gravity="right"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:textColor="#ffffff" />
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/android.support.v7.widget.GridLayout"
+        android:layout_below="@+id/linear_total"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout"

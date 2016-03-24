@@ -131,7 +131,8 @@ public class SignupFragment extends Fragment {
                                 if (result.error == null) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                     builder.setMessage(result.result.message)
-                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            .setIcon(R.drawable.bang_icon_48)
+                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     startActivity(new Intent(getContext(), LoginActivity.class));

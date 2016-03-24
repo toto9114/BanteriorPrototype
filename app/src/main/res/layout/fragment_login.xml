@@ -31,7 +31,8 @@
         android:layout_alignLeft="@+id/btn_login"
         android:layout_alignStart="@+id/btn_login"
         android:nextFocusDown="@+id/edit_password"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textSize="14sp" />
 
     <EditText
         android:layout_width="@dimen/login_text_width"
@@ -47,7 +48,8 @@
         android:layout_alignStart="@+id/edit_id"
         android:layout_alignRight="@+id/edit_id"
         android:layout_alignEnd="@+id/edit_id"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textSize="14sp" />
 
     <Button
         android:layout_width="@dimen/login_btn_width"
@@ -79,13 +81,14 @@
         android:layout_height="wrap_content"
         android:text="@string/text_signup_suggest"
         android:id="@+id/text_suggest"
-       />
+        android:textColor="#d94856" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_signup"
-        android:id="@+id/text_signup" />
+        android:id="@+id/text_signup"
+        android:textColor="#d94856" />
     </LinearLayout>
 
 </RelativeLayout>

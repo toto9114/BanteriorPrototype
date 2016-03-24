@@ -54,7 +54,7 @@
     <string name="order_phone">연락처</string>
     <string name="order_address">배송지</string>
     <string name="comment_hint">댓글을 입력해주세요</string>
-    <string name="write_fragment_hint">소품명과 브랜드정보를 입력해주세요. 사진은 최대 1개까지 업로드할 수 있습니다.</string>
+    <string name="write_fragment_hint">소품명과 브랜드정보를 입력해주세요.\n사진은 최대 1개까지 업로드할 수 있습니다.</string>
     <string name="warning_password">비밀번호 7자리 이상 입력해주세요</string>
     <string name="possible_id">사용가능한 이메일입니다.</string>
     <string name="warning_id">올바르지 않은 이메일 형식입니다.</string>

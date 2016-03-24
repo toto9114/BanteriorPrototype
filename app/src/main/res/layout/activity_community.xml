@@ -92,13 +92,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scrap"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:textColor="#f0d59c" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/text_scrap_count"
+                android:textColor="#f0d59c" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/linear_content"
+            android:layout_below="@+id/linear_scrap_count"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/text_scrap_count"/>
+                android:id="@+id/text_name"
+                android:textStyle="bold"
+                android:textColor="#f0d59c" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:layout_weight="1"
+                android:id="@+id/text_hash_tag"
+                android:layout_marginLeft="@dimen/comment_left_margin"
+                android:textColor="#d94755" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -123,7 +152,8 @@
                 android:background="@drawable/textfield"
                 android:layout_gravity="center_vertical"
                 android:hint="@string/comment_hint"
-                android:paddingLeft="@dimen/edit_comment_left_padding" />
+                android:paddingLeft="@dimen/edit_comment_left_padding"
+                android:textSize="14sp" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -148,7 +178,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:id="@+id/recycler_comment"
-            android:layout_below="@+id/linear_scrap_count"
+            android:layout_below="@+id/linear_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"

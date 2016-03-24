@@ -94,18 +94,18 @@ public class MyPageFragment extends Fragment {
 //            }
 //        });
 
-        NetworkManager.getInstance().getMyScrap(getActivity(), new NetworkManager.OnResultListener<MyPageScrap>() {
-            @Override
-            public void onSuccess(Request request, MyPageScrap result) {
-                scrapAdapter.clear();
-                scrapAdapter.addAll(result.result.scrapData.postList);
-            }
-
-            @Override
-            public void onFailure(Request request, int code, Throwable cause) {
-
-            }
-        });
+//        NetworkManager.getInstance().getMyScrap(getActivity(), new NetworkManager.OnResultListener<MyPageScrap>() {
+//            @Override
+//            public void onSuccess(Request request, MyPageScrap result) {
+//                scrapAdapter.clear();
+//                scrapAdapter.addAll(result.result.scrapData.postList);
+//            }
+//
+//            @Override
+//            public void onFailure(Request request, int code, Throwable cause) {
+//
+//            }
+//        });
 
         tabLayout.addTab(tabLayout.newTab().setText("스크랩"), 0, true);
         tabLayout.addTab(tabLayout.newTab().setText("내가 쓴 글"), 1);
@@ -171,6 +171,7 @@ public class MyPageFragment extends Fragment {
                         ScrapData interiorData = (ScrapData) gridView.getItemAtPosition(position);
                         if(interiorData.category.equals(COMMUNITY_DATA)){
                             Intent i = new Intent(getContext(), CommunityContentActivity.class);
+                            i.putExtra(CommunityContentActivity.EXTRA_IS_SCRAP_MESSAGE,1);
                             i.putExtra(CommunityContentActivity.EXTRA_POSTID_MESSAGE,interiorData.post_id);
                             startActivity(i);
                         }else {

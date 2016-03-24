@@ -26,14 +26,16 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:textColor="#d94755"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignRight="@+id/edit_content"
+            android:layout_alignEnd="@+id/edit_content" />
 
         <ImageView
             android:id="@+id/image_load"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true" />
         <Button
             android:layout_width="@dimen/btn_image_cancel_size"
             android:layout_height="@dimen/btn_image_cancel_size"
@@ -41,7 +43,8 @@
             android:layout_toEndOf="@+id/image_load"
             android:layout_alignTop="@+id/image_load"
             android:background="@drawable/btn_image_cancle"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:id="@+id/btn_delete" />
 
         <EditText
             android:id="@+id/edit_content"
@@ -52,7 +55,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/image_load"
-            android:hint="@string/write_fragment_hint" />
+            android:background="@null"
+            android:hint="@string/write_fragment_hint"
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <LinearLayout

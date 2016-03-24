@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,9 +55,10 @@ public class WriteFragment extends Fragment {
     TextView hashTagView;
     File file;
     ImageView titleView;
-
+    Button delBtn;
     int postId = -1;
     String fileUrl;
+    boolean isShow = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,7 @@ public class WriteFragment extends Fragment {
         imageView = (ImageView)view.findViewById(R.id.image_load);
         contentView = (EditText)view.findViewById(R.id.edit_content);
         hashTagView = (TextView)view.findViewById(R.id.text_hash);
-
+        delBtn = (Button)view.findViewById(R.id.btn_delete);
         if(postId != -1){
             NetworkManager.getInstance().getCommunityPost(getContext(), postId, new NetworkManager.OnResultListener<CommunityResult>() {
                 @Override
@@ -103,6 +105,7 @@ public class WriteFragment extends Fragment {
                         }
                         hashTagView.setText(sb.toString());
                     }
+                    delBtn.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -135,7 +138,14 @@ public class WriteFragment extends Fragment {
         if(savedInstanceState != null){
             mFIleUri = savedInstanceState.getParcelable(SELECTED_URI);
         }
-
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView.setImageDrawable(null);
+                isShow =false;
+                delBtn.setVisibility(View.GONE);
+            }
+        });
         return view;
     }
 
@@ -176,10 +186,14 @@ public class WriteFragment extends Fragment {
             c.close();
             file = new File(path);
             Glide.with(this).load(selectedImageUri).into(imageView);
+            isShow = true;
+            delBtn.setVisibility(View.VISIBLE);
         }
         if(requestCode == PICK_CAPTURE){
             if(resultCode == Activity.RESULT_OK){
                 Glide.with(this).load(mFIleUri).into(imageView);
+                isShow = true;
+                delBtn.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -195,9 +209,13 @@ public class WriteFragment extends Fragment {
         int id = item.getItemId();
 
         if(id == R.id.regist_hash) {
-            ((WriteActivity)getActivity()).setContent(file,contentView.getText().toString());
-            ((WriteActivity)getActivity()).changeHashTag();
-            return true;
+            if(!TextUtils.isEmpty(contentView.getText().toString()) && isShow) {
+                ((WriteActivity) getActivity()).setContent(file, contentView.getText().toString());
+                ((WriteActivity) getActivity()).changeHashTag();
+                return true;
+            }else {
+                Toast.makeText(getContext(),"사진, 글 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
+            }
         }
         return false;
     }

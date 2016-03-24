@@ -91,13 +91,12 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onSuccess(Request request, CommunityResult result) {
                 mAdapter.addAll(result.communityData.communityList);
-
-                isMoreData =false;
+                isMoreData = false;
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-                isMoreData=false;
+                isMoreData = false;
             }
         });
     }

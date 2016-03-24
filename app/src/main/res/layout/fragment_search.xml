@@ -33,7 +33,8 @@
             android:imeOptions="actionSearch"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </RelativeLayout>

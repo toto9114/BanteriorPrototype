@@ -18,7 +18,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/check_service_top_margin"
-        android:checked="false" />
+        android:checked="false"
+        android:textColor="#d94856"
+        android:typeface="sans" />
 
     <ScrollView
         android:layout_width="@dimen/join_box_width"
@@ -34,7 +36,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/terms_of_service"
-            android:id="@+id/textView" />
+            android:id="@+id/textView"
+            android:textSize="9sp" />
     </ScrollView>
 
     <CheckBox
@@ -46,7 +49,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:checked="false"
-        android:layout_marginTop="@dimen/check_personal_top_margin" />
+        android:layout_marginTop="@dimen/check_personal_top_margin"
+        android:textColor="#d94856"
+        android:typeface="sans" />
 
     <ScrollView
         android:layout_width="@dimen/join_box_width"
@@ -61,7 +66,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/agreement_personal_info"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textSize="9sp"
+            android:typeface="sans" />
     </ScrollView>
 
 </RelativeLayout>

@@ -97,7 +97,7 @@ public class MyGcmListenerService extends GcmListenerService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setTicker("Reply Message")
                 .setSmallIcon(R.drawable.bang_icon_48)
-                .setContentTitle("Reply Message")
+                .setContentTitle("방테리어")
                 .setContentText(getString(R.string.message_reply))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
@@ -105,8 +105,8 @@ public class MyGcmListenerService extends GcmListenerService {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
     }
 
     private void sendNotificationRental() {
