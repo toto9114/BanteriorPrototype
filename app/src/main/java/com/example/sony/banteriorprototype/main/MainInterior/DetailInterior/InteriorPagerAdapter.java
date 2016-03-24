@@ -3,7 +3,7 @@ package com.example.sony.banteriorprototype.main.MainInterior.DetailInterior;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.sony.banteriorprototype.data.Interior.InteriorContentData;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by sony on 2016-02-23.
  */
-public class InteriorPagerAdapter extends FragmentStatePagerAdapter {
+public class InteriorPagerAdapter extends FragmentPagerAdapter {
     List<InteriorContentData> items = new ArrayList<>();
 
     public void add(InteriorContentData data){
@@ -47,7 +47,7 @@ public class InteriorPagerAdapter extends FragmentStatePagerAdapter {
         detailInteriorFragment = new DetailInteriorFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(DetailInteriorFragment.EXTRA_INTERIOR, items.get(position));
-        bundle.putInt(DetailInteriorFragment.EXTRA_POSTION,position);
+        bundle.putInt(DetailInteriorFragment.EXTRA_POSTION, position);
         detailInteriorFragment.setArguments(bundle);
         return detailInteriorFragment;
     }

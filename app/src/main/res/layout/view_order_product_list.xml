@@ -4,9 +4,16 @@
     android:layout_width="328dp"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:paddingLeft="@dimen/order_other_layout_horizontal_margin"
+    android:paddingRight="@dimen/order_other_layout_horizontal_margin">
 
+ <ImageView
+     android:id="@+id/divider"
+     android:layout_width="match_parent"
+     android:layout_alignParentTop="true"
+     android:layout_height="wrap_content"
+     android:src="@drawable/second_line" />
 
     <ImageView
         android:id="@+id/image_product"
@@ -14,16 +21,22 @@
         android:layout_height="@dimen/product_height"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_alignTop="@+id/linear_product_info"
+        android:layout_below="@+id/divider"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginRight="12dp" />
 
     <LinearLayout
+        android:id="@+id/linear_product_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/image_product"
         android:layout_toRightOf="@+id/image_product"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="5dp">
 
         <LinearLayout
             android:layout_width="wrap_content"

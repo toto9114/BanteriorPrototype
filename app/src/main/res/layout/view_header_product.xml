@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="328dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="328dp"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:paddingTop="@dimen/order_title_vertical_margin"
-    android:paddingBottom="@dimen/order_title_vertical_margin"
-    android:paddingLeft="@dimen/order_other_layout_horizontal_margin"
-    android:paddingRight="@dimen/order_other_layout_horizontal_margin">
+    android:background="@color/white">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/first_line"
+        android:layout_below="@+id/linear"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/order_title_vertical_margin"
+        android:paddingLeft="@dimen/order_other_layout_horizontal_margin"
+        android:paddingRight="@dimen/order_other_layout_horizontal_margin"
+        android:layout_marginBottom="7dp">
     <ImageView
         android:layout_width="@dimen/ic_cart_width"
         android:layout_height="@dimen/ic_cart_height"
@@ -28,4 +38,5 @@
         android:layout_toRightOf="@+id/image_address_icon"
         android:layout_toEndOf="@+id/image_address_icon"
         android:layout_gravity="center_vertical" />
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

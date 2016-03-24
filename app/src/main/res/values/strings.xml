@@ -200,4 +200,6 @@
 
 5.인테리어 소품을 묶어 월정액제 패키지로 임대할 수 있습니다.
 ]]></string>
+
+    <string name="warning_rental">주문정보를 다시 확인해주세요.</string>
 </resources>

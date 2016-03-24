@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by sony on 2016-03-02.
  */
-public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickListener {
+public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickListener,OnSearchClickListener {
     List<ProductData> items = new ArrayList<>();
 
     private static final int TITILE_COUNT = 1;
@@ -35,6 +35,18 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         itemClickListener = listener;
+    }
+
+    OnSearchClickListener searchClickListener;
+    public void setOnSearchClickListener(OnSearchClickListener listener){
+        searchClickListener = listener;
+    }
+
+    @Override
+    public void onSearchItemClick(View view) {
+        if(searchClickListener != null){
+            searchClickListener.onSearchItemClick(view);
+        }
     }
 
     @Override
@@ -57,7 +69,10 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
         this.month = month;
         notifyDataSetChanged();
     }
-
+    String address;
+    public void setAddress(String address){
+        this.address = address;
+    }
     public void add(ProductData data) {
         items.add(data);
         notifyDataSetChanged();
@@ -69,9 +84,10 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
     }
 
     InteriorContentData interiorContentData;
-
-    public void setInterior(InteriorContentData interiorContentData) {
+    String category;
+    public void setInterior(InteriorContentData interiorContentData,String category) {
         this.interiorContentData = interiorContentData;
+        this.category = category;
     }
     public InteriorContentData getInterior(){
         return  this.interiorContentData;
@@ -126,6 +142,7 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                 OrderProductOtherViewHolder holder = new OrderProductOtherViewHolder(footerView);
                 holder.setPrice(price);
                 holder.setOnItemClickListener(this);
+                holder.setOnSearchClickListener(this);
                 return holder;
         }
         return null;
@@ -148,7 +165,7 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
-        int diff = (this.year - year) * 12 + (this.month - month);
+        int diff = (this.year - year) * 12 + (this.month - month) -1;
         info.period = diff;
         if(cardBtn.isSelected()) {
             info.paymethod = method[0];
@@ -168,7 +185,7 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
         }
         switch (getItemViewType(position)) {
             case VIEW_TITLE:
-                ((OrderProductTitleViewHolder) holder).setTitle(interiorContentData);
+                ((OrderProductTitleViewHolder) holder).setTitle(interiorContentData,category);
                 return;
             case VIEW_PRODUCT_HEADER:
                 ((OrderProductHeaderViewHolder) holder).setHeader();
@@ -178,6 +195,8 @@ public class OrderAdapter extends RecyclerView.Adapter implements OnItemClickLis
                 return;
             case VIEW_FOOTER:
                 ((OrderProductOtherViewHolder) holder).setDate(year, month);
+                ((OrderProductOtherViewHolder) holder).setAddress(address);
+
                 return;
         }
     }

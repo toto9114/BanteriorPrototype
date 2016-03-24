@@ -36,7 +36,7 @@ public class CommunityContentActivity extends AppCompatActivity {
     EditText commentView;
     CommentAdapter mAdapter;
     CommunityToolbar communityToolbar;
-    Button scrapView;
+    Button scrapView, shareView;
     public static final String EXTRA_POSTID_MESSAGE = "postid";
     public static final String EXTRA_IS_SCRAP_MESSAGE = "isScrap";
     public static final String EXTRA_FILE = "file";
@@ -62,7 +62,7 @@ public class CommunityContentActivity extends AppCompatActivity {
             }
         });
         scrapView = (Button) findViewById(R.id.btn_scrap);
-
+        shareView = (Button)findViewById(R.id.btn_share);
         Intent intent = getIntent();
         postId = intent.getIntExtra(EXTRA_POSTID_MESSAGE, 0);
         file = intent.getStringExtra(EXTRA_FILE);
@@ -248,10 +248,25 @@ public class CommunityContentActivity extends AppCompatActivity {
             }
         });
 
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "방테리어\n");
+                intent.putExtra(Intent.EXTRA_TEXT, "방테리어로 초대합니다");
+                intent.setPackage("com.kakao.talk");
+
+                startActivity(intent);
+            }
+        });
+
 
         NetworkManager.getInstance().getCommunityPost(this, postId, new NetworkManager.OnResultListener<CommunityResult>() {
             @Override
             public void onSuccess(Request request, CommunityResult result) {
+                mAdapter.clear();
                 Glide.with(CommunityContentActivity.this).load(result.communityDetails.mainImage).into(interiorView);
                 scrapCountView.setText("" + result.communityDetails.scrap_count);
                 communityToolbar.setToolbar(result.communityDetails);

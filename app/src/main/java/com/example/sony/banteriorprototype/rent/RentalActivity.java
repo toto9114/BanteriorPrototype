@@ -1,11 +1,14 @@
 package com.example.sony.banteriorprototype.rent;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -54,7 +57,7 @@ public class RentalActivity extends AppCompatActivity{
             NetworkManager.getInstance().getInteriorPost(this, interiorContentData.post_id, interiorContentData.category, new NetworkManager.OnResultListener<InteriorResult>() {
                 @Override
                 public void onSuccess(Request request, InteriorResult result) {
-                    mAdapter.setInterior(result.detailData);
+                    mAdapter.setInterior(result.detailData ,interiorContentData.category);
                     mAdapter.setPrice(result.detailData.month_price);
                     mAdapter.addAll(result.detailData.productDataList);
                     orderView.setAdapter(mAdapter);
@@ -78,8 +81,22 @@ public class RentalActivity extends AppCompatActivity{
                 NetworkManager.getInstance().setOrder(RentalActivity.this, interiorContentData.post_id, info.address, info.phone, info.total_price, info.paymethod, info.period, new NetworkManager.OnResultListener<PostTypeResult>() {
                     @Override
                     public void onSuccess(Request request, PostTypeResult result) {
-                        Toast.makeText(RentalActivity.this,result.result.message,Toast.LENGTH_SHORT).show();
-                        finish();
+                        if(result.error!=null){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RentalActivity.this);
+                            builder.setIcon(R.drawable.bang_icon_48)
+                                    .setTitle("주문정보오류")
+                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .setMessage(R.string.warning_rental)
+                                    .show();
+                        }else {
+                            Toast.makeText(RentalActivity.this, result.result.message, Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
                     }
 
                     @Override
@@ -87,8 +104,6 @@ public class RentalActivity extends AppCompatActivity{
 
                     }
                 });
-                Toast.makeText(RentalActivity.this, getString(R.string.complete_payment), Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
 
@@ -105,8 +120,34 @@ public class RentalActivity extends AppCompatActivity{
             }
         });
 
+        mAdapter.setOnSearchClickListener(new OnSearchClickListener() {
+            @Override
+            public void onSearchItemClick(View view) {
+//                startActivityForResult(new Intent(RentalActivity.this, SearchAddressActivity.class), SearchAddressActivity.RC_CODE);
+            }
+        });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String address = data.getStringExtra("address");
+        mAdapter.setAddress(address);
+    }
+
     public void setDate(int year, int month){
         mAdapter.setDate(year,month);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return false;
     }
 }

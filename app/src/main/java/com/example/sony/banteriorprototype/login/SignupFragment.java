@@ -18,10 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sony.banteriorprototype.GCM.PropertyManager;
 import com.example.sony.banteriorprototype.Manager.NetworkManager;
 import com.example.sony.banteriorprototype.R;
 import com.example.sony.banteriorprototype.data.PostTypeResult;
-import com.example.sony.banteriorprototype.main.MainActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +47,7 @@ public class SignupFragment extends Fragment {
     TextView serviceView, personalView;
     TextView idWarning;
     Button agreeBtn;
+    String registrationToken, email, name, password;
     boolean[] check = {false, false};
 
     @Override
@@ -60,16 +61,16 @@ public class SignupFragment extends Fragment {
         passwordView = (EditText) view.findViewById(R.id.edit_password);
         serviceCheck = (CheckBox) view.findViewById(R.id.check_service);
         personalCheck = (CheckBox) view.findViewById(R.id.check_personal_info);
-        idWarning = (TextView)view.findViewById(R.id.text_possible_email);
+        idWarning = (TextView) view.findViewById(R.id.text_possible_email);
         agreeBtn = (Button) view.findViewById(R.id.btn_agree);
 
         serviceCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 check[AgreementActivity.SERVICE_CHECK] = isChecked;
-                if(serviceCheck.isChecked() && personalCheck.isChecked()){
+                if (serviceCheck.isChecked() && personalCheck.isChecked()) {
                     agreeBtn.setEnabled(true);
-                }else {
+                } else {
                     agreeBtn.setEnabled(false);
                 }
             }
@@ -79,9 +80,9 @@ public class SignupFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 check[AgreementActivity.PERSONAL_CHECK] = isChecked;
-                if(serviceCheck.isChecked() && personalCheck.isChecked()){
+                if (serviceCheck.isChecked() && personalCheck.isChecked()) {
                     agreeBtn.setEnabled(true);
-                }else {
+                } else {
                     agreeBtn.setEnabled(false);
                 }
             }
@@ -117,12 +118,13 @@ public class SignupFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String email = idView.getText().toString();
-                String name = nameView.getText().toString();
-                String password = passwordView.getText().toString();
-                if(checkEmail(email)) {
+                email = idView.getText().toString();
+                name = nameView.getText().toString();
+                password = passwordView.getText().toString();
+                registrationToken = PropertyManager.getInstance().getRegistrationToken();
+                if (checkEmail(email)) {
                     idWarning.setText(R.string.possible_id);
-                    if(password.length() > 6) {
+                    if (password.length() > 6) {
                         NetworkManager.getInstance().signupUser(getContext(), name, email, password, new NetworkManager.OnResultListener<PostTypeResult>() {
                             @Override
                             public void onSuccess(Request request, PostTypeResult result) {
@@ -132,7 +134,7 @@ public class SignupFragment extends Fragment {
                                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    startActivity(new Intent(getContext(), MainActivity.class));
+                                                    startActivity(new Intent(getContext(), LoginActivity.class));
                                                     getActivity().finish();
                                                 }
                                             }).show();
@@ -144,10 +146,10 @@ public class SignupFragment extends Fragment {
 
                             }
                         });
-                    }else{
-                        Toast.makeText(getContext(),R.string.warning_password,Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), R.string.warning_password, Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     idWarning.setText(R.string.warning_id);
                 }
             }
@@ -163,6 +165,7 @@ public class SignupFragment extends Fragment {
         Matcher m = p.matcher(email);
         return m.matches();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

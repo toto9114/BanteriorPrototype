@@ -80,30 +80,29 @@ public class DetailInteriorFragment extends Fragment {
 
     boolean isScrap= false;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_detail_interior, container, false);
         interiorView = (ImageView)view.findViewById(R.id.image_detail_interior);
+
         scrapView = (Button)view.findViewById(R.id.image_scrap);
         shareView = (ImageView)view.findViewById(R.id.image_share);
         if(interiorContentData.state ==0){
-            isScrap =false;
             scrapView.setSelected(false);
         }else {
-            isScrap = true;
             scrapView.setSelected(true);
         }
 
         scrapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isScrap){
+                if(interiorContentData.state==1){
                     NetworkManager.getInstance().undoScrap(getActivity(), interiorContentData.post_id, new NetworkManager.OnResultListener<PostTypeResult>() {
                         @Override
                         public void onSuccess(Request request, PostTypeResult result) {
                             Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
-                            isScrap = false;
+                            interiorContentData.state = 0;
                             scrapView.setSelected(false);
                         }
 
@@ -118,8 +117,8 @@ public class DetailInteriorFragment extends Fragment {
                         @Override
                         public void onSuccess(Request request, PostTypeResult result) {
                             Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
+                            interiorContentData.state = 1;
                             scrapView.setSelected(true);
-                            isScrap = true;
                         }
 
                         @Override

@@ -24,7 +24,7 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
     Button cardBtn;
     Button phoneBtn;
     Button checkBtn;
-    EditText phoneView, addressView1, addressView2, DetailAddressView, yearView, monthView;
+    EditText phoneView, addressView1, addressView2, detailAddressView, yearView, monthView;
     TextView todayView;
     ImageView calenderView;
     Context mContext;
@@ -35,13 +35,17 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         itemClickListener = listener;
     }
 
+    public OnSearchClickListener searchClickListener;
+    public void setOnSearchClickListener(OnSearchClickListener listener){
+        searchClickListener = listener;
+    }
     public OrderProductOtherViewHolder(View itemView) {
         super(itemView);
         mContext = itemView.getContext();
         phoneView = (EditText) itemView.findViewById(R.id.edit_phone);
         addressView1 = (EditText) itemView.findViewById(R.id.edit_adderess1);
         addressView2 = (EditText) itemView.findViewById(R.id.edit_address2);
-        DetailAddressView = (EditText) itemView.findViewById(R.id.edit_detail_address);
+        detailAddressView = (EditText) itemView.findViewById(R.id.edit_detail_address);
         yearView = (EditText) itemView.findViewById(R.id.edit_year);
         monthView = (EditText) itemView.findViewById(R.id.edit_month);
         fieldPrice = (TextView)itemView.findViewById(R.id.text_field_price);
@@ -92,6 +96,16 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+        Button btn = (Button)itemView.findViewById(R.id.btn_search);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(searchClickListener != null){
+                    searchClickListener.onSearchItemClick(v);
+                }
+            }
+        });
         init();
     }
     private void init(){
@@ -115,11 +129,18 @@ public class OrderProductOtherViewHolder extends RecyclerView.ViewHolder {
         yearView.setText("" + year);
         monthView.setText("" + month);
         Calendar c = Calendar.getInstance();
-        int diff = (year- c.get(Calendar.YEAR))*12 + (month-c.get(Calendar.MONTH));
+        int diff = (year- c.get(Calendar.YEAR))*12 + (month-c.get(Calendar.MONTH)) -1;
         fieldPrice.setText("");
+        priceView.setText("");
+        totalPriceVIew.setText("");
         fieldPrice.setText(TEXT_FIELD_PRICE+"(x"+diff+"개월)");
-        priceView.setText(""+price*diff);
+        priceView.setText(""+price*diff+"원");
         int totalPrice = price*diff + DEPOSIT_PRICE + FEE_PRICE;
-        totalPriceVIew.setText(""+totalPrice);
+        totalPriceVIew.setText(""+totalPrice+"원");
+    }
+    public void setAddress(String address){
+        if(address != null){
+            detailAddressView.setText(address);
+        }
     }
 }

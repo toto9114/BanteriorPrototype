@@ -48,4 +48,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.3.0'
     compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
     compile project(':library')
+    compile files('libs/com.skp.Tmap_1.0.37.jar')
 }

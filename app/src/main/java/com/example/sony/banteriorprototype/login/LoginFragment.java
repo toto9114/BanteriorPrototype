@@ -85,6 +85,9 @@ public class LoginFragment extends Fragment {
                             public void onSuccess(Request request, PostTypeResult result) {
                                 Toast.makeText(getContext(), result.result.message, Toast.LENGTH_SHORT).show();
                                 if (result.error == null) {
+                                    PropertyManager.getInstance().setLocalId(id);
+                                    PropertyManager.getInstance().setLocalPassword(password);
+                                    PropertyManager.getInstance().setId(result.result.id);
                                     startActivity(new Intent(getContext(), MainActivity.class));
                                     getActivity().finish();
                                 }
