@@ -23,9 +23,9 @@
         app:civ_border="false"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher"
         android:layout_marginTop="@dimen/profile_margin_top"
-        android:layout_marginBottom="@dimen/profile_margin_bottom" />
+        android:layout_marginBottom="@dimen/profile_margin_bottom"
+        android:src="@drawable/default_profile" />
 
     <TextView
         android:id="@+id/text_brand"

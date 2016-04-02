@@ -102,6 +102,7 @@ public class SearchFragment extends Fragment {
                 searchView.setText("");
             }
         });
+
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -154,5 +155,4 @@ public class SearchFragment extends Fragment {
         });
         return view;
     }
-
 }

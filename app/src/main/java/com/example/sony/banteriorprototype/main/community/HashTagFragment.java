@@ -66,6 +66,10 @@ public class HashTagFragment extends Fragment {
         }
     }
 
+    OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        onItemClickListener = listener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,9 +135,20 @@ public class HashTagFragment extends Fragment {
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TokenView hashTag = new TokenView(getContext());
+                final TokenView hashTag = new TokenView(getContext());
                 String keyword = mAdapter.getItem(position);
                 hashTag.setToken(keyword);
+                hashTag.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                    }
+                });
                 hashTagList.add(keyword);
                 mFlowlayout.addView(hashTag, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 keywordView.setText("");
