@@ -38,8 +38,11 @@ public class
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_interior, container, false);
         listView = (ListView) view.findViewById(R.id.interior_listView);
+//        listView.setOverscrollHeader(ContextCompat.getDrawable(getContext(), R.drawable.overscroll_glow));
         mAdapter = new MainInteriorAdapter();
         listView.setAdapter(mAdapter);
+
+        //listView.setOverscrollFooter(ContextCompat.getDrawable(getContext(), R.drawable.overscroll_glow));
 
         NetworkManager.getInstance().getMainpage(getContext(), new NetworkManager.OnResultListener<MainData>() {
             @Override
